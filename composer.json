@@ -1,18 +1,20 @@
 {
-    "name": "suliang/trhui",
-    "description": "招商银行清算通",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "suliang",
-            "email": "suliang20@163.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {},
-	"autoload": {
-		"psr-4": {
-			"Trhui\\": "src/"
-		}
-	} 
+  "name": "suliang/trhui",
+  "description": "招商银行清算通",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "suliang",
+      "email": "suliang20@163.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "yiisoft/yii2": "~2.0.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "Trhui\\": "src/"
+    }
+  }
 }
