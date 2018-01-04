@@ -28,6 +28,8 @@ class Tpam
     public $rsaPublicKey;
     public $tpamPublicKey;
 
+    private $url;
+
     /**
      * 商户号
      * @var
@@ -112,7 +114,7 @@ class Tpam
      */
     public function toRegister(ToRegister $inpubObj, $merOrderId)
     {
-        $url = $this->basePath . '/interface/toRegister';
+        $this->url = $this->basePath . '/interface/toRegister';
         $this->serverCode = 'toRegister';
 
         try {
@@ -128,11 +130,12 @@ class Tpam
                 }
             }
 
-            $result = $this->postCurl($this->getValues(), $url);
-            if (!$result) {
-                throw new \Trhui\TpamException('提交数据失败');
-            }
-            return $result;
+//            $result = $this->postCurl($this->getValues(), $this->url);
+//            if (!$result) {
+//                throw new \Trhui\TpamException('提交数据失败');
+//            }
+//            return $result;
+            return $this->toJson();
         } catch (\Trhui\TpamException $e) {
             if (!$this->hasError()) {
                 $this->addError('toRegister', $e->getMessage());
@@ -195,6 +198,15 @@ class Tpam
         return false;
     }
 
+    /**
+     * 输出JSON数据
+     * @return string
+     */
+    public function toJson()
+    {
+        return json_encode($this->getValues());
+    }
+
     public function test($data)
     {
         $encrypted = "";
@@ -216,6 +228,15 @@ class Tpam
     }
 
     /**
+     * 获取接口URL
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * $data待签名数据
      * 签名用商户私钥，必须是没有经过pkcs8转换的私钥
      * 最后的签名，需要用base64编码
@@ -234,7 +255,7 @@ class Tpam
             //释放资源
             openssl_free_key($res);
             //base64编码
-//        $sign = base64_encode($sign);
+            $sign = base64_encode($sign);
             return $sign;
         } catch (\Trhui\TpamException $e) {
             if (!$this->hasError()) {
