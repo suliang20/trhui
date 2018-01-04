@@ -8,10 +8,10 @@
 ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 use Trhui\Tpam as Tpam;
 
-defined('ROOT') or define('ROOT', dirname(__FILE__) . '/');
+defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
 
 $rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
 $rsaPublicKeyPath = ROOT . 'rsa/rsa_public_key.pem';
