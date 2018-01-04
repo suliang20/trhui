@@ -8,12 +8,11 @@
 
 namespace Trhui;
 
-use yii\base\Model;
 use Trhui\data\ToRegister;
 
-class Tpam extends Model
+class Tpam
 {
-//    public $errors = array();
+    public $errors = array();
 
     /**
      * 服务器地址
@@ -90,26 +89,6 @@ class Tpam extends Model
      * @var
      */
     protected $params;
-
-    public function init()
-    {
-        try {
-            if (!file_exists($this->rsaPrivateKeyPath)) {
-                throw new \Trhui\TpamException('私钥文件不存在');
-            }
-            if (!file_exists($this->rsaPublicKeyPath)) {
-                throw new \Trhui\TpamException('公钥文件不存在');
-            }
-            $this->rsaPrivateKey = @file_get_contents($this->rsaPrivateKeyPath);
-            $this->rsaPublicKey = @file_get_contents($this->rsaPublicKeyPath);
-            $this->date = $_SERVER['REQUEST_TIME'];
-        } catch (\Trhui\TpamException $e) {
-            if ($this->hasErrors()) {
-                $this->addError('construct', $e->getMessage());
-            }
-        }
-        parent::init();
-    }
 
     /**
      * 注册
@@ -370,5 +349,24 @@ class Tpam extends Model
             }
         }
         return false;
+    }
+
+    /**
+     * 检查错误
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return !empty($this->errors);
+    }
+
+    /**
+     * 添加错误
+     * @param $name
+     * @param $error
+     */
+    public function addError($name, $error)
+    {
+        $this->errors[$name] = $error;
     }
 }

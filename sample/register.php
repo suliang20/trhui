@@ -32,6 +32,7 @@ if (!$result) {
     var_dump($tpam->errors);
     exit;
 }
+//var_dump($result);exit;
 ?>
 
 <html>
