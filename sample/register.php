@@ -23,8 +23,12 @@ $inputObj->SetMobile('13000000000');
 $inputObj->SetNotifyUrl('https://notify.nongline.cn/trhui');
 
 
-$tpam = new Tpam('test', $rsaPrivateKeyPath, $rsaPublicKeyPath);
-if (!$result = $tpam->toRegister($inputObj, date('YmdHis'))) {
+$tpam = new Tpam();
+$tpam->merchantNo = 'test';
+$tpam->rsaPublicKeyPath = $rsaPublicKeyPath;
+$tpam->rsaPrivateKeyPath = $rsaPrivateKeyPath;
+$result = $tpam->toRegister($inputObj, date('YmdHis'));
+if (!$result) {
     var_dump($tpam->errors);
     exit;
 }
