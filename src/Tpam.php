@@ -8,8 +8,12 @@
 
 namespace Trhui;
 
+use Trhui\data\ToRegister;
+
 class Tpam
 {
+    public $errors = array();
+
     /**
      * 服务器地址
      * @var string
@@ -29,27 +33,92 @@ class Tpam
      * @var
      */
     public $merchantNo;
+
     /**
      * 订单号
      * @var
      */
     public $merOrderId;
     /**
-     * 签名，由merOrderId + merchantNo+date+params根据私钥生成如果有参数为null，签名串中应当做空字符串("")来处理
-     * @var
-     */
-    public $sign;
-    /**
-     * 业务类型编号（采用接口名称interface后的字符）如注册：toRegister
-     * @var
-     */
-    public $serverCode;
-    /**
      * 接口版本号（默认为：1.0.0）
      * @var string
      */
     public $version = '1.0.0';
+    /**
+     * 时间戳
+     * @var
+     */
+    public $date;
 
+    /**
+     * 签名，由merOrderId + merchantNo+date+params根据私钥生成如果有参数为null，签名串中应当做空字符串("")来处理
+     * @var
+     */
+    private $sign;
+    /**
+     * 业务类型编号（采用接口名称interface后的字符）如注册：toRegister
+     * @var
+     */
+    private $serverCode;
+    /**
+     * 业务参数，json格式
+     * @var
+     */
+    private $params;
+
+
+    public function __construct($merchantNo, $privateKeyPath, $publicKeyPath)
+    {
+        $this->merchantNo = $merchantNo;
+
+        $this->rsaPrivateKeyPath = $privateKeyPath;
+        $this->rsaPublicKeyPath = $publicKeyPath;
+        $this->date = $_SERVER['REQUEST_TIME'];
+        try {
+            $this->rsaPrivateKey = file_get_contents($this->rsaPrivateKeyPath);
+            $this->rsaPublicKey = file_get_contents($this->rsaPublicKeyPath);
+        } catch (\Trhui\TpamException $e) {
+            $this->addError('construct', $e->getMessage());
+        }
+    }
+
+
+    public function toRegister(ToRegister $inpubObj, $merOrderId)
+    {
+        $url = $this->basePath . '/interface/toRegister';
+        $this->serverCode = 'toRegister';
+
+        try {
+            $this->params = $inpubObj->toJson();
+            if (!$this->params) {
+                foreach ($inpubObj->errors as $error) {
+                    throw new \Trhui\TpamException($error);
+                }
+            }
+            if (!$this->sign) {
+                throw new \Trhui\TpamException('未签名');
+            }
+
+            var_dump($this->getValues());
+            exit;
+        } catch (\Trhui\TpamException $e) {
+            $this->addError('toRegister', $e->getMessage());
+        }
+        return false;
+    }
+
+    public function getValues()
+    {
+        return [
+            'merOrderId' => $this->merOrderId,
+            'merchantNo' => $this->merchantNo,
+            'sign' => $this->sign,
+            'serverCode' => $this->serverCode,
+            'version' => $this->version,
+            'params' => $this->params,
+            'date' => $this->date,
+        ];
+    }
 
     public function test($data)
     {
@@ -77,16 +146,53 @@ class Tpam
      * 最后的签名，需要用base64编码
      * return Sign签名
      */
-    public function sign($data)
+    private function sign($data)
     {
-        //转换为openssl密钥，必须是经过pkcs8转换的私钥
-        $res = openssl_get_privatekey($this->rsaPrivateKey);
-        //调用openssl内置签名方法，生成签名$sign
-        openssl_sign($data, $sign, $res);
-        //释放资源
-        openssl_free_key($res);
-        //base64编码
+        try {
+            //转换为openssl密钥，必须是经过pkcs8转换的私钥
+            $res = openssl_get_privatekey($this->rsaPrivateKey);
+            if (!$res) {
+                throw new \Trhui\TpamException('转换密钥失败');
+            }
+            //调用openssl内置签名方法，生成签名$sign
+            openssl_sign($data, $sign, $res);
+            //释放资源
+            openssl_free_key($res);
+            //base64编码
 //        $sign = base64_encode($sign);
-        return $sign;
+            return $sign;
+        } catch (\Trhui\TpamException $e) {
+            $this->addError('sign', $e->getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * 生成签名
+     * @return bool
+     */
+    public function MakeSign()
+    {
+        try {
+            $string = $this->merOrderId . $this->merchantNo . $this->date . $this->params;
+            $this->sign = $this->sign($string);
+            if (!$this->sign) {
+                throw new \Trhui\TpamException('生成签名失败');
+            }
+            return $this->sign;
+        } catch (\Trhui\TpamException $e) {
+            $this->addError('makeSign', $e->getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * 添加错误
+     * @param $name
+     * @param $errorMsg
+     */
+    public function addError($name, $errorMsg)
+    {
+        $this->errors[$name] = $errorMsg;
     }
 }

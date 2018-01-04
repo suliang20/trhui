@@ -7,6 +7,9 @@
  */
 require 'vendor/autoload.php';
 
+ini_set("display_errors", "On");
+error_reporting(E_ALL | E_STRICT);
+
 defined('ROOT') or define('ROOT', dirname(__FILE__) . '/');
 //var_dump(ROOT);
 //exit;
@@ -18,8 +21,11 @@ $rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
 $rsaPublicKeyPath = ROOT . 'rsa/rsa_public_key.pem';
 $tpamPublicKeyPath = ROOT . 'rsa/tpampublic.cer';
 
-$tpam = new Tpam();
-$tpam->rsaPrivateKeyPath = $rsaPrivateKeyPath;
-$tpam->rsaPublicKeyPath = $rsaPublicKeyPath;
-$tpam->tpamPublicKeyPath = $tpamPublicKeyPath;
-$tpam->test('sssss');
+$inputObj = new \Trhui\data\ToRegister();
+$inputObj->SetMerUserId('222');
+
+
+$tpam = new Tpam('ssss', $rsaPrivateKeyPath, $rsaPublicKeyPath);
+$tpam->toRegister($inputObj, time());
+var_dump($tpam->errors);
+exit;
