@@ -6,7 +6,7 @@
  * Time: 18:21
  */
 
-namespace Trhui\data;
+namespace trhui\data;
 
 
 class ToRegister extends DataBase

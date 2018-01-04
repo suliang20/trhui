@@ -6,7 +6,7 @@
  * Time: 20:42
  */
 
-namespace Trhui;
+namespace trhui;
 
 class TpamException extends \Exception
 {

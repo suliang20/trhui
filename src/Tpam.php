@@ -6,9 +6,9 @@
  * Time: 15:21
  */
 
-namespace Trhui;
+namespace trhui;
 
-use Trhui\data\ToRegister;
+use trhui\data\ToRegister;
 
 class Tpam
 {

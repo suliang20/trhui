@@ -6,7 +6,7 @@
  * Time: 18:18
  */
 
-namespace Trhui\data;
+namespace trhui\data;
 
 class DataBase
 {

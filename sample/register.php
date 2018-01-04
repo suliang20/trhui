@@ -9,7 +9,7 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
 require '../vendor/autoload.php';
-use Trhui\Tpam as Tpam;
+use trhui\Tpam as Tpam;
 
 defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
 
@@ -17,7 +17,7 @@ $rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
 $rsaPublicKeyPath = ROOT . 'rsa/rsa_public_key.pem';
 $tpamPublicKeyPath = ROOT . 'rsa/tpampublic.cer';
 
-$inputObj = new \Trhui\data\ToRegister();
+$inputObj = new \trhui\data\ToRegister();
 $inputObj->SetMerUserId('222');
 $inputObj->SetMobile('13000000000');
 $inputObj->SetNotifyUrl('https://notify.nongline.cn/trhui');
