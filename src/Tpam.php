@@ -18,7 +18,7 @@ class Tpam
      * 服务器地址
      * @var string
      */
-    public $basePath = 'ttp://cmbtest.trhui.com/tpam/service/';
+    public $basePath = 'http://cmbtest.trhui.com/tpam/service/';
 
     public $rsaPrivateKeyPath;
     public $rsaPublicKeyPath;
@@ -33,12 +33,6 @@ class Tpam
      * @var
      */
     public $merchantNo;
-
-    /**
-     * 订单号
-     * @var
-     */
-    public $merOrderId;
     /**
      * 接口版本号（默认为：1.0.0）
      * @var string
@@ -50,6 +44,11 @@ class Tpam
      */
     public $date;
 
+    /**
+     * 订单号
+     * @var
+     */
+    private $merOrderId;
     /**
      * 签名，由merOrderId + merchantNo+date+params根据私钥生成如果有参数为null，签名串中应当做空字符串("")来处理
      * @var
@@ -66,6 +65,27 @@ class Tpam
      */
     private $params;
 
+    /**
+     * 代理主机
+     * @var string
+     */
+    public $curlProxyHost = '0.0.0.0';
+    /**
+     * 代理端口
+     * @var int
+     */
+    public $curlProxyPort = 0;
+
+    /**
+     * 证书地址
+     * @var
+     */
+    public $sslCertPath;
+    /**
+     * 证书KEY地址
+     * @var
+     */
+    public $sslKeyPath;
 
     public function __construct($merchantNo, $privateKeyPath, $publicKeyPath)
     {
@@ -78,46 +98,101 @@ class Tpam
             $this->rsaPrivateKey = file_get_contents($this->rsaPrivateKeyPath);
             $this->rsaPublicKey = file_get_contents($this->rsaPublicKeyPath);
         } catch (\Trhui\TpamException $e) {
-            $this->addError('construct', $e->getMessage());
+            if ($this->hasError()) {
+                $this->addError('construct', $e->getMessage());
+            }
         }
     }
 
-
+    /**
+     * 注册
+     * @param ToRegister $inpubObj
+     * @param $merOrderId
+     * @return bool
+     */
     public function toRegister(ToRegister $inpubObj, $merOrderId)
     {
         $url = $this->basePath . '/interface/toRegister';
         $this->serverCode = 'toRegister';
 
         try {
+            if (empty($merOrderId)) {
+                throw new \Trhui\TpamException('订单号不能为空');
+            }
+
+            $this->merOrderId = $merOrderId;
             $this->params = $inpubObj->toJson();
             if (!$this->params) {
                 foreach ($inpubObj->errors as $error) {
                     throw new \Trhui\TpamException($error);
                 }
             }
-            if (!$this->sign) {
-                throw new \Trhui\TpamException('未签名');
-            }
 
-            var_dump($this->getValues());
-            exit;
+            $result = $this->postCurl($this->getValues(), $url);
+            if (!$result) {
+                throw new \Trhui\TpamException('提交数据失败');
+            }
+            return $result;
         } catch (\Trhui\TpamException $e) {
-            $this->addError('toRegister', $e->getMessage());
+            if (!$this->hasError()) {
+                $this->addError('toRegister', $e->getMessage());
+            }
         }
         return false;
     }
 
+    /**
+     * 获取接口请求公共参数
+     * @return array
+     */
     public function getValues()
     {
-        return [
-            'merOrderId' => $this->merOrderId,
-            'merchantNo' => $this->merchantNo,
-            'sign' => $this->sign,
-            'serverCode' => $this->serverCode,
-            'version' => $this->version,
-            'params' => $this->params,
-            'date' => $this->date,
-        ];
+        try {
+            if (empty($this->merOrderId)) {
+                throw new \Trhui\TpamException('商户订单号不能为空');
+            }
+            if (empty($this->merchantNo)) {
+                throw new \Trhui\TpamException('商户号不能为空');
+            }
+
+            if (empty($this->serverCode)) {
+                throw new \Trhui\TpamException('业务类型为设置');
+            }
+            if (empty($this->version)) {
+                throw new \Trhui\TpamException('版本号不能为空');
+            }
+            if (empty($this->params)) {
+                throw new \Trhui\TpamException('业务参数不能为空');
+            }
+            if (empty($this->date)) {
+                throw new \Trhui\TpamException('时间戳为生成');
+            }
+            //  生成签名
+            if (!$this->MakeSign()) {
+                throw new \Trhui\TpamException('签名失败');
+            }
+            if (!$this->sign) {
+                //  生成签名
+                if (!$this->MakeSign()) {
+                    throw new \Trhui\TpamException('签名失败');
+                }
+            }
+
+            return [
+                'merOrderId' => $this->merOrderId,
+                'merchantNo' => $this->merchantNo,
+                'sign' => $this->sign,
+                'serverCode' => $this->serverCode,
+                'version' => $this->version,
+                'params' => $this->params,
+                'date' => $this->date,
+            ];
+        } catch (\Trhui\TpamException $e) {
+            if (!$this->hasError()) {
+                $this->addError('getValues', $e->getMessage());
+            }
+        }
+        return false;
     }
 
     public function test($data)
@@ -162,7 +237,9 @@ class Tpam
 //        $sign = base64_encode($sign);
             return $sign;
         } catch (\Trhui\TpamException $e) {
-            $this->addError('sign', $e->getMessage());
+            if (!$this->hasError()) {
+                $this->addError('sign', $e->getMessage());
+            }
         }
         return false;
     }
@@ -181,7 +258,9 @@ class Tpam
             }
             return $this->sign;
         } catch (\Trhui\TpamException $e) {
-            $this->addError('makeSign', $e->getMessage());
+            if (!$this->hasError()) {
+                $this->addError('makeSign', $e->getMessage());
+            }
         }
         return false;
     }
@@ -194,5 +273,71 @@ class Tpam
     public function addError($name, $errorMsg)
     {
         $this->errors[$name] = $errorMsg;
+    }
+
+    /**
+     * 检查是否有错误
+     * @return bool
+     */
+    public function hasError()
+    {
+        return !empty($this->errors);
+    }
+
+    /**
+     * 以post方式提交xml到对应的接口url
+     * @param string $xml 需要post的xml数据
+     * @param string $url url
+     * @param bool $useCert 是否需要证书，默认不需要
+     * @param int $second url执行超时时间，默认30s
+     * @throws WxPayException
+     */
+    public function postCurl($requestData, $url, $useCert = false, $second = 30)
+    {
+        try {
+            $ch = curl_init();
+            //设置超时
+            curl_setopt($ch, CURLOPT_TIMEOUT, $second);
+
+            //如果有配置代理这里就设置代理
+            if ($this->curlProxyHost != "0.0.0.0" && $this->curlProxyPort != 0) {
+                curl_setopt($ch, CURLOPT_PROXY, $this->curlProxyHost);
+                curl_setopt($ch, CURLOPT_PROXYPORT, $this->curlProxyPort);
+            }
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);//严格校验
+            //设置header
+            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+            //要求结果为字符串且输出到屏幕上
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+            if ($useCert == true) {
+                //设置证书
+                //使用证书：cert 与 key 分别属于两个.pem文件
+                curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
+                curl_setopt($ch, CURLOPT_SSLCERT, $this->sslCertPath);
+                curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
+                curl_setopt($ch, CURLOPT_SSLKEY, $this->sslKeyPath);
+            }
+            //post提交方式
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $requestData);
+            //运行curl
+            $data = curl_exec($ch);
+            //返回结果
+            if (!$data) {
+                $error = curl_errno($ch);
+                curl_close($ch);
+                throw new \Trhui\TpamException("curl出错，错误码:$error");
+            }
+            curl_close($ch);
+            return $data;
+        } catch (\Trhui\TpamException $e) {
+            if (!$this->hasError()) {
+                $this->addError('postCurl', $e->getMessage());
+            }
+        }
+        return false;
     }
 }

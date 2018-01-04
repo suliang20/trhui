@@ -14,6 +14,8 @@ defined('ROOT') or define('ROOT', dirname(__FILE__) . '/');
 //var_dump(ROOT);
 //exit;
 
+//echo phpinfo();exit;
+
 //use MiniUpload\MyUpload as MyUpload;
 use Trhui\Tpam as Tpam;
 
@@ -23,9 +25,14 @@ $tpamPublicKeyPath = ROOT . 'rsa/tpampublic.cer';
 
 $inputObj = new \Trhui\data\ToRegister();
 $inputObj->SetMerUserId('222');
+$inputObj->SetMobile('13959260751');
+$inputObj->SetNotifyUrl('https://notify.nongline.cn/trhui');
 
 
 $tpam = new Tpam('ssss', $rsaPrivateKeyPath, $rsaPublicKeyPath);
-$tpam->toRegister($inputObj, time());
-var_dump($tpam->errors);
-exit;
+if (!$result = $tpam->toRegister($inputObj, date('YmdHis'))) {
+    var_dump($tpam->errors);
+    exit;
+}
+echo $result;
+
