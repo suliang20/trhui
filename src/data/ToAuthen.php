@@ -14,8 +14,8 @@ class ToAuthen extends DataBase
 
     public function __construct()
     {
-        $this->serverInterface =  '/interface/toAuthen';
-        $this->serverCode=  'toAuthen';
+        $this->serverInterface = '/interface/toAuthen';
+        $this->serverCode = 'toAuthen';
     }
 
     //  TODO    清算通系统会员ID
@@ -35,6 +35,18 @@ class ToAuthen extends DataBase
         return array_key_exists('userId', $this->params) && !empty($this->params['userId']);
     }
 
+    //  TODO    认证类型    0：个人实名认证    1：企业实名认证
+
+    public function SetAuthenType($value)
+    {
+        $this->params['authenType'] = $value;
+    }
+
+    public function GetAuthenType()
+    {
+        return $this->params['authenType'];
+    }
+
     //  TODO    前台回调地址
 
     public function SetFrontUrl($value)
@@ -45,11 +57,6 @@ class ToAuthen extends DataBase
     public function GetFrontUrl()
     {
         return $this->params['frontUrl'];
-    }
-
-    public function IsFrontUrlSet()
-    {
-        return array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']);
     }
 
     //  TODO    后台回调地址

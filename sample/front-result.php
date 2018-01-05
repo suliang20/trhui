@@ -9,14 +9,10 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
 require '../vendor/autoload.php';
-
-defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
-
-$tpamPublicKeyPath = ROOT . 'rsa/tpamPublic.pem';
-//$tpamPublicKeyPath = ROOT . 'rsa/rsa_public_key.pem';
+require_once('./commonParams.php');
 
 $result = new \trhui\Results();
-$result->tpamPublicKeyPath = $tpamPublicKeyPath;
+$result->tpamPublicKeyPath = PUBLIC_KEY_PATH;
 $res = $result->handle($_POST);
 if(!$res){
    var_dump($result->errors);

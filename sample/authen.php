@@ -9,20 +9,20 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
 require '../vendor/autoload.php';
+require_once('./commonParams.php');
 
-defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
-
-$rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
 
 $inputObj = new \trhui\data\ToAuthen();
-$inputObj->SetUserId('510');
-$inputObj->SetNotifyUrl('http://notify.nongline.cn/trhui');
-$inputObj->SetFrontUrl('http://git-dev.com/composer/trhui/sample/front-result.php');
+$inputObj->SetNotifyUrl(NOTIFY_URL);
+$inputObj->SetFrontUrl(FRONT_URL);
+
+$inputObj->SetUserId(USER_ID);
+$inputObj->SetAuthenType(USER_TYPE);
 
 $tpam = new \trhui\Tpam();
-$tpam->merchantNo = 'test';
-$tpam->rsaPrivateKeyPath = $rsaPrivateKeyPath;
-$result = $tpam->frontInterface($inputObj, date('YmdHis'));
+$tpam->merchantNo = MER_CHANT_NO;
+$tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+$result = $tpam->frontInterface($inputObj, MER_ORDER_ID);
 if (!$result) {
     var_dump($tpam->errors);
     exit;
