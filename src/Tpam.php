@@ -143,34 +143,6 @@ class Tpam
         return false;
     }
 
-    public function accredit(ToRegister $inpubObj, $merOrderId)
-    {
-        try {
-            if (empty($merOrderId)) {
-                throw new TpamException('订单号不能为空');
-            }
-
-            $this->merOrderId = $merOrderId;
-            $this->params = $inpubObj->toJson();
-            if (!$this->params) {
-                foreach ($inpubObj->errors as $error) {
-                    throw new TpamException($error);
-                }
-            }
-            if (!$json = $this->toJson()) {
-                throw new TpamException('JSON数据为空');
-            }
-
-            return $json;
-        } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('toRegister', $e->getMessage());
-            }
-        }
-        return false;
-    }
-
-
     /**
      * 获取接口请求公共参数
      * @return array
