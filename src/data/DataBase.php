@@ -13,6 +13,18 @@ class DataBase
     public $errors = array();
     protected $params = array();
 
+    //  TODO    自定义参数1
+
+    public function SetParameterl($value)
+    {
+        $this->params['parameterl'] = $value;
+    }
+
+    public function GetParameterl()
+    {
+        return $this->params['parameterl'];
+    }
+
     /**
      * 输出Json数据
      * @return bool|string

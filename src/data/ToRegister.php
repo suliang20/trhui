@@ -89,15 +89,4 @@ class ToRegister extends DataBase
         return array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']);
     }
 
-    //  TODO    自定义参数1
-
-    public function SetParameterl($value)
-    {
-        $this->params['parameterl'] = $value;
-    }
-
-    public function GetParameterl()
-    {
-        return $this->params['parameterl'];
-    }
 }

@@ -16,7 +16,7 @@ $rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
 
 $inputObj = new \trhui\data\ToRegister();
 $inputObj->SetMerUserId('223');
-$inputObj->SetMobile('13000000003');
+$inputObj->SetMobile('13000000004');
 $inputObj->SetNotifyUrl('http://notify.nongline.cn/trhui');
 $inputObj->SetFrontUrl('http://git-dev.com/composer/trhui/sample/registerSuccess.php');
 
