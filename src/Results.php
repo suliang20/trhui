@@ -8,6 +8,7 @@
 
 namespace trhui;
 
+use trhui\data\ResultCode;
 /**
  * 清算通返回数据处理
  * 返回示例
@@ -106,6 +107,8 @@ class Results
     public function ResultProcess()
     {
         try {
+            var_dump(ResultCode::RESULT_CODE[$this->code]);
+
 //            $values = $this->getValues();
             $result = $this->getResult();
             var_dump($result);
