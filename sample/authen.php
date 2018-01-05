@@ -5,12 +5,8 @@
  * Date: 2017/12/29
  * Time: 15:29
  */
-ini_set("display_errors", "On");
-error_reporting(E_ALL | E_STRICT);
-
-require '../vendor/autoload.php';
 require_once('./commonParams.php');
-
+require '../vendor/autoload.php';
 
 $inputObj = new \trhui\data\ToAuthen();
 $inputObj->SetNotifyUrl(NOTIFY_URL);

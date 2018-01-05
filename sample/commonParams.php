@@ -4,6 +4,8 @@
  * Date: 2018/1/5
  * Time: 19:13
  */
+ini_set("display_errors", "On");
+error_reporting(E_ALL | E_STRICT);
 
 //  项目根目录
 defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');

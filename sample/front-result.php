@@ -5,11 +5,8 @@
  * Date: 2018/1/4
  * Time: 18:08
  */
-ini_set("display_errors", "On");
-error_reporting(E_ALL | E_STRICT);
-
-require '../vendor/autoload.php';
 require_once('./commonParams.php');
+require '../vendor/autoload.php';
 
 $result = new \trhui\Results();
 $result->tpamPublicKeyPath = PUBLIC_KEY_PATH;
