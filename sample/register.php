@@ -9,23 +9,19 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 
 require '../vendor/autoload.php';
-use trhui\Tpam as Tpam;
 
 defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
 
 $rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
-$rsaPublicKeyPath = ROOT . 'rsa/rsa_public_key.pem';
-$tpamPublicKeyPath = ROOT . 'rsa/tpampublic.cer';
 
 $inputObj = new \trhui\data\ToRegister();
-$inputObj->SetMerUserId('222');
-$inputObj->SetMobile('13000000000');
-$inputObj->SetNotifyUrl('https://notify.nongline.cn/trhui');
+$inputObj->SetMerUserId('223');
+$inputObj->SetMobile('13000000003');
+$inputObj->SetNotifyUrl('http://notify.nongline.cn/trhui');
+$inputObj->SetFrontUrl('http://git-dev.com/composer/trhui/sample/registerSuccess.php');
 
-
-$tpam = new Tpam();
+$tpam = new \trhui\Tpam();
 $tpam->merchantNo = 'test';
-$tpam->rsaPublicKeyPath = $rsaPublicKeyPath;
 $tpam->rsaPrivateKeyPath = $rsaPrivateKeyPath;
 $result = $tpam->toRegister($inputObj, date('YmdHis'));
 if (!$result) {
@@ -37,7 +33,7 @@ if (!$result) {
 
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>用户注册示例</title>
 </head>
 <body>

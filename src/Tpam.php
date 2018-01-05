@@ -19,14 +19,16 @@ class Tpam
      * @var string
      */
     public $basePath = 'http://cmbtest.trhui.com/tpam/service/';
-
+    /**
+     * 商户私钥路径
+     * @var
+     */
     public $rsaPrivateKeyPath;
-    public $rsaPublicKeyPath;
-    public $tpamPublicKeyPath;
-
+    /**
+     * 商户私钥
+     * @var
+     */
     protected $rsaPrivateKey;
-    protected $rsaPublicKey;
-    protected $tpamPublicKey;
     protected $url;
 
 
@@ -90,6 +92,11 @@ class Tpam
      */
     protected $params;
 
+    public function __construct()
+    {
+        $this->date = $_SERVER['REQUEST_TIME'];
+    }
+
     /**
      * 注册
      * @param ToRegister $inpubObj
@@ -103,22 +110,22 @@ class Tpam
 
         try {
             if (empty($merOrderId)) {
-                throw new \Trhui\TpamException('订单号不能为空');
+                throw new TpamException('订单号不能为空');
             }
 
             $this->merOrderId = $merOrderId;
             $this->params = $inpubObj->toJson();
             if (!$this->params) {
                 foreach ($inpubObj->errors as $error) {
-                    throw new \Trhui\TpamException($error);
+                    throw new TpamException($error);
                 }
             }
             if (!$json = $this->toJson()) {
-                throw new \Trhui\TpamException('JSON数据为空');
+                throw new TpamException('JSON数据为空');
             }
 
             return $json;
-        } catch (\Trhui\TpamException $e) {
+        } catch (TpamException $e) {
             if (!$this->hasErrors()) {
                 $this->addError('toRegister', $e->getMessage());
             }
@@ -133,48 +140,33 @@ class Tpam
     public function getValues()
     {
         try {
-            if (!file_exists($this->rsaPrivateKeyPath)) {
-                throw new \Trhui\TpamException('私钥文件不存在');
-            }
-            if (!file_exists($this->rsaPublicKeyPath)) {
-                throw new \Trhui\TpamException('公钥文件不存在');
-            }
-            $this->rsaPrivateKey = @file_get_contents($this->rsaPrivateKeyPath);
-            $this->rsaPublicKey = @file_get_contents($this->rsaPublicKeyPath);
-            $this->date = $_SERVER['REQUEST_TIME'];
-            if (empty($this->rsaPrivateKey)) {
-                throw new \Trhui\TpamException('私钥不能为空');
-            }
-            if (empty($this->rsaPublicKey)) {
-                throw new \Trhui\TpamException('公钥不能为空');
-            }
             if (empty($this->date)) {
-                throw new \Trhui\TpamException('时间戳为空');
+                throw new TpamException('时间戳为空');
             }
             if (empty($this->merOrderId)) {
-                throw new \Trhui\TpamException('商户订单号不能为空');
+                throw new TpamException('商户订单号不能为空');
             }
             if (empty($this->merchantNo)) {
-                throw new \Trhui\TpamException('商户号不能为空');
+                throw new TpamException('商户号不能为空');
             }
 
             if (empty($this->serverCode)) {
-                throw new \Trhui\TpamException('业务类型为设置');
+                throw new TpamException('业务类型为设置');
             }
             if (empty($this->version)) {
-                throw new \Trhui\TpamException('版本号不能为空');
+                throw new TpamException('版本号不能为空');
             }
             if (empty($this->params)) {
-                throw new \Trhui\TpamException('业务参数不能为空');
+                throw new TpamException('业务参数不能为空');
             }
             //  生成签名
             if (!$this->MakeSign()) {
-                throw new \Trhui\TpamException('签名失败');
+                throw new TpamException('签名失败');
             }
             if (!$this->sign) {
                 //  生成签名
                 if (!$this->MakeSign()) {
-                    throw new \Trhui\TpamException('签名失败');
+                    throw new TpamException('签名失败');
                 }
             }
 
@@ -187,7 +179,7 @@ class Tpam
                 'params' => $this->params,
                 'date' => $this->date,
             ];
-        } catch (\Trhui\TpamException $e) {
+        } catch (TpamException $e) {
             if (!$this->hasErrors()) {
                 $this->addError('getValues', $e->getMessage());
             }
@@ -204,10 +196,10 @@ class Tpam
         try {
             $values = $this->getValues();
             if (!$values) {
-                throw new \Trhui\TpamException('获取参数值失败');
+                throw new TpamException('获取参数值失败');
             }
             return json_encode($values);
-        } catch (\Trhui\TpamException $e) {
+        } catch (TpamException $e) {
             if (!$this->hasErrors()) {
                 $this->addError('toRegister', $e->getMessage());
             }
@@ -253,10 +245,17 @@ class Tpam
     private function sign($data)
     {
         try {
+            if (!file_exists($this->rsaPrivateKeyPath)) {
+                throw new TpamException('私钥文件不存在');
+            }
+            $this->rsaPrivateKey = @file_get_contents($this->rsaPrivateKeyPath);
+            if (empty($this->rsaPrivateKey)) {
+                throw new TpamException('私钥不能为空');
+            }
             //转换为openssl密钥，必须是经过pkcs8转换的私钥
             $res = openssl_get_privatekey($this->rsaPrivateKey);
             if (!$res) {
-                throw new \Trhui\TpamException('转换密钥失败');
+                throw new TpamException('转换密钥失败');
             }
             //调用openssl内置签名方法，生成签名$sign
             openssl_sign($data, $sign, $res);
@@ -265,7 +264,7 @@ class Tpam
             //base64编码
             $sign = base64_encode($sign);
             return $sign;
-        } catch (\Trhui\TpamException $e) {
+        } catch (TpamException $e) {
             if (!$this->hasErrors()) {
                 $this->addError('sign', $e->getMessage());
             }
@@ -283,10 +282,10 @@ class Tpam
             $string = $this->merOrderId . $this->merchantNo . $this->date . $this->params;
             $this->sign = $this->sign($string);
             if (!$this->sign) {
-                throw new \Trhui\TpamException('生成签名失败');
+                throw new TpamException('生成签名失败');
             }
             return $this->sign;
-        } catch (\Trhui\TpamException $e) {
+        } catch (TpamException $e) {
             if (!$this->hasErrors()) {
                 $this->addError('makeSign', $e->getMessage());
             }
@@ -339,11 +338,11 @@ class Tpam
             if (!$data) {
                 $error = curl_errno($ch);
                 curl_close($ch);
-                throw new \Trhui\TpamException("curl出错，错误码:$error");
+                throw new TpamException("curl出错，错误码:$error");
             }
             curl_close($ch);
             return $data;
-        } catch (\Trhui\TpamException $e) {
+        } catch (TpamException $e) {
             if (!$this->hasErrors()) {
                 $this->addError('postCurl', $e->getMessage());
             }
