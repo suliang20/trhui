@@ -14,6 +14,7 @@ class ResultCode
      * 返回代码
      */
     const RESULT_CODE = array(
+
         //  公共返回
         '100' => '操作成功',
         '999' => '交易异常',
