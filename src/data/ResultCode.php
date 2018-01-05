@@ -8,6 +8,11 @@
 
 namespace trhui\data;
 
+/**
+ * 清算通返回码
+ * Class ResultCode
+ * @package trhui\data
+ */
 class ResultCode
 {
     /**

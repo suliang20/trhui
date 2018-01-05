@@ -9,6 +9,12 @@
 namespace trhui\data;
 
 
+/**
+ * 注册参数
+ * TODO 请求地址：/interface/toRegister
+ * Class ToRegister
+ * @package trhui\data
+ */
 class ToRegister extends DataBase
 {
     public function __construct()

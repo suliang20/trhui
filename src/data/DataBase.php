@@ -8,6 +8,11 @@
 
 namespace trhui\data;
 
+/**
+ * 参数基类
+ * Class DataBase
+ * @package trhui\data
+ */
 class DataBase
 {
     public $errors = array();
@@ -27,14 +32,14 @@ class DataBase
 
     //  TODO    自定义参数1
 
-    public function SetParameterl($value)
+    public function SetParameter1($value)
     {
-        $this->params['parameterl'] = $value;
+        $this->params['parameter1'] = $value;
     }
 
-    public function GetParameterl()
+    public function GetParameter1()
     {
-        return $this->params['parameterl'];
+        return $this->params['parameter1'];
     }
 
     /**

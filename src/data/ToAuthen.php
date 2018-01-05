@@ -8,7 +8,13 @@
 
 namespace trhui\data;
 
-
+/**
+ * 实名认证参数
+ * TODO 请求地址：/interface/toAuthen
+ * 会员在提现操作之前，都必须要实名认证(绑定银行卡)
+ * Class ToAuthen
+ * @package trhui\data
+ */
 class ToAuthen extends DataBase
 {
 
