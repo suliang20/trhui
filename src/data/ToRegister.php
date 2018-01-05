@@ -11,7 +11,11 @@ namespace trhui\data;
 
 class ToRegister extends DataBase
 {
-    protected $params = array();
+    public function __construct()
+    {
+        $this->serverInterface =  '/interface/toRegister';
+        $this->serverCode=  'toRegister';
+    }
 
     //  TODO    商户平台会员ID -- 由商户平台定义
 

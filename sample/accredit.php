@@ -14,9 +14,8 @@ defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
 
 $rsaPrivateKeyPath = ROOT . 'rsa/pkcs8_rsa_private_key.pem';
 
-$inputObj = new \trhui\data\ToRegister();
-$inputObj->SetMerUserId('223');
-$inputObj->SetMobile('13000000004');
+$inputObj = new \trhui\data\Accredit();
+$inputObj->SetUserId('510');
 $inputObj->SetNotifyUrl('http://notify.nongline.cn/trhui');
 $inputObj->SetFrontUrl('http://git-dev.com/composer/trhui/sample/front-result.php');
 
@@ -34,10 +33,10 @@ if (!$result) {
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>用户注册示例</title>
+    <title>用户授权</title>
 </head>
 <body>
-<button onclick='sendData("<?= $tpam->getUrl() ?>",<?= $result ?>)'>提交注册</button>
+<button onclick='sendData("<?= $tpam->getUrl() ?>",<?= $result ?>)'>提交</button>
 <script>
 
     function sendData(action, data) {

@@ -13,6 +13,18 @@ class DataBase
     public $errors = array();
     protected $params = array();
 
+    /**
+     * 服务接口
+     * @var
+     */
+    protected $serverInterface;
+
+    /**
+     * 业务类型编码
+     * @var
+     */
+    protected $serverCode;
+
     //  TODO    自定义参数1
 
     public function SetParameterl($value)
@@ -23,6 +35,24 @@ class DataBase
     public function GetParameterl()
     {
         return $this->params['parameterl'];
+    }
+
+    /**
+     * 获取服务接口
+     * @return mixed
+     */
+    public function getServerInterface()
+    {
+        return $this->serverInterface;
+    }
+
+    /**
+     * 获取业务类型编码
+     * @return mixed
+     */
+    public function getServerCode()
+    {
+        return $this->serverCode;
     }
 
     /**

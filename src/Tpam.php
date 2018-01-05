@@ -8,6 +8,7 @@
 
 namespace trhui;
 
+use trhui\data\DataBase;
 use trhui\data\ToRegister;
 
 class Tpam
@@ -98,16 +99,52 @@ class Tpam
     }
 
     /**
-     * 注册
+     * 前台接口
      * @param ToRegister $inpubObj
      * @param $merOrderId
-     * @return bool
+     * @return bool|string
      */
-    public function toRegister(ToRegister $inpubObj, $merOrderId)
+    public function frontInterface(DataBase $inpubObj, $merOrderId)
     {
         $this->url = $this->basePath . '/interface/toRegister';
         $this->serverCode = 'toRegister';
 
+        try {
+            if(!$serverInterface = $inpubObj->getServerInterface()){
+                throw new TpamException('服务接口不为空');
+            }
+            if(!$serverCode  = $inpubObj->getServerCode()){
+                throw new TpamException('业务类型编号不为空');
+            }
+            $this->url = $this->basePath . $serverInterface;
+            $this->serverCode = $serverCode;
+
+            if (empty($merOrderId)) {
+                throw new TpamException('订单号不能为空');
+            }
+
+            $this->merOrderId = $merOrderId;
+            $this->params = $inpubObj->toJson();
+            if (!$this->params) {
+                foreach ($inpubObj->errors as $error) {
+                    throw new TpamException($error);
+                }
+            }
+            if (!$json = $this->toJson()) {
+                throw new TpamException('JSON数据为空');
+            }
+
+            return $json;
+        } catch (TpamException $e) {
+            if (!$this->hasErrors()) {
+                $this->addError('toRegister', $e->getMessage());
+            }
+        }
+        return false;
+    }
+
+    public function accredit(ToRegister $inpubObj, $merOrderId)
+    {
         try {
             if (empty($merOrderId)) {
                 throw new TpamException('订单号不能为空');
@@ -132,6 +169,7 @@ class Tpam
         }
         return false;
     }
+
 
     /**
      * 获取接口请求公共参数
