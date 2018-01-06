@@ -8,10 +8,11 @@
 
 namespace trhui;
 
+use trhui\data\Data;
 use trhui\data\DataBase;
 use trhui\data\ToRegister;
 
-class Tpam
+class Tpam extends Data
 {
     public $errors = array();
 
@@ -104,16 +105,16 @@ class Tpam
      * @param $merOrderId
      * @return bool|string
      */
-    public function frontInterface(DataBase $inpubObj, $merOrderId)
+    public function frontInterface(DataBase $inputObj, $merOrderId)
     {
         try {
             if (!$this->serverUrl) {
                 throw new TpamException('服务地址不为空');
             }
-            if (!$serverInterface = $inpubObj->getServerInterface()) {
+            if (!$serverInterface = $inputObj->getServerInterface()) {
                 throw new TpamException('服务接口不为空');
             }
-            if (!$serverCode = $inpubObj->getServerCode()) {
+            if (!$serverCode = $inputObj->getServerCode()) {
                 throw new TpamException('业务类型编号不为空');
             }
             $this->url = $this->serverUrl . $serverInterface;
@@ -124,9 +125,9 @@ class Tpam
             }
 
             $this->merOrderId = $merOrderId;
-            $this->params = $inpubObj->toJson();
+            $this->params = $inputObj->toJson();
             if (!$this->params) {
-                $this->errors = array_merge($this->errors, $inpubObj->errors);
+                $this->errors = array_merge($this->errors, $inputObj->errors);
                 throw new TpamException('获取业务参数失败');
             }
             if (!$json = $this->toJson()) {
@@ -345,29 +346,5 @@ class Tpam
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
-    }
-
-    /**
-     * 检查错误
-     * @return bool
-     */
-    public function hasErrors()
-    {
-        return !empty($this->errors);
-    }
-
-    /**
-     * 添加错误
-     * @param $name
-     * @param $error
-     */
-    public function addError($name, $errorMsg, $line = '', $file = '')
-    {
-        $this->errors[] = [
-            'name' => $name,
-            'errorMsg' => $errorMsg,
-            'file' => $file,
-            'line' => $line,
-        ];
     }
 }

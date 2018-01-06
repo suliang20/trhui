@@ -263,19 +263,9 @@ class OrderTransfer extends DataBase
      * 手续费收款方支付时1个对象
      * @param $value
      */
-    public function SetPayeeUserList(PayeeUserList $inputOjb)
+    public function SetPayeeUserList($value)
     {
-        try {
-            if (!$payeeUserListParams = $inputOjb->getParams()) {
-                $this->errors = array_merge($this->errors, $inputOjb->errors);
-                throw new TpamException('获取收款人数据异常');
-            }
-            $this->params['payeeUserList'] = json_encode($payeeUserListParams);
-            return true;
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
+        $this->params['payeeUserList'] = $value;
     }
 
     public function GetPayeeUserList()

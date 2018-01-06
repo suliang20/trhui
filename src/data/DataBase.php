@@ -15,9 +15,8 @@ use trhui\TpamException;
  * Class DataBase
  * @package trhui\data
  */
-class DataBase
+class DataBase extends Data
 {
-    public $errors = array();
     protected $params = array();
 
     /**
@@ -114,29 +113,5 @@ class DataBase
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
-    }
-
-    /**
-     * 添加错误
-     * @param $name
-     * @param $errorMsg
-     */
-    public function addError($name, $errorMsg, $line = '', $file = '')
-    {
-        $this->errors[] = [
-            'name' => $name,
-            'errorMsg' => $errorMsg,
-            'file' => $file,
-            'line' => $line,
-        ];
-    }
-
-    /**
-     * 检查是否有错误
-     * @return bool
-     */
-    public function hasErrors()
-    {
-        return !empty($this->errors);
     }
 }

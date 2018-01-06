@@ -8,34 +8,45 @@
 require_once('./commonParams.php');
 require '../vendor/autoload.php';
 
-    $inputObj = new \trhui\data\OrderTransfer();
-    $inputObj->SetNotifyUrl(NOTIFY_URL);
-    $inputObj->SetFrontUrl(FRONT_URL);
+$inputObj = new \trhui\data\OrderTransfer();
+$inputObj->SetNotifyUrl(NOTIFY_URL);
+$inputObj->SetFrontUrl(FRONT_URL);
 
-    $inputObj->SetAmount(100);
-    $inputObj->SetPayerUserId(USER_ID);
-    $inputObj->SetActionType(1);
-    $inputObj->SetTransferPayType(0);
-    $inputObj->SetTopupType(1);
-    $inputObj->SetPayType();
-    $inputObj->SetFeePayer();
+$inputObj->SetAmount(100);
+$inputObj->SetPayerUserId(USER_ID);
+$inputObj->SetActionType(1);
+$inputObj->SetTransferPayType(0);
+$inputObj->SetTopupType(1);
+$inputObj->SetPayType();
+$inputObj->SetFeePayer();
 
-    $payeeUserListObj = new \trhui\data\PayeeUserList();
-////$payeeUserListObj
-//
-    $inputObj->SetPayeeUserList($payeeUserListObj);
+$paramArr1 = [
+    'orderId' => ORDER_ID,
+    'payeeUserId' => MER_USER_ID,
+    'payeeAmount' => 1,
+    'feeToMerchant' => 0,
+    'transferType' => 1,
+    'feeType' => 1
+];
 
-    $tpam = new \trhui\Tpam();
-    $tpam->serverUrl = SERVER_URL;
-    $tpam->merchantNo = MER_CHANT_NO;
-    $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
-    $result = $tpam->frontInterface($inputObj, MER_ORDER_ID);
-    if (!$result) {
-        var_dump($tpam->errors);
-        exit;
-    }
-//    var_dump($result);
-//    exit;
+$payeeUserListArrObj = new \trhui\data\ParamsArray();
+if (!$payeeUserListArrObj->SetParams(new \trhui\data\PayeeUserList(), $paramArr1)) {
+    var_dump($payeeUserListArrObj->errors);
+    exit;
+}
+$inputObj->SetPayeeUserList($payeeUserListArrObj->getParamsArr());
+
+$tpam = new \trhui\Tpam();
+$tpam->serverUrl = SERVER_URL;
+$tpam->merchantNo = MER_CHANT_NO;
+$tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+$result = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+if (!$result) {
+    var_dump($tpam->errors);
+    exit;
+}
+//var_dump($result);
+//exit;
 ?>
 
 <html>
