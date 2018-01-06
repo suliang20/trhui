@@ -20,6 +20,32 @@ use trhui\TpamException;
 class PayeeUserList extends DataBase
 {
     /**
+     * 转账方式
+     * 0：托管转账，需要商户管理员审核通过后，资金才会划转到对方账户；
+     * 1：直接转账，转账成功后，资金直接划转到对方账户中。
+     */
+    const TRANSFER_TYPE_COSTODY = 0;        //  托管转账
+    const TRANSFER_TYPE_DIRECT = 1;         //  直接转账
+    const TRANSFER_TYPE = [
+        '0' => '托管转账',
+        '1' => '直接转账',
+    ];
+
+    /**
+     * 佣金收取方式
+     * 0：立即收取；
+     * 1：交易结束时收取。
+     * 如果商户有收取交易手续费，且转账方式为“托管转账”时有效
+     */
+    const FEE_TYPE_PROMPTLY = 0;                //  立即收取
+    const FEE_TYPE_TRANSACTION_CLOSE = 1;     //  交易结束
+    const FEE_TYPE = [
+        '0' => '立即收取',
+        '1' => '交易结束',
+    ];
+
+
+    /**
      * 商户平台交易订单号
      * @param $value
      */

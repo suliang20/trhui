@@ -125,11 +125,11 @@ class OrderTransfer extends DataBase
      * 1：收款方
      * Ps：非支付转账业务，此值无意义
      */
-    const FEE_PAYER_MERCHANT_PLATFORM = 1;      //  商户平台
-    const FEE_PAYER_PAYEE = 2;                    //  收款方
+    const FEE_PAYER_MERCHANT_PLATFORM = 0;      //  商户平台
+    const FEE_PAYER_PAYEE = 1;                    //  收款方
     const FEE_PAYER = [
-        '1' => '商户平台',
-        '2' => '收款方',
+        '0' => '商户平台',
+        '1' => '收款方',
     ];
 
     public function __construct()
