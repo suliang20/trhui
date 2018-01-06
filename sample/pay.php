@@ -8,32 +8,43 @@
 require_once('./commonParams.php');
 require '../vendor/autoload.php';
 
-$inputObj = new \trhui\data\ToRegister();
-$inputObj->SetNotifyUrl(NOTIFY_URL);
-$inputObj->SetFrontUrl(FRONT_URL);
+    $inputObj = new \trhui\data\OrderTransfer();
+    $inputObj->SetNotifyUrl(NOTIFY_URL);
+    $inputObj->SetFrontUrl(FRONT_URL);
 
-$inputObj->SetMerUserId(MER_USER_ID);
-$inputObj->SetMobile(MOBILE);
+    $inputObj->SetAmount(100);
+    $inputObj->SetPayerUserId(USER_ID);
+    $inputObj->SetActionType(1);
+    $inputObj->SetTransferPayType(0);
+    $inputObj->SetTopupType(1);
+    $inputObj->SetPayType();
+    $inputObj->SetFeePayer();
 
-$tpam = new \trhui\Tpam();
-$tpam->serverUrl = SERVER_URL;
-$tpam->merchantNo = MER_CHANT_NO;
-$tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
-$result = $tpam->frontInterface($inputObj, MER_ORDER_ID);
-if (!$result) {
-    var_dump($tpam->errors);
-    exit;
-}
-//var_dump($result);exit;
+    $payeeUserListObj = new \trhui\data\PayeeUserList();
+////$payeeUserListObj
+//
+    $inputObj->SetPayeeUserList($payeeUserListObj);
+
+    $tpam = new \trhui\Tpam();
+    $tpam->serverUrl = SERVER_URL;
+    $tpam->merchantNo = MER_CHANT_NO;
+    $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+    $result = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+    if (!$result) {
+        var_dump($tpam->errors);
+        exit;
+    }
+//    var_dump($result);
+//    exit;
 ?>
 
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>用户注册示例</title>
+    <title>支付</title>
 </head>
 <body>
-<button onclick='sendData("<?= $tpam->getUrl() ?>",<?= $result ?>)'>提交注册</button>
+<button onclick='sendData("<?= $tpam->getUrl() ?>",<?= $result ?>)'>提交支付</button>
 <script>
 
     function sendData(action, data) {

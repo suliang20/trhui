@@ -8,6 +8,8 @@
 
 namespace trhui\data;
 
+use trhui\TpamException;
+
 /**
  * 商品列表（不校验金额，仅校验数据格式，用于以后数据挖掘）
  * Class ItemList
@@ -31,7 +33,15 @@ class ItemList extends DataBase
 
     public function IsItemIdSet()
     {
-        return array_key_exists('itemId', $this->params) && !empty($this->params['itemId']);
+        try {
+            if (!(array_key_exists('itemId', $this->params) && !empty($this->params['itemId']))) {
+                throw new TpamException('商品编号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -51,7 +61,15 @@ class ItemList extends DataBase
 
     public function IsItemNameSet()
     {
-        return array_key_exists('itemName', $this->params) && !empty($this->params['itemName']);
+        try {
+            if (!(array_key_exists('itemName', $this->params) && !empty($this->params['itemName']))) {
+                throw new TpamException('商品名称未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -72,7 +90,15 @@ class ItemList extends DataBase
 
     public function IsItemQtySet()
     {
-        return array_key_exists('itemQty', $this->params) && !empty($this->params['itemQty']);
+        try {
+            if (!(array_key_exists('itemQty', $this->params) && !empty($this->params['itemQty']))) {
+                throw new TpamException('商品数量未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -92,6 +118,14 @@ class ItemList extends DataBase
 
     public function IsItemAmountSet()
     {
-        return array_key_exists('itemAmount', $this->params) && !empty($this->params['itemAmount']);
+        try {
+            if (!(array_key_exists('itemAmount', $this->params) && !empty($this->params['itemAmount']))) {
+                throw new TpamException('商品价格未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 }

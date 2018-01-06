@@ -8,6 +8,8 @@
 
 namespace trhui\data;
 
+use trhui\TpamException;
+
 /**
  * 支付参数
  * 注：测试环境仅能进行“个人网银支付”、“手机WAP支付”
@@ -30,8 +32,8 @@ class OrderTransfer extends DataBase
 
     public function __construct()
     {
-        $this->serverInterface = '/interface/accredit';
-        $this->serverCode = 'accredit';
+        $this->serverInterface = '/interface/orderTransfer';
+        $this->serverCode = 'orderTransfer';
     }
 
     /**
@@ -51,7 +53,15 @@ class OrderTransfer extends DataBase
 
     public function IsAmountSet()
     {
-        return array_key_exists('amount', $this->params) && !empty($this->params['amount']);
+        try {
+            if (!(array_key_exists('amount', $this->params) && !empty($this->params['amount']))) {
+                throw new TpamException('交易金额未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -70,7 +80,15 @@ class OrderTransfer extends DataBase
 
     public function IsPayerUserIdSet()
     {
-        return array_key_exists('payerUserId', $this->params) && !empty($this->params['payerUserId']);
+        try {
+            if (!(array_key_exists('payerUserId', $this->params) && !empty($this->params['payerUserId']))) {
+                throw new TpamException('付款方商户平台账号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -90,7 +108,15 @@ class OrderTransfer extends DataBase
 
     public function IsActionTypeSet()
     {
-        return array_key_exists('actionType', $this->params) && !empty($this->params['actionType']);
+        try {
+            if (!(array_key_exists('actionType', $this->params) && !empty($this->params['actionType']))) {
+                throw new TpamException('业务类型未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -98,7 +124,7 @@ class OrderTransfer extends DataBase
      * 0:余额支付，1:在线支付
      * @param $value
      */
-    public function SetTransferPayType($value)
+    public function SetTransferPayType($value = 0)
     {
         $this->params['transferPayType'] = $value;
     }
@@ -110,7 +136,16 @@ class OrderTransfer extends DataBase
 
     public function IsTransferPayTypeSet()
     {
-        return array_key_exists('transferPayType', $this->params) && !empty($this->params['transferPayType']);
+        return true;
+        try {
+            if (!(array_key_exists('transferPayType', $this->params) && !empty($this->params['transferPayType']))) {
+                throw new TpamException('支付方式未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -146,7 +181,15 @@ class OrderTransfer extends DataBase
 
     public function IsTopupTypeSet()
     {
-        return array_key_exists('topupType', $this->params) && !empty($this->params['topupType']);
+        try {
+            if (!(array_key_exists('topupType', $this->params) && !empty($this->params['topupType']))) {
+                throw new TpamException('支付类型未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -156,9 +199,11 @@ class OrderTransfer extends DataBase
      * 支付类型为EPOS必填
      * @param $value
      */
-    public function SetPayType($value)
+    public function SetPayType($value = '')
     {
-        $this->params['payType'] = $value;
+        if (!empty($value)) {
+            $this->params['payType'] = $value;
+        }
     }
 
     public function GetPayType()
@@ -168,7 +213,16 @@ class OrderTransfer extends DataBase
 
     public function IsPayTypeSet()
     {
-        return array_key_exists('payType', $this->params) && !empty($this->params['payType']);
+        return true;
+        try {
+            if (!(array_key_exists('payType', $this->params) && !empty($this->params['payType']))) {
+                throw new TpamException('卡种未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -178,7 +232,7 @@ class OrderTransfer extends DataBase
      * Ps：非支付转账业务，此值无意义
      * @param $value
      */
-    public function SetFeePayer($value)
+    public function SetFeePayer($value = 0)
     {
         $this->params['feePayer'] = $value;
     }
@@ -190,7 +244,16 @@ class OrderTransfer extends DataBase
 
     public function IsFeePayerSet()
     {
-        return array_key_exists('feePayer', $this->params) && !empty($this->params['feePayer']);
+        return true;
+        try {
+            if (!(array_key_exists('feePayer', $this->params) && !empty($this->params['feePayer']))) {
+                throw new TpamException('支付手续费承担方未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -200,9 +263,19 @@ class OrderTransfer extends DataBase
      * 手续费收款方支付时1个对象
      * @param $value
      */
-    public function SetPayeeUserList($value)
+    public function SetPayeeUserList(PayeeUserList $inputOjb)
     {
-        $this->params['payeeUserList'] = $value;
+        try {
+            if (!$payeeUserListParams = $inputOjb->getParams()) {
+                $this->errors = array_merge($this->errors, $inputOjb->errors);
+                throw new TpamException('获取收款人数据异常');
+            }
+            $this->params['payeeUserList'] = json_encode($payeeUserListParams);
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     public function GetPayeeUserList()
@@ -212,7 +285,17 @@ class OrderTransfer extends DataBase
 
     public function IsPayeeUserListSet()
     {
-        return array_key_exists('payeeUserList', $this->params) && !empty($this->params['payeeUserList']);
+        try {
+            if (!(array_key_exists('payeeUserList', $this->params) && !empty($this->params['payeeUserList']))) {
+                throw new TpamException('收款人列表数据不能为空');
+            }
+            return true;
+        } catch (TpamException $e) {
+            if (!$this->hasErrors()) {
+                $this->addError('IsPayeeUserListSet', $e->getMessage());
+            }
+        }
+        return false;
     }
 
     /**
@@ -231,7 +314,15 @@ class OrderTransfer extends DataBase
 
     public function IsFrontUrlSet()
     {
-        return array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']);
+        try {
+            if (!(array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']))) {
+                throw new TpamException('前台回调地址未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -250,7 +341,15 @@ class OrderTransfer extends DataBase
 
     public function IsNotifyUrlSet()
     {
-        return array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']);
+        try {
+            if (!(array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']))) {
+                throw new TpamException('后台回调地址未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -277,6 +376,7 @@ class OrderTransfer extends DataBase
 
     public function IsParameter1Set()
     {
+        return true;
         return array_key_exists('parameter1', $this->params) && !empty($this->params['parameter1']);
     }
 
@@ -303,6 +403,7 @@ class OrderTransfer extends DataBase
 
     public function IsParameter2Set()
     {
+        return true;
         return array_key_exists('parameter2', $this->params) && !empty($this->params['parameter2']);
     }
 }

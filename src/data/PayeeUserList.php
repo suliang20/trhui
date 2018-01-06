@@ -8,6 +8,8 @@
 
 namespace trhui\data;
 
+use trhui\TpamException;
+
 /**
  * 收款人列表
  * 注：开发时,收款人列表长度控制为最多20对象
@@ -33,7 +35,15 @@ class PayeeUserList extends DataBase
 
     public function IsOrderIdSet()
     {
-        return array_key_exists('orderId', $this->params) && !empty($this->params['orderId']);
+        try {
+            if (!(array_key_exists('orderId', $this->params) && !empty($this->params['orderId']))) {
+                throw new TpamException('商户平台交易订单号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -52,11 +62,19 @@ class PayeeUserList extends DataBase
 
     public function IsPayeeUserIdSet()
     {
-        return array_key_exists('payeeUserId', $this->params) && !empty($this->params['payeeUserId']);
+        try {
+            if (!(array_key_exists('payeeUserId', $this->params) && !empty($this->params['payeeUserId']))) {
+                throw new TpamException('商户平台交易订单号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
-     * 收款金额金额,单位：分
+     * 收款金额,单位：分
      * 金额必须大于0分,且和feeToMerchant累加起来等于付款金额，否则视为异常
      * @param $value
      */
@@ -72,7 +90,15 @@ class PayeeUserList extends DataBase
 
     public function IsPayeeAmountSet()
     {
-        return array_key_exists('payeeAmount', $this->params) && !empty($this->params['payeeAmount']);
+        try {
+            if (!(array_key_exists('payeeAmount', $this->params) && !empty($this->params['payeeAmount']))) {
+                throw new TpamException('收款金额未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -92,7 +118,15 @@ class PayeeUserList extends DataBase
 
     public function IsFeeToMerchantSet()
     {
-        return array_key_exists('feeToMerchant', $this->params) && !empty($this->params['feeToMerchant']);
+        try {
+            if (!(array_key_exists('feeToMerchant', $this->params) && !empty($this->params['feeToMerchant']))) {
+                throw new TpamException('商户平台收取佣金未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -112,7 +146,15 @@ class PayeeUserList extends DataBase
 
     public function IsTransferTypeSet()
     {
-        return array_key_exists('transferType', $this->params) && !empty($this->params['transferType']);
+        try {
+            if (!(array_key_exists('transferType', $this->params) && !empty($this->params['transferType']))) {
+                throw new TpamException('转账方式未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -132,7 +174,15 @@ class PayeeUserList extends DataBase
 
     public function IsFeeTypeSet()
     {
-        return array_key_exists('feeType', $this->params) && !empty($this->params['feeType']);
+        try {
+            if (!(array_key_exists('feeType', $this->params) && !empty($this->params['feeType']))) {
+                throw new TpamException('佣金收取方式未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -152,7 +202,15 @@ class PayeeUserList extends DataBase
 
     public function IsAutoPaydaySet()
     {
-        return array_key_exists('autoPayday', $this->params) && !empty($this->params['autoPayday']);
+        try {
+            if (!(array_key_exists('autoPayday', $this->params) && !empty($this->params['autoPayday']))) {
+                throw new TpamException('自动支付时间未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
@@ -171,6 +229,14 @@ class PayeeUserList extends DataBase
 
     public function IsItemListSet()
     {
-        return array_key_exists('itemList', $this->params) && !empty($this->params['itemList']);
+        try {
+            if (!(array_key_exists('itemList', $this->params) && !empty($this->params['itemList']))) {
+                throw new TpamException('商品列表未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 }

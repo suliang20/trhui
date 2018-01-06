@@ -19,7 +19,7 @@ class Tpam
      * 服务器地址
      * @var string
      */
-    public $basePath = 'http://cmbtest.trhui.com/tpam/service/';
+    public $serverUrl;
     /**
      * 商户私钥路径
      * @var
@@ -106,17 +106,17 @@ class Tpam
      */
     public function frontInterface(DataBase $inpubObj, $merOrderId)
     {
-        $this->url = $this->basePath . '/interface/toRegister';
-        $this->serverCode = 'toRegister';
-
         try {
-            if(!$serverInterface = $inpubObj->getServerInterface()){
+            if (!$this->serverUrl) {
+                throw new TpamException('服务地址不为空');
+            }
+            if (!$serverInterface = $inpubObj->getServerInterface()) {
                 throw new TpamException('服务接口不为空');
             }
-            if(!$serverCode  = $inpubObj->getServerCode()){
+            if (!$serverCode = $inpubObj->getServerCode()) {
                 throw new TpamException('业务类型编号不为空');
             }
-            $this->url = $this->basePath . $serverInterface;
+            $this->url = $this->serverUrl . $serverInterface;
             $this->serverCode = $serverCode;
 
             if (empty($merOrderId)) {
@@ -126,9 +126,8 @@ class Tpam
             $this->merOrderId = $merOrderId;
             $this->params = $inpubObj->toJson();
             if (!$this->params) {
-                foreach ($inpubObj->errors as $error) {
-                    throw new TpamException($error);
-                }
+                $this->errors = array_merge($this->errors, $inpubObj->errors);
+                throw new TpamException('获取业务参数失败');
             }
             if (!$json = $this->toJson()) {
                 throw new TpamException('JSON数据为空');
@@ -136,9 +135,7 @@ class Tpam
 
             return $json;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('toRegister', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -190,9 +187,7 @@ class Tpam
                 'date' => $this->date,
             ];
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('getValues', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -210,9 +205,7 @@ class Tpam
             }
             return json_encode($values);
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('toRegister', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -275,9 +268,7 @@ class Tpam
             $sign = base64_encode($sign);
             return $sign;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('sign', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -296,9 +287,7 @@ class Tpam
             }
             return $this->sign;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('makeSign', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -353,9 +342,7 @@ class Tpam
             curl_close($ch);
             return $data;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('postCurl', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -374,8 +361,13 @@ class Tpam
      * @param $name
      * @param $error
      */
-    public function addError($name, $error)
+    public function addError($name, $errorMsg, $line = '', $file = '')
     {
-        $this->errors[$name] = $error;
+        $this->errors[] = [
+            'name' => $name,
+            'errorMsg' => $errorMsg,
+            'file' => $file,
+            'line' => $line,
+        ];
     }
 }

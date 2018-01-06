@@ -17,6 +17,8 @@ defined('PUBLIC_KEY_PATH') OR define('PUBLIC_KEY_PATH', ROOT . 'rsa/tpamPublic.p
 
 //  商户号
 defined('MER_CHANT_NO') or define('MER_CHANT_NO', 'test');
+//  招商清算通服务地址
+defined('SERVER_URL') or define('SERVER_URL', 'http://cmbtest.trhui.com/tpam/service/');
 //  回调地址
 defined('NOTIFY_URL') or define('NOTIFY_URL', 'http://notify.nongline.cn/trhui');
 //  前台地址

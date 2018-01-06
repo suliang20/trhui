@@ -8,6 +8,8 @@
 
 namespace trhui\data;
 
+use trhui\TpamException;
+
 
 /**
  * 授权参数
@@ -25,8 +27,10 @@ class Accredit extends DataBase
         $this->serverCode = 'accredit';
     }
 
-    //  TODO    清算通系统会员ID
-
+    /**
+     * 清算通系统会员ID
+     * @param $value
+     */
     public function SetUserId($value)
     {
         $this->params['userId'] = $value;
@@ -39,11 +43,21 @@ class Accredit extends DataBase
 
     public function IsUserIdSet()
     {
-        return array_key_exists('userId', $this->params) && !empty($this->params['userId']);
+        try {
+            if (!(array_key_exists('userId', $this->params) && !empty($this->params['userId']))) {
+                throw new TpamException('清算通系统会员ID未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
-    //  TODO    前台回调地址
-
+    /**
+     * 前台回调地址
+     * @param $value
+     */
     public function SetFrontUrl($value)
     {
         $this->params['frontUrl'] = $value;
@@ -56,11 +70,21 @@ class Accredit extends DataBase
 
     public function IsFrontUrlSet()
     {
-        return array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']);
+        try {
+            if (!(array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']))) {
+                throw new TpamException('前台回调地址未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
-    //  TODO    后台回调地址
-
+    /**
+     * 后台回调地址
+     * @param $value
+     */
     public function SetNotifyUrl($value)
     {
         $this->params['notifyUrl'] = $value;
@@ -73,7 +97,15 @@ class Accredit extends DataBase
 
     public function IsNotifyUrlSet()
     {
-        return array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']);
+        try {
+            if (!(array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']))) {
+                throw new TpamException('后台回调地址未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
 }

@@ -15,6 +15,7 @@ $inputObj->SetFrontUrl(FRONT_URL);
 $inputObj->SetUserId(USER_ID);
 
 $tpam = new \trhui\Tpam();
+$tpam->serverUrl = SERVER_URL;
 $tpam->merchantNo = MER_CHANT_NO;
 $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
 $result = $tpam->frontInterface($inputObj, MER_ORDER_ID);

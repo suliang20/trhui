@@ -9,6 +9,7 @@
 namespace trhui;
 
 use trhui\data\ResultCode;
+
 /**
  * 清算通返回数据处理
  * 返回示例
@@ -88,13 +89,11 @@ class Results
                 throw new TpamException('获取数据失败');
             }
             //  结果处理
-            $this->ResultProcess($values);
+            $this->ResultProcess();
 
             return $values;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('handle', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -113,9 +112,7 @@ class Results
             $result = $this->getResult();
             var_dump($result);
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('handle', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
     }
 
@@ -137,9 +134,7 @@ class Results
                 'date' => $this->date,
             ];
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('getValues', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -165,9 +160,7 @@ class Results
             }
             return true;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('getValues', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -188,9 +181,7 @@ class Results
             }
             return $result;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('getValues', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -228,9 +219,7 @@ class Results
             }
             return true;
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('checkSign', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -248,9 +237,7 @@ class Results
             }
             return json_encode($values);
         } catch (TpamException $e) {
-            if (!$this->hasErrors()) {
-                $this->addError('toRegister', $e->getMessage());
-            }
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -269,8 +256,13 @@ class Results
      * @param $name
      * @param $error
      */
-    final protected function addError($name, $error)
+    final protected function addError($name, $errorMsg, $line = '', $file = '')
     {
-        $this->errors[$name] = $error;
+        $this->errors[] = [
+            'name' => $name,
+            'errorMsg' => $errorMsg,
+            'file' => $file,
+            'line' => $line,
+        ];
     }
 }

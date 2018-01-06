@@ -8,6 +8,8 @@
 
 namespace trhui\data;
 
+use trhui\TpamException;
+
 /**
  * 参数基类
  * Class DataBase
@@ -68,13 +70,11 @@ class DataBase
     {
         try {
             if (!$this->checkParams()) {
-                throw new \trhui\TpamException('参数异常！');
+                throw new TpamException('参数异常！');
             }
             return json_encode($this->params);
-        } catch (\trhui\TpamException $e) {
-            if (!$this->hasError()) {
-                $this->addError('toJson', $e->getMessage());
-            }
+        } catch (TpamException $e) {
+            $this->addError('toJson', $e->getMessage());
         }
         return false;
     }
@@ -86,13 +86,11 @@ class DataBase
     {
         try {
             if (!$this->checkParams()) {
-                throw new \trhui\TpamException('参数异常！');
+                throw new TpamException('参数异常！');
             }
             return $this->params;
-        } catch (\trhui\TpamException $e) {
-            if (!$this->hasError()) {
-                $this->addError('getParams', $e->getMessage());
-            }
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -104,21 +102,16 @@ class DataBase
     public function checkParams()
     {
         try {
-            if (!is_array($this->params) || count($this->params) <= 0) {
-                throw new \trhui\TpamException('数组数据异常！');
-            }
             foreach (get_class_methods($this) as $method) {
                 if (preg_match('/^Is\w*Set$/', $method)) {
                     if (!$this->$method()) {
-                        throw new \trhui\TpamException(substr($method, 2, -3) . '未设置！');
+                        throw new TpamException(substr($method, 2, -3) . '未设置！');
                     }
                 }
             }
             return true;
-        } catch (\trhui\TpamException $e) {
-            if (!$this->hasError()) {
-                $this->addError('checkParams', $e->getMessage());
-            }
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
     }
@@ -128,16 +121,21 @@ class DataBase
      * @param $name
      * @param $errorMsg
      */
-    public function addError($name, $errorMsg)
+    public function addError($name, $errorMsg, $line = '', $file = '')
     {
-        $this->errors[$name] = $errorMsg;
+        $this->errors[] = [
+            'name' => $name,
+            'errorMsg' => $errorMsg,
+            'file' => $file,
+            'line' => $line,
+        ];
     }
 
     /**
      * 检查是否有错误
      * @return bool
      */
-    public function hasError()
+    public function hasErrors()
     {
         return !empty($this->errors);
     }

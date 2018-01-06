@@ -8,6 +8,8 @@
 
 namespace trhui\data;
 
+use trhui\TpamException;
+
 
 /**
  * 注册参数
@@ -19,12 +21,15 @@ class ToRegister extends DataBase
 {
     public function __construct()
     {
-        $this->serverInterface =  '/interface/toRegister';
-        $this->serverCode=  'toRegister';
+        $this->serverInterface = '/interface/toRegister';
+        $this->serverCode = 'toRegister';
     }
 
-    //  TODO    商户平台会员ID -- 由商户平台定义
-
+    /**
+     * 商户平台会员ID
+     * 由商户平台定义
+     * @param $value
+     */
     public function SetMerUserId($value)
     {
         $this->params['merUserId'] = $value;
@@ -37,11 +42,22 @@ class ToRegister extends DataBase
 
     public function IsMerUserIdSet()
     {
-        return array_key_exists('merUserId', $this->params) && !empty($this->params['merUserId']);
+        try {
+            if (!(array_key_exists('merUserId', $this->params) && !empty($this->params['merUserId']))) {
+                throw new TpamException('商户平台会员ID未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
-    //  TODO  账户类型 --   空或0表示个人账户;1表示企业账户
-
+    /**
+     * 账户类型
+     * 空或0表示个人账户;1表示企业账户
+     * @param $value
+     */
     public function SetUserType($value)
     {
         $this->params['userType'] = $value;
@@ -52,8 +68,10 @@ class ToRegister extends DataBase
         return $this->params['userType'];
     }
 
-    //  TODO    手机号
-
+    /**
+     * 手机号
+     * @param $value
+     */
     public function SetMobile($value)
     {
         $this->params['mobile'] = $value;
@@ -66,12 +84,22 @@ class ToRegister extends DataBase
 
     public function IsMobileSet()
     {
-        return array_key_exists('mobile', $this->params) && !empty($this->params['mobile']);
+        try {
+            if (!(array_key_exists('mobile', $this->params) && !empty($this->params['mobile']))) {
+                throw new TpamException('手机号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
 
-    //  TODO    前台回调地址
-
+    /**
+     * 前台回调地址
+     * @param $value
+     */
     public function SetFrontUrl($value)
     {
         $this->params['frontUrl'] = $value;
@@ -82,8 +110,23 @@ class ToRegister extends DataBase
         return $this->params['frontUrl'];
     }
 
-    //  TODO    后台回调地址
+    public function IsFrontUrlSet()
+    {
+        try {
+            if (!(array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']))) {
+                throw new TpamException('前台回调地址未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
 
+    /**
+     * 后台回调地址
+     * @param $value
+     */
     public function SetNotifyUrl($value)
     {
         $this->params['notifyUrl'] = $value;
@@ -96,7 +139,15 @@ class ToRegister extends DataBase
 
     public function IsNotifyUrlSet()
     {
-        return array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']);
+        try {
+            if (!(array_key_exists('notifyUrl', $this->params) && !empty($this->params['notifyUrl']))) {
+                throw new TpamException('后台回调地址未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
 }
