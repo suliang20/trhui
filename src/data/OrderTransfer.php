@@ -30,6 +30,108 @@ use trhui\TpamException;
 class OrderTransfer extends DataBase
 {
 
+    /**
+     * 业务类型
+     * 1：消费转账
+     */
+    const ACTION_TYPE_CONSUME = 1;      //  消费转账
+    const ACTION_TYPE = [
+        '1' => '消费转账'
+    ];
+
+    /**
+     * 支付类型
+     * 0:余额支付
+     * 1:在线支付
+     */
+    const TRANSFER_PAY_TYPE_BALANCE = 0;    //  余额支付
+    const TRANSFER_PAY_TYPE_ONLINE = 1;     //  在线支付
+    const TRANSFER_PAY_TYPE = [
+        '0' => '余额支付',
+        '1' => '在线支付',
+    ];
+
+    /**
+     * 支付类型
+     * 1：个人网银支付
+     * 2：企业网银
+     * 3：快捷支付
+     * 4：手机WAP支付
+     * 5：代收/代扣
+     * 6：E-pos支付
+     * 7：微信扫码支付
+     * 8：支付宝扫码支付
+     * 9：微信公众号支付
+     * 10：支付宝服务窗支付
+     * 11：A-pos支付
+     * 12：微信控件支付
+     * 13：微信B扫C支付
+     * 14：支付宝B扫C支付
+     * 15：微信H5支付
+     * 16：微信小程序支付
+     * 转账支付方式为1时有用
+     */
+    const TOPUP_TYPE_PERSONAL_BANK = 1;             //  个人网银
+    const TOPUP_TYPE_BUSINESS_BANK = 2;             //  企业网银
+    const TOPUP_TYPE_FAST_PAYMENT = 3;              //  快捷支付
+    const TOPUP_TYPE_WAP_PAYMENT = 4;               //  wap支付
+    const TOPUP_TYPE_COLLECTION_WITHHOLD = 5;       //  代收/代扣
+    const TOPUP_TYPE_EPOS = 6;                       //  EPOS
+    const TOPUP_TYPE_WECHAT_SCAN = 7;               //  微信扫码
+    const TOPUP_TYPE_ALIPAY_SCAN = 8;               //  支付宝扫码
+    const TOPUP_TYPE_WECHAT_OFFICIAL = 9;           // 微信公众号
+    const TOPUP_TYPE_ALIPAY_SERVER = 10;           //  支付宝服务窗
+    const TOPUP_TYPE_APOS = 11;                       // A-post
+    const TOPUP_TYPE_WECHAT_WIDGET = 12;            //  微信控件
+    const TOPUP_TYPE_WECHAT_B2C = 13;               //  微信B扫C支付
+    const TOPUP_TYPE_ALIPAY_B2C = 14;               //  支付宝B扫C支
+    const TOPUP_TYPE_WECHAT_H5 = 15;               //   微信H5
+    const TOPUP_TYPE_WECHAT_APPLET = 16;          //   微信小程序
+    const TOPUP_TYPE = [
+        '1' => '个人网银',
+        '2' => '企业网银',
+        '3' => '快捷支付',
+        '4' => 'WAP支付',
+        '5' => '代收/代扣',
+        '6' => 'EPOS',
+        '7' => '微信扫码',
+        '8' => '支付宝扫码',
+        '9' => '微信公众号',
+        '10' => '支付宝服务窗',
+        '11' => 'APOS',
+        '12' => '微信控件',
+        '13' => '微信B扫C',
+        '14' => '支付宝B扫C',
+        '15' => '微信H5',
+        '16' => '微信小程序',
+    ];
+
+    /**
+     * 卡种
+     * 1：借记卡
+     * 2：贷记卡
+     * 支付类型为EPOS必填
+     */
+    const PAY_TYPE_DEBIT_CARD = 1;      //  借记卡
+    const PAY_TYPE_CREDIT_CARD = 2;     //  贷记卡
+    const PAY_TYPE = [
+        '1' => '借记卡',
+        '2' => '贷记卡',
+    ];
+
+    /**
+     * 支付手续费承担方
+     * 0：商户平台；
+     * 1：收款方
+     * Ps：非支付转账业务，此值无意义
+     */
+    const FEE_PAYER_MERCHANT_PLATFORM = 1;      //  商户平台
+    const FEE_PAYER_PAYEE = 2;                    //  收款方
+    const FEE_PAYER = [
+        '1' => '商户平台',
+        '2' => '收款方',
+    ];
+
     public function __construct()
     {
         $this->serverInterface = '/interface/orderTransfer';
@@ -65,7 +167,8 @@ class OrderTransfer extends DataBase
     }
 
     /**
-     * 付款方商户平台账号
+     * 付款方清算通账号未
+     * 注：未注册使用0
      * @param $value
      */
     public function SetPayerUserId($value)
@@ -81,7 +184,7 @@ class OrderTransfer extends DataBase
     public function IsPayerUserIdSet()
     {
         try {
-            if (!(array_key_exists('payerUserId', $this->params) && !empty($this->params['payerUserId']))) {
+            if (!(array_key_exists('payerUserId', $this->params) && isset($this->params['payerUserId']))) {
                 throw new TpamException('付款方商户平台账号未设置');
             }
             return true;

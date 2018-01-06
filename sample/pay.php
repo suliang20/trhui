@@ -12,17 +12,20 @@ $inputObj = new \trhui\data\OrderTransfer();
 $inputObj->SetNotifyUrl(NOTIFY_URL);
 $inputObj->SetFrontUrl(FRONT_URL);
 
-$inputObj->SetAmount(100);
-$inputObj->SetPayerUserId(USER_ID);
+$inputObj->SetAmount(1);
+//$inputObj->SetPayerUserId(MER_USER_ID);
+//$inputObj->SetPayerUserId(USER_ID);
+$inputObj->SetPayerUserId(0);
 $inputObj->SetActionType(1);
-$inputObj->SetTransferPayType(0);
-$inputObj->SetTopupType(1);
-$inputObj->SetPayType();
+$inputObj->SetTransferPayType(1);
+$inputObj->SetTopupType(7);
+$inputObj->SetPayType(0);
 $inputObj->SetFeePayer();
 
 $paramArr1 = [
     'orderId' => ORDER_ID,
-    'payeeUserId' => MER_USER_ID,
+//    'payeeUserId' => MER_USER_ID,
+    'payeeUserId' => 526,
     'payeeAmount' => 1,
     'feeToMerchant' => 0,
     'transferType' => 1,
@@ -45,7 +48,7 @@ if (!$result) {
     var_dump($tpam->errors);
     exit;
 }
-//var_dump($result);
+var_dump($result);
 //exit;
 ?>
 

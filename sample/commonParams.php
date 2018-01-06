@@ -23,7 +23,6 @@ defined('MER_CHANT_NO') or define('MER_CHANT_NO', 'test');
 defined('SERVER_URL') or define('SERVER_URL', 'http://cmbtest.trhui.com/tpam/service/');
 
 
-
 //  回调地址
 defined('NOTIFY_URL') or define('NOTIFY_URL', 'http://notify.nongline.cn/trhui');
 //  前台地址
@@ -35,14 +34,17 @@ defined('MER_ORDER_ID') or define('MER_ORDER_ID', date('YmdHis'));
 //  商户平台交易订单号
 defined('ORDER_ID') or define('ORDER_ID', date('YmdHis'));
 
-//  清算通用户ID
-defined('USER_ID') or define('USER_ID', '510');
 
-//  授权类型
-defined('USER_TYPE') or define('USER_TYPE', '0');
-
-//  商户平台用户ID
-defined('MER_USER_ID') or define('MER_USER_ID', '223');
-
-//  用户手机号
-defined('MOBILE') or define('MOBILE', '13000000004');
+//  TODO    用户注册数据
+if (true) {
+    defined('USER_ID') or define('USER_ID', '509');             //  清算通用户ID
+    defined('USER_TYPE') or define('USER_TYPE', '0');           //  授权类型
+    defined('MER_USER_ID') or define('MER_USER_ID', '223');     //  商户平台用户ID
+    defined('MOBILE') or define('MOBILE', '13000000002');       //  用户手机号
+}
+if (false) {
+    defined('USER_ID') or define('USER_ID', '526');             //  清算通用户ID
+    defined('USER_TYPE') or define('USER_TYPE', '0');           //  授权类型
+    defined('MER_USER_ID') or define('MER_USER_ID', '224');     //  商户平台用户ID
+    defined('MOBILE') or define('MOBILE', '13000000004');       //  用户手机号
+}

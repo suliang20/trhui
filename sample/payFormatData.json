@@ -1,0 +1,9 @@
+{
+  "merOrderId": "20180106133855",
+  "merchantNo": "fhda001",
+  "sign": "Vx3teOjuznR15gKeuXmW7nKK7rOTRevFqyNO8V4gBxL24Cfu3rXiwkMwNkc2mCEF9LVQZErvEhaBowr+Ue7kX\/7s4e5JNOEgmslrH8i8xVe+nv7TIION2zzIcQLYcDuT8g5kXLJ4K4SyVGY7mO1rj2cbvO4QQrGFyzdB9zCbzaE=",
+  "serverCode": "orderTransfer",
+  "version": "1.0.0",
+  "params": "{\"notifyUrl\":\"http:\\\/\\\/notify.nongline.cn\\\/trhui\",\"frontUrl\":\"http:\\\/\\\/git-dev.com\\\/composer\\\/trhui\\\/sample\\\/front-result.php\",\"amount\":100,\"payerUserId\":\"223\",\"actionType\":1,\"transferPayType\":0,\"topupType\":1,\"feePayer\":0,\"payeeUserList\":[{\"orderId\":\"20180106133855\",\"payeeUserId\":\"223\",\"payeeAmount\":1,\"feeToMerchant\":0,\"transferType\":1,\"feeType\":1}]}",
+  "date": 1515245935
+}
