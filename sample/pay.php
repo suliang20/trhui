@@ -58,18 +58,16 @@ if (is_post()) {
                     throw new \trhui\TpamException($error['errorMsg']);
                 }
             }
-
-            $result['error'] = 1;
-            $result['msg'] = '提交成功';
-            $result['data']['businessData'] = $res;
-            $result['data']['businessUrl'] = $tpam->getUrl();
         } while (false);
 
+        $result['error'] = 1;
+        $result['msg'] = '提交成功';
+        $result['data']['businessData'] = $res;
+        $result['data']['businessUrl'] = $tpam->getUrl();
     } catch (\trhui\TpamException $e) {
         $result['msg'] = $e->getMessage();
     }
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
-//    echo json_encode($result);
     exit;
 }
 ?>

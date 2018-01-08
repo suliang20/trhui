@@ -1,3 +1,4 @@
 /vendor/
 /rsa/
 composer.lock
+/data/

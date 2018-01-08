@@ -130,11 +130,35 @@ class Tpam extends Data
                 $this->errors = array_merge($this->errors, $inputObj->errors);
                 throw new TpamException('获取业务参数失败');
             }
-            if (!$data= $this->getValues()) {
+            if (!$data = $this->getValues()) {
                 throw new TpamException('JSON数据为空');
             }
 
+            //  其他处理
+            if (!$this->Process()) {
+                throw new TpamException('请求处理失败');
+            }
+
             return $data;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
+     * 请求处理
+     */
+    public function Process()
+    {
+        try {
+            //  添加请求日志
+            $requestObj = new Request();
+            if (!$requestObj->push($this->merOrderId, $this->getValues())) {
+                $this->errors = array_merge($this->errors, $requestObj->errors);
+                throw new TpamException('添加请求数据失败');
+            }
+            return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
