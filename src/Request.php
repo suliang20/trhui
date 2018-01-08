@@ -8,6 +8,7 @@
 
 namespace trhui;
 
+use trhui\business\PayRequestOrder;
 use trhui\data\Data;
 
 class Request extends Data
@@ -28,6 +29,18 @@ class Request extends Data
             }
             if (empty($datas[$merOrderId])) {
                 $datas[$merOrderId] = $data;
+            }
+            switch ($data['serverCode']) {
+                case 'orderTransfer':
+                    $requestObj = new PayRequestOrder();
+                    $res = $requestObj->push($merOrderId, $data);
+                    break;
+                default:
+                    $res = true;
+            }
+            if (!$res) {
+                $this->errors = array_merge($this->errors, $requestObj->errors);
+                throw new TpamException('订单记录失败');
             }
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
