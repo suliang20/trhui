@@ -15,12 +15,23 @@ if (is_post()) {
     ];
     try {
         do {
+            if (!\trhui\business\Register::chkMobile($_POST['mobile'])) {
+                throw new \trhui\TpamException('手机号格式错误');
+            }
+            $mobile = $_POST['mobile'];
+            $registerObj = new \trhui\business\Register();
+            if ($registerObj->hasMobile($mobile)) {
+                throw new \trhui\TpamException('手机号已注册');
+            }
+
             $inputObj = new \trhui\data\ToRegister();
             $inputObj->SetNotifyUrl(NOTIFY_URL);
             $inputObj->SetFrontUrl(FRONT_URL);
 
-            $inputObj->SetMerUserId(MER_USER_ID);
-            $inputObj->SetMobile(MOBILE);
+            //  获取商户用户ID
+            $merUserId = $registerObj->getNewMerUserId();
+            $inputObj->SetMerUserId($merUserId);
+            $inputObj->SetMobile($mobile);
 
             $tpam = new \trhui\Tpam();
             $tpam->serverUrl = SERVER_URL;

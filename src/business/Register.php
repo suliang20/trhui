@@ -6,13 +6,14 @@
  * Time: 18:44
  */
 
-namespace trhui;
+namespace trhui\business;
 
 use trhui\data\Data;
+use trhui\TpamException;
 
 class Register extends Data
 {
-    public static $logFile = '../../data/resister.log';
+    public static $logFile = ROOT . '/data/register.log';
 
     public function push($data)
     {
@@ -25,7 +26,7 @@ class Register extends Data
                 $datas = file_get_contents(static::$logFile);
                 $datas = unserialize($datas);
             } else {
-                if (!@touch(static::$logFile)) {
+                if (!touch(static::$logFile)) {
                     throw new TpamException('创建注册日志文件失败');
                 }
                 $datas = [];
@@ -74,5 +75,41 @@ class Register extends Data
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;
+    }
+
+    public function getNewMerUserId()
+    {
+        $allUser = $this->getAllRegister();
+        if (empty($allUser)) {
+            return 1000;
+        } else {
+            return max(array_keys($allUser)) + 1;
+        }
+    }
+
+    public function hasMobile($mobile)
+    {
+        $allUser = $this->getAllRegister();
+        foreach ($allUser as $value) {
+            if ($value['mobile'] == $mobile) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 验证手机号码格式
+     * @param unknown $mobile
+     * @return boolean
+     */
+    public static function chkMobile($mobile)
+    {
+        $search = '/^1[3-9]\d{9}$/';
+        if (preg_match($search, $mobile)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

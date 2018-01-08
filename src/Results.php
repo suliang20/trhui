@@ -8,6 +8,7 @@
 
 namespace trhui;
 
+use trhui\business\Register;
 use trhui\data\ResultCode;
 
 /**
@@ -105,6 +106,8 @@ class Results
      */
     public function ResultProcess()
     {
+        var_dump($this->code,$this->msg);
+        var_dump($this->result);
         try {
             //  记录响应日志
             $response = $this->getResult();
@@ -127,7 +130,7 @@ class Results
             switch ($requestData['serverCode']) {
                 case 'toRegister':
                     $processObj = new Register();
-                    $res = $processObj->push($response);
+                    $res = $processObj->push($this->getResult());
                     break;
                 default:
                     throw new TpamException('不存在的服务代码');
@@ -136,11 +139,11 @@ class Results
                 $this->errors = array_merge($this->errors, $processObj->errors);
                 throw new TpamException('返回结果处理失败');
             }
-
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
+        var_dump($this->errors);
         return false;
     }
 

@@ -12,7 +12,7 @@ use trhui\data\Data;
 
 class Response extends Data
 {
-    public static $logFile = '../data/response.log';
+    public static $logFile = ROOT . '/data/response.log';
 
     public function push($merOrderId, $data)
     {
