@@ -107,13 +107,13 @@ class Results
     {
         try {
             //  记录响应日志
-            $res = $this->getResult();
-            $response = new Response();
-            $res['sign'] = $this->sign;
-            $res['code'] = $this->code;
-            $res['msg'] = $this->msg;
-            $res['date'] = $this->date;
-            if (!$response->push($res['merOrderId'], $res)) {
+            $response = $this->getResult();
+            $responseObj = new Response();
+            $response['sign'] = $this->sign;
+            $response['code'] = $this->code;
+            $response['msg'] = $this->msg;
+            $response['date'] = $this->date;
+            if (!$responseObj->push($response['merOrderId'], $response)) {
                 throw new TpamException('记录响应日志失败');
             }
             //  响应成功处理
@@ -121,15 +121,22 @@ class Results
                 throw new TpamException(ResultCode::RESULT_CODE[$this->code]);
             }
             $requestObj = new Request();
-            if (!$requestData = $requestObj->getRequestByMerOrderId($res['merOrderId'])) {
+            if (!$requestData = $requestObj->getRequestByMerOrderId($response['merOrderId'])) {
                 throw new TpamException('请求订单号不存在');
             }
             switch ($requestData['serverCode']) {
                 case 'toRegister':
+                    $processObj = new Register();
+                    $res = $processObj->push($response);
                     break;
                 default:
                     throw new TpamException('不存在的服务代码');
             }
+            if (!$res) {
+                $this->errors = array_merge($this->errors, $processObj->errors);
+                throw new TpamException('返回结果处理失败');
+            }
+
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
