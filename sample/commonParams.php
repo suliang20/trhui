@@ -48,3 +48,23 @@ if (false) {
     defined('MER_USER_ID') or define('MER_USER_ID', '224');     //  商户平台用户ID
     defined('MOBILE') or define('MOBILE', '13000000004');       //  用户手机号
 }
+
+const REGISTER_USER = [
+    '509' => '13000000002',
+    '526' => '13000000004'
+];
+
+//var_dump(REGISTER_USER);
+//exit;
+//  判断是否post提交
+function is_post()
+{
+    return $_SERVER['REQUEST_METHOD'] == 'POST' ? true : false;
+}
+
+//  判断是否post提交
+function is_get()
+{
+    return $_SERVER['REQUEST_METHOD'] == 'get' ? true : false;
+}
+

@@ -173,7 +173,7 @@ class PayeeUserList extends DataBase
     public function IsTransferTypeSet()
     {
         try {
-            if (!(array_key_exists('transferType', $this->params) && !empty($this->params['transferType']))) {
+            if (!(array_key_exists('transferType', $this->params) && isset($this->params['transferType']))) {
                 throw new TpamException('转账方式未设置');
             }
             return true;

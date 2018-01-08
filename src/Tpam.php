@@ -130,11 +130,11 @@ class Tpam extends Data
                 $this->errors = array_merge($this->errors, $inputObj->errors);
                 throw new TpamException('获取业务参数失败');
             }
-            if (!$json = $this->toJson()) {
+            if (!$data= $this->getValues()) {
                 throw new TpamException('JSON数据为空');
             }
 
-            return $json;
+            return $data;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
