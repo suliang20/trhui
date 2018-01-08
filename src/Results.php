@@ -106,14 +106,35 @@ class Results
     public function ResultProcess()
     {
         try {
-            var_dump(ResultCode::RESULT_CODE[$this->code]);
-
-//            $values = $this->getValues();
-            $result = $this->getResult();
-            var_dump($result);
+            //  记录响应日志
+            $res = $this->getResult();
+            $response = new Response();
+            $res['sign'] = $this->sign;
+            $res['code'] = $this->code;
+            $res['msg'] = $this->msg;
+            $res['date'] = $this->date;
+            if (!$response->push($res['merOrderId'], $res)) {
+                throw new TpamException('记录响应日志失败');
+            }
+            //  响应成功处理
+            if ($this->code != 100) {
+                throw new TpamException(ResultCode::RESULT_CODE[$this->code]);
+            }
+            $requestObj = new Request();
+            if (!$requestData = $requestObj->getRequestByMerOrderId($res['merOrderId'])) {
+                throw new TpamException('请求订单号不存在');
+            }
+            switch ($requestData['serverCode']) {
+                case 'toRegister':
+                    break;
+                default:
+                    throw new TpamException('不存在的服务代码');
+            }
+            return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
+        return false;
     }
 
     /**
