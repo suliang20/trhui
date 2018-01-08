@@ -112,8 +112,8 @@ if (is_post()) {
     <div>
         <label for="payeeUserId">收款用户</label>
         <select name="payee_user_id" id="payeeUserId">
-            <?php foreach (REGISTER_USER as $key => $name): ?>
-                <option value="<?= $key ?>"><?= $name ?></option>
+            <?php foreach ((new \trhui\business\Register())->getAllRegister() as $key => $value): ?>
+                <option value="<?= $value['userId'] ?>"><?= $value['mobile'] ?></option>
             <?php endforeach; ?>
         </select>
     </div>

@@ -54,8 +54,6 @@ const REGISTER_USER = [
     '526' => '13000000004'
 ];
 
-//var_dump(REGISTER_USER);
-//exit;
 //  判断是否post提交
 function is_post()
 {
