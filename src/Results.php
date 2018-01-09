@@ -10,6 +10,7 @@ namespace trhui;
 
 use trhui\business\PayResponse;
 use trhui\business\Register;
+use trhui\business\DelayAutoPayday;
 use trhui\data\ResultCode;
 
 /**
@@ -107,8 +108,6 @@ class Results
      */
     public function ResultProcess()
     {
-        var_dump($this->code, $this->msg);
-        var_dump($this->result);
         try {
             //  记录响应日志
             $response = $this->getResult();
@@ -135,6 +134,10 @@ class Results
                     break;
                 case 'orderTransfer':
                     $processObj = new PayResponse();
+                    $res = $processObj->push($this->getResult(), $this->date);
+                    break;
+                case 'delayAutoPayday':
+                    $processObj = new DelayAutoPayday();
                     $res = $processObj->push($this->getResult(), $this->date);
                     break;
                 default:

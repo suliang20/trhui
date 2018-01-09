@@ -106,4 +106,13 @@ class PayOrder extends Data
         return false;
     }
 
+    public function getOneByMerOrderId($merUserId)
+    {
+        $orders = $this->getAllOrder();
+        if (!isset($orders[$merUserId])) {
+            return false;
+        }
+        return $orders[$merUserId];
+    }
+
 }

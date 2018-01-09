@@ -30,7 +30,6 @@ if (is_post()) {
 
             //  获取商户用户ID
             $merUserId = $registerObj->getNewMerUserId();
-            var_dump($merUserId);exit;
             $inputObj->SetMerUserId($merUserId);
             $inputObj->SetMobile($mobile);
 

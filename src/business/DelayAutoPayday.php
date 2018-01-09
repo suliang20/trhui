@@ -11,9 +11,9 @@ namespace trhui\business;
 use trhui\data\Data;
 use trhui\TpamException;
 
-class PayResponse extends Data
+class DelayAutoPayday extends Data
 {
-    public static $logFile = ROOT . '/data/pay-response.log';
+    public static $logFile = ROOT . '/data/delay-auto-payday.log';
 
     public function push($data, $time)
     {
@@ -36,11 +36,11 @@ class PayResponse extends Data
             }
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
-            $payRequestOrderObj = new PayRequestOrder();
-            if (!$payRequestOrderObj->update($data, $time)) {
-                $this->errors = array_merge($this->errors, $payRequestOrderObj->errors);
-                throw new TpamException('更新请求订单失败');
-            }
+//            $payRequestOrderObj = new PayRequestOrder();
+//            if (!$payRequestOrderObj->update($data, $time)) {
+//                $this->errors = array_merge($this->errors, $payRequestOrderObj->errors);
+//                throw new TpamException('更新请求订单失败');
+//            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());

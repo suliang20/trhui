@@ -365,7 +365,7 @@ class Tpam extends Data
                 throw new TpamException("curl出错，错误码:$error");
             }
             curl_close($ch);
-            return $data;
+            return json_decode($data, true);
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }

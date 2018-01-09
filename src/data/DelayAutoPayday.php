@@ -19,34 +19,34 @@ use trhui\TpamException;
  * Class ToRegister
  * @package trhui\data
  */
-class ToRegister extends DataBase
+class DelayAutoPayday extends DataBase
 {
     public function __construct()
     {
-        $this->serverInterface = '/interface/toRegister';
-        $this->serverCode = 'toRegister';
+        $this->serverInterface = '/interface/delayAutoPayday';
+        $this->serverCode = 'delayAutoPayday';
     }
 
     /**
-     * 商户平台会员ID
-     * 由商户平台定义
+     * 原系统转账响应订单号
+     * 该订单号为商户平台调用转账接口时，清算通系统返回的订单号
      * @param $value
      */
-    public function SetMerUserId($value)
+    public function SetOriginalPlatformOrderId($value)
     {
-        $this->params['merUserId'] = $value;
+        $this->params['originalPlatformOrderId'] = $value;
     }
 
-    public function GetMerUserId()
+    public function GetOriginalPlatformOrderId()
     {
-        return $this->params['merUserId'];
+        return $this->params['originalPlatformOrderId'];
     }
 
-    public function IsMerUserIdSet()
+    public function IsOriginalPlatformOrderIdSet()
     {
         try {
-            if (!(array_key_exists('merUserId', $this->params) && !empty($this->params['merUserId']))) {
-                throw new TpamException('商户平台会员ID未设置');
+            if (!(array_key_exists('originalPlatformOrderId', $this->params) && !empty($this->params['originalPlatformOrderId']))) {
+                throw new TpamException('原系统转账响应订单号未设置');
             }
             return true;
         } catch (TpamException $e) {
@@ -56,39 +56,84 @@ class ToRegister extends DataBase
     }
 
     /**
-     * 账户类型
-     * 空或0表示个人账户;1表示企业账户
+     * 原商户平台交易订单号
+     * 原商户平台交易订单号，即需要延期的订单
      * @param $value
      */
-    public function SetUserType($value)
+    public function SetOriginalOrderId($value)
     {
-        $this->params['userType'] = $value;
+        $this->params['originalOrderId'] = $value;
     }
 
-    public function GetUserType()
+    public function GetOriginalOrderId()
     {
-        return $this->params['userType'];
+        return $this->params['originalOrderId'];
+    }
+
+    public function IsOriginalOrderIdSet()
+    {
+        try {
+            if (!(array_key_exists('originalOrderId', $this->params) && !empty($this->params['originalOrderId']))) {
+                throw new TpamException('原商户平台交易订单号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**
-     * 手机号
+     * 清算通系统会员ID
      * @param $value
      */
-    public function SetMobile($value)
+    public function SetUserId($value)
     {
-        $this->params['mobile'] = $value;
+        $this->params['userId'] = $value;
     }
 
-    public function GetMobile()
+    public function GetUserId()
     {
-        return $this->params['mobile'];
+        return $this->params['userId'];
     }
 
-    public function IsMobileSet()
+    public function IsUserIdSet()
     {
         try {
-            if (!(array_key_exists('mobile', $this->params) && !empty($this->params['mobile']))) {
-                throw new TpamException('手机号未设置');
+            if (!(array_key_exists('userId', $this->params) && isset($this->params['userId']))) {
+                throw new TpamException('清算通系统会员ID未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+
+    /**
+     * 延期天数
+     * 必须大于0，将在原订单自动支付的基础上+N
+     * @param $value
+     */
+    public function SetDays($value)
+    {
+        $this->params['days'] = $value;
+    }
+
+    public function GetDays()
+    {
+        return $this->params['days'];
+    }
+
+    public function IsDaysSet()
+    {
+        try {
+            if (!(array_key_exists('days', $this->params) && !empty($this->params['days']))) {
+                throw new TpamException('延期天数未设置');
+            }
+            if ($this->params['days'] <= 0) {
+                throw new TpamException('延期天数必须大于0');
             }
             return true;
         } catch (TpamException $e) {
