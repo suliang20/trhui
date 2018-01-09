@@ -148,7 +148,6 @@ class Results
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
-        var_dump($this->errors);
         return false;
     }
 
