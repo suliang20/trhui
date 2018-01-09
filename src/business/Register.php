@@ -43,7 +43,7 @@ class Register extends Data
         return false;
     }
 
-    public function getAllRegister()
+    public function getAll()
     {
         try {
             if (file_exists(static::$logFile)) {
@@ -79,7 +79,7 @@ class Register extends Data
 
     public function getNewMerUserId()
     {
-        $allUser = $this->getAllRegister();
+        $allUser = $this->getAll();
         if (empty($allUser)) {
             return 1000;
         } else {
@@ -89,7 +89,7 @@ class Register extends Data
 
     public function hasMobile($mobile)
     {
-        $allUser = $this->getAllRegister();
+        $allUser = $this->getAll();
         foreach ($allUser as $value) {
             if ($value['mobile'] == $mobile) {
                 return true;

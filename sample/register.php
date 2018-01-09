@@ -63,6 +63,7 @@ if (is_post()) {
     <title>用户注册示例</title>
 </head>
 <body>
+<div>
 <form action="" method="post" id="payForm" name="payForm">
     <div>
         <label for="mobile">用户手机号</label>
@@ -70,6 +71,10 @@ if (is_post()) {
     </div>
     <button type="button" id="submitPay">提交注册</button>
 </form>
+</div>
+<div>
+    <a href="register-list.php">注册列表</a>
+</div>
 <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
     function test() {

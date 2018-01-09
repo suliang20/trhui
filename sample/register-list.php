@@ -8,15 +8,15 @@
 require_once('./commonParams.php');
 require '../vendor/autoload.php';
 
-$payOrderObj = new \trhui\business\PayOrder();
-$orders = $payOrderObj->getAllOrder();
-
+$registerObj= new \trhui\business\Register();
+$registers= $registerObj->getAll();
+//var_dump($registers);exit;
 ?>
 
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>订单列表</title>
+    <title>注册列表</title>
     <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 </head>
 
@@ -24,27 +24,19 @@ $orders = $payOrderObj->getAllOrder();
 <div>
     <table border="2">
         <tr>
-            <th>商户订单号</th>
-            <th>清算通系统订响应单号</th>
-            <th>交易订单号</th>
-            <th>收款方清算通用户ID</th>
-            <th>收款金额</th>
-            <th>商户平台收取佣金</th>
-            <th>转帐方式</th>
-            <th>佣金收取方式</th>
-            <th>状态</th>
+            <th>授权状态</th>
+            <th>清算平台用户ID</th>
+            <th>商户平台用户ID</th>
+            <th>订单号</th>
+            <th>手机号</th>
         </tr>
-        <?php foreach ($orders as $item): ?>
+        <?php foreach ($registers as $item): ?>
             <tr>
+                <td><?= isset($item['authed']) ? $item['authed'] : '' ?></td>
+                <td><?= isset($item['userId']) ? $item['userId'] : '' ?></td>
+                <td><?= isset($item['merUserId']) ? $item['merUserId'] : '' ?></td>
                 <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
-                <td><?= isset($item['platformOrderId']) ? $item['platformOrderId'] : '' ?></td>
-                <td><?= isset($item['orderId']) ? $item['orderId'] : '' ?></td>
-                <td><?= isset($item['payeeUserId']) ? $item['payeeUserId'] : '' ?></td>
-                <td><?= isset($item['payeeAmount']) ? $item['payeeAmount'] : '' ?></td>
-                <td><?= isset($item['feeToMerchant']) ? $item['feeToMerchant'] : '' ?></td>
-                <td><?= isset($item['transferType']) ? $item['transferType'] : '' ?></td>
-                <td><?= isset($item['feeType']) ? $item['feeType'] : '' ?></td>
-                <td><?= isset($item['status']) ? $item['status'] : '' ?></td>
+                <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
             </tr>
         <?php endforeach; ?>
     </table>
