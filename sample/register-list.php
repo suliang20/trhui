@@ -8,8 +8,8 @@
 require_once('./commonParams.php');
 require '../vendor/autoload.php';
 
-$registerObj= new \trhui\business\Register();
-$registers= $registerObj->getAll();
+$registerObj = new \trhui\business\Register();
+$registers = $registerObj->getAll();
 //var_dump($registers);exit;
 ?>
 
@@ -29,15 +29,19 @@ $registers= $registerObj->getAll();
             <th>商户平台用户ID</th>
             <th>订单号</th>
             <th>手机号</th>
+            <th>操作</th>
         </tr>
         <?php foreach ($registers as $item): ?>
-            <tr>
-                <td><?= isset($item['authed']) ? $item['authed'] : '' ?></td>
-                <td><?= isset($item['userId']) ? $item['userId'] : '' ?></td>
-                <td><?= isset($item['merUserId']) ? $item['merUserId'] : '' ?></td>
-                <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
-                <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
-            </tr>
+            <?php if (isset($item['userId'])): ?>
+                <tr>
+                    <td><?= isset($item['authed']) ? $item['authed'] : '' ?></td>
+                    <td><?= isset($item['userId']) ? $item['userId'] : '' ?></td>
+                    <td><?= isset($item['merUserId']) ? $item['merUserId'] : '' ?></td>
+                    <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
+                    <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
+                    <td><a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a></td>
+                </tr>
+            <?php endif; ?>
         <?php endforeach; ?>
     </table>
 </div>

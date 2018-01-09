@@ -114,11 +114,14 @@ if (is_post()) {
             <label for="payeeUserId">收款用户</label>
             <select name="payee_user_id" id="payeeUserId">
                 <?php foreach ((new \trhui\business\Register())->getAll() as $key => $value): ?>
-                    <option value="<?= $value['userId'] ?>"><?= $value['mobile'] ?></option>
+                    <?php if (isset($value['userId'])): ?>
+                        <option value="<?= $value['userId'] ?>" <?= isset($_GET['mobile']) && $_GET['mobile'] == $value['mobile'] ? 'selected="selected"' : '' ?>><?= $value['mobile'] ?></option>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </select>
         </div>
         <button type="button" id="submitPay">提交支付</button>
+        <a href="register.php">注册用户</a>
     </form>
 </div>
 <div>

@@ -55,6 +55,8 @@ if (is_post()) {
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
+$registerObj = new \trhui\business\Register();
+$registers = $registerObj->getAll();
 ?>
 
 <html>
@@ -64,16 +66,41 @@ if (is_post()) {
 </head>
 <body>
 <div>
-<form action="" method="post" id="payForm" name="payForm">
-    <div>
-        <label for="mobile">用户手机号</label>
-        <input type="text" name="mobile" id="mobile">
-    </div>
-    <button type="button" id="submitPay">提交注册</button>
-</form>
+    <form action="" method="post" id="payForm" name="payForm">
+        <div>
+            <label for="mobile">用户手机号</label>
+            <input type="text" name="mobile" id="mobile">
+        </div>
+        <button type="button" id="submitPay">提交注册</button>
+        <a href="pay.php">支付</a>
+    </form>
 </div>
 <div>
     <a href="register-list.php">注册列表</a>
+</div>
+<div>
+    <table border="2">
+        <tr>
+            <th>授权状态</th>
+            <th>清算平台用户ID</th>
+            <th>商户平台用户ID</th>
+            <th>订单号</th>
+            <th>手机号</th>
+            <th>操作</th>
+        </tr>
+        <?php foreach ($registers as $item): ?>
+            <?php if (isset($item['userId'])): ?>
+                <tr>
+                    <td><?= isset($item['authed']) ? $item['authed'] : '' ?></td>
+                    <td><?= isset($item['userId']) ? $item['userId'] : '' ?></td>
+                    <td><?= isset($item['merUserId']) ? $item['merUserId'] : '' ?></td>
+                    <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
+                    <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
+                    <td><a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a></td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </table>
 </div>
 <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 <script type="text/javascript">

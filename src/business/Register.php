@@ -91,7 +91,7 @@ class Register extends Data
     {
         $allUser = $this->getAll();
         foreach ($allUser as $value) {
-            if ($value['mobile'] == $mobile) {
+            if (isset($value['merUserId']) && $value['mobile'] == $mobile) {
                 return true;
             }
         }
