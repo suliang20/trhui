@@ -8,6 +8,7 @@
 
 namespace trhui;
 
+use trhui\business\PayResponse;
 use trhui\business\Register;
 use trhui\data\ResultCode;
 
@@ -106,7 +107,7 @@ class Results
      */
     public function ResultProcess()
     {
-        var_dump($this->code,$this->msg);
+        var_dump($this->code, $this->msg);
         var_dump($this->result);
         try {
             //  记录响应日志
@@ -130,6 +131,10 @@ class Results
             switch ($requestData['serverCode']) {
                 case 'toRegister':
                     $processObj = new Register();
+                    $res = $processObj->push($this->getResult());
+                    break;
+                case 'orderTransfer':
+                    $processObj = new PayResponse();
                     $res = $processObj->push($this->getResult());
                     break;
                 default:

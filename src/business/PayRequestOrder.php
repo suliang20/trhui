@@ -65,7 +65,38 @@ class PayRequestOrder extends Data
         return false;
     }
 
-    public function getAllRegister()
+    public function update($data)
+    {
+        try {
+            $merOrderId = $data['merOrderId'];
+            $datas = $this->getAllOrder();
+            if (!isset($datas[$merOrderId])) {
+                throw new TpamException('订单不存在');
+            }
+            $datas[$merOrderId]['platformOrderId'] = $data['platformOrderId'];
+            $datas[$merOrderId]['response_amount'] = $data['amount'];
+            $datas[$merOrderId]['response_status'] = $data['status'];
+            $datas[$merOrderId]['status'] = 1;
+            $datas[$merOrderId]['response_parameter1'] = $data['parameter1'];
+            if (isset($data['remarks'])) {
+                $datas[$merOrderId]['remarks'] = $data['remarks'];
+            }
+
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            $payOrderObj = new PayOrder();
+            if (!$payOrderObj->update($data)) {
+                $this->errors = array_merge($this->errors, $payOrderObj->errors);
+                throw new TpamException('返回结果处理失败');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    public function getAllOrder()
     {
         try {
             if (file_exists(static::$logFile)) {
@@ -81,57 +112,4 @@ class PayRequestOrder extends Data
         return false;
     }
 
-    public function getUserByMerUserId($merUserId)
-    {
-        try {
-            if (!file_exists(static::$logFile)) {
-                throw new TpamException('注册文件不存在');
-            }
-            $datas = file_get_contents(static::$logFile);
-            $datas = unserialize($datas);
-            if (empty($datas[$merUserId])) {
-                throw new TpamException('商户用户ID不存在');
-            }
-            return $datas[$merUserId];
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-    }
-
-    public function getNewMerUserId()
-    {
-        $allUser = $this->getAllRegister();
-        if (empty($allUser)) {
-            return 1000;
-        } else {
-            return max(array_keys($allUser)) + 1;
-        }
-    }
-
-    public function hasMobile($mobile)
-    {
-        $allUser = $this->getAllRegister();
-        foreach ($allUser as $value) {
-            if ($value['mobile'] == $mobile) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 验证手机号码格式
-     * @param unknown $mobile
-     * @return boolean
-     */
-    public static function chkMobile($mobile)
-    {
-        $search = '/^1[3-9]\d{9}$/';
-        if (preg_match($search, $mobile)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

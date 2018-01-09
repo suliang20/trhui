@@ -31,12 +31,12 @@ class PayOrder extends Data
                     'merOrderId' => $merOrderId,
                     'platformOrderId' => 0,
                     'orderId' => $orderId,
+                    'payeeUserId' => $item['payeeUserId'],
                     'payeeAmount' => $item['payeeAmount'],
                     'feeToMerchant' => $item['feeToMerchant'],
                     'transferType' => $item['transferType'],
                     'feeType' => $item['feeType'],
                     'status' => 0,
-                    'transferType' => 0,
                 ];
                 if (file_exists(static::$logFile)) {
                     $datas = file_get_contents(static::$logFile);
@@ -60,7 +60,31 @@ class PayOrder extends Data
         return false;
     }
 
-    public function getAllRegister()
+    public function update($data)
+    {
+        try {
+            $merOrderId = $data['merOrderId'];
+            $datas = $this->getAllOrder();
+            if (!isset($datas[$merOrderId])) {
+                throw new TpamException('订单不存在');
+            }
+            foreach ($datas as $key => $item) {
+                if ($item['merOrderId'] == $merOrderId) {
+                    $datas[$key]['platformOrderId'] = $data['platformOrderId'];
+                    $datas[$key]['status'] = 1;
+                }
+            }
+
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    public function getAllOrder()
     {
         try {
             if (file_exists(static::$logFile)) {
@@ -76,57 +100,4 @@ class PayOrder extends Data
         return false;
     }
 
-    public function getUserByMerUserId($merUserId)
-    {
-        try {
-            if (!file_exists(static::$logFile)) {
-                throw new TpamException('注册文件不存在');
-            }
-            $datas = file_get_contents(static::$logFile);
-            $datas = unserialize($datas);
-            if (empty($datas[$merUserId])) {
-                throw new TpamException('商户用户ID不存在');
-            }
-            return $datas[$merUserId];
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-    }
-
-    public function getNewMerUserId()
-    {
-        $allUser = $this->getAllRegister();
-        if (empty($allUser)) {
-            return 1000;
-        } else {
-            return max(array_keys($allUser)) + 1;
-        }
-    }
-
-    public function hasMobile($mobile)
-    {
-        $allUser = $this->getAllRegister();
-        foreach ($allUser as $value) {
-            if ($value['mobile'] == $mobile) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 验证手机号码格式
-     * @param unknown $mobile
-     * @return boolean
-     */
-    public static function chkMobile($mobile)
-    {
-        $search = '/^1[3-9]\d{9}$/';
-        if (preg_match($search, $mobile)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

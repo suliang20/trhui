@@ -80,45 +80,50 @@ if (is_post()) {
 </head>
 
 <body>
-<form action="pay.php" method="post" id="payForm" name="payForm">
-    <div>
-        <label for="transferPayType">支付方式</label>
-        <select name="transfer_pay_type" id="transferPayType">
-            <?php foreach (\trhui\data\OrderTransfer::TRANSFER_PAY_TYPE as $key => $name): ?>
-                <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TRANSFER_PAY_TYPE_ONLINE ? 'selected="selected"' : '' ?>><?= $name ?></option>>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div>
-        <label for="topupType">支付类型</label>
-        <select name="topup_type" id="topupType">
-            <?php foreach (\trhui\data\OrderTransfer::TOPUP_TYPE as $key => $name): ?>
-                <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TOPUP_TYPE_WECHAT_SCAN ? 'selected="selected"' : '' ?>><?= $name ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div>
-        <label for="topupType">转账方式</label>
-        <select name="transfer_type" id="transfer_type">
-            <?php foreach (\trhui\data\PayeeUserList::TRANSFER_TYPE as $key => $name): ?>
-                <option value="<?= $key ?>" <?= $key == \trhui\data\PayeeUserList::TRANSFER_TYPE_COSTODY ? 'selected="selected"' : '' ?>><?= $name ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div>
-        <label for="amount">支付金额</label>
-        <input type="text" name="amount" id="amount" value="0.01">
-    </div>
-    <div>
-        <label for="payeeUserId">收款用户</label>
-        <select name="payee_user_id" id="payeeUserId">
-            <?php foreach ((new \trhui\business\Register())->getAllRegister() as $key => $value): ?>
-                <option value="<?= $value['userId'] ?>"><?= $value['mobile'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <button type="button" id="submitPay">提交支付</button>
-</form>
+<div>
+    <form action="pay.php" method="post" id="payForm" name="payForm">
+        <div>
+            <label for="transferPayType">支付方式</label>
+            <select name="transfer_pay_type" id="transferPayType">
+                <?php foreach (\trhui\data\OrderTransfer::TRANSFER_PAY_TYPE as $key => $name): ?>
+                    <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TRANSFER_PAY_TYPE_ONLINE ? 'selected="selected"' : '' ?>><?= $name ?></option>>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="topupType">支付类型</label>
+            <select name="topup_type" id="topupType">
+                <?php foreach (\trhui\data\OrderTransfer::TOPUP_TYPE as $key => $name): ?>
+                    <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TOPUP_TYPE_WECHAT_SCAN ? 'selected="selected"' : '' ?>><?= $name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="topupType">转账方式</label>
+            <select name="transfer_type" id="transfer_type">
+                <?php foreach (\trhui\data\PayeeUserList::TRANSFER_TYPE as $key => $name): ?>
+                    <option value="<?= $key ?>" <?= $key == \trhui\data\PayeeUserList::TRANSFER_TYPE_COSTODY ? 'selected="selected"' : '' ?>><?= $name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="amount">支付金额</label>
+            <input type="text" name="amount" id="amount" value="0.01">
+        </div>
+        <div>
+            <label for="payeeUserId">收款用户</label>
+            <select name="payee_user_id" id="payeeUserId">
+                <?php foreach ((new \trhui\business\Register())->getAllRegister() as $key => $value): ?>
+                    <option value="<?= $value['userId'] ?>"><?= $value['mobile'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <button type="button" id="submitPay">提交支付</button>
+    </form>
+</div>
+<div>
+    <a href="pay-list.php">支付列表</a>&nbsp;<a href="order-list.php">订单列表</a>
+</div>
 <script type="text/javascript">
     function test() {
         console.log('test');
