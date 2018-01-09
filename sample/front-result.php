@@ -5,7 +5,7 @@
  * Date: 2018/1/4
  * Time: 18:08
  */
-require_once('./commonParams.php');
+require_once('./config.php');
 require '../vendor/autoload.php';
 
 $result = new \trhui\Results();

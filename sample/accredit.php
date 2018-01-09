@@ -5,7 +5,7 @@
  * Date: 2017/12/29
  * Time: 15:29
  */
-require_once('./commonParams.php');
+require_once('./config.php');
 require '../vendor/autoload.php';
 
 $inputObj = new \trhui\data\Accredit();
