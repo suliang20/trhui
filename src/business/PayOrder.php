@@ -11,9 +11,9 @@ namespace trhui\business;
 use trhui\data\Data;
 use trhui\TpamException;
 
-class PayRequestOrder extends Data
+class PayOrder extends Data
 {
-    public static $logFile = ROOT . '/data/pay_request_order.log';
+    public static $logFile = ROOT . '/data/pay_order.log';
 
     public function push($merOrderId, $data)
     {
@@ -21,43 +21,38 @@ class PayRequestOrder extends Data
             if (empty($merOrderId)) {
                 throw new TpamException('商户订单号不存在');
             }
-            $params = json_decode($data['params'], true);
-            $requestOrder = [
-                'merOrderId' => $merOrderId,
-                'platformOrderId' => 0,
-                'request_amount' => $params['amount'],
-                'response_amount' => 0,
-                'payerUserId' => $params['payerUserId'],
-                'actionType' => $params['actionType'],
-                'transferPayType' => $params['transferPayType'],
-                'topupType' => $params['topupType'],
-                'feePayer' => $params['feePayer'],
-                'status' => 0,
-                'response_status' => -1,
-                'remarks' => '',
-                'request_parameter1' => !empty($data['parameter1']) ? $data['parameter1'] : '',
-                'response_parameter1' => '',
-            ];
-            if (file_exists(static::$logFile)) {
-                $datas = file_get_contents(static::$logFile);
-                $datas = unserialize($datas);
-            } else {
-                if (!touch(static::$logFile)) {
-                    throw new TpamException('创建支付订单日志文件失败');
-                }
-                $datas = [];
+            if (!$data['payeeUserList']) {
+                throw new TpamException('收款人列表不存在');
             }
-
-            if (empty($datas[$merOrderId])) {
-                $datas[$merOrderId] = $requestOrder;
+            $payeeUserList = $data['payeeUserList'];
+            foreach ($payeeUserList as $item) {
+                $orderId = $item['orderId'];
+                $payOrder = [
+                    'merOrderId' => $merOrderId,
+                    'platformOrderId' => 0,
+                    'orderId' => $orderId,
+                    'payeeAmount' => $item['payeeAmount'],
+                    'feeToMerchant' => $item['feeToMerchant'],
+                    'transferType' => $item['transferType'],
+                    'feeType' => $item['feeType'],
+                    'status' => 0,
+                    'transferType' => 0,
+                ];
+                if (file_exists(static::$logFile)) {
+                    $datas = file_get_contents(static::$logFile);
+                    $datas = unserialize($datas);
+                } else {
+                    if (!touch(static::$logFile)) {
+                        throw new TpamException('创建支付订单日志文件失败');
+                    }
+                    $datas = [];
+                }
+                if (empty($datas[$orderId])) {
+                    $datas[$orderId] = $payOrder;
+                }
             }
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
-            $payOrderObj = new PayOrder();
-            if (!$payOrderObj->push($merOrderId, $params)) {
-                $this->errors = array_merge($this->errors, $payOrderObj->errors);
-                throw new TpamException('返回结果处理失败');
-            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
