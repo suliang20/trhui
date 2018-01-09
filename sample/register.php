@@ -30,6 +30,7 @@ if (is_post()) {
 
             //  获取商户用户ID
             $merUserId = $registerObj->getNewMerUserId();
+            var_dump($merUserId);exit;
             $inputObj->SetMerUserId($merUserId);
             $inputObj->SetMobile($mobile);
 
@@ -86,6 +87,7 @@ $registers = $registerObj->getAll();
             <th>商户平台用户ID</th>
             <th>订单号</th>
             <th>手机号</th>
+            <th>注册时间</th>
             <th>操作</th>
         </tr>
         <?php foreach ($registers as $item): ?>
@@ -96,6 +98,7 @@ $registers = $registerObj->getAll();
                     <td><?= isset($item['merUserId']) ? $item['merUserId'] : '' ?></td>
                     <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
                     <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
+                    <td><?= isset($item['register_time']) ? date('Y-m-d H:i:s', substr($item['register_time'], 0, -3)) : '' ?></td>
                     <td><a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a></td>
                 </tr>
             <?php endif; ?>

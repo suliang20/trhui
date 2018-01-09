@@ -15,7 +15,7 @@ class PayResponse extends Data
 {
     public static $logFile = ROOT . '/data/pay-response.log';
 
-    public function push($data)
+    public function push($data, $time)
     {
         try {
             if (empty($data['merOrderId'])) {
@@ -37,7 +37,7 @@ class PayResponse extends Data
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
             $payRequestOrderObj = new PayRequestOrder();
-            if (!$payRequestOrderObj->update($data)) {
+            if (!$payRequestOrderObj->update($data, $time)) {
                 $this->errors = array_merge($this->errors, $payRequestOrderObj->errors);
                 throw new TpamException('更新请求订单失败');
             }

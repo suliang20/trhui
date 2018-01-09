@@ -154,7 +154,7 @@ class Tpam extends Data
         try {
             //  添加请求日志
             $requestObj = new Request();
-            if (!$requestObj->push($this->merOrderId, $this->getValues())) {
+            if (!$requestObj->push($this->merOrderId, $this->getValues(), $this->date)) {
                 $this->errors = array_merge($this->errors, $requestObj->errors);
                 throw new TpamException('添加请求数据失败');
             }

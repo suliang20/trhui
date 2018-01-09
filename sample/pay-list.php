@@ -35,6 +35,8 @@ $orders = $payRequestOrderObj->getAllOrder();
             <th>状态</th>
             <th>支付状态</th>
             <th>摘要备注</th>
+            <th>请求时间</th>
+            <th>支付时间</th>
         </tr>
         <?php foreach ($orders as $item): ?>
             <tr>
@@ -49,6 +51,8 @@ $orders = $payRequestOrderObj->getAllOrder();
                 <td><?= isset($item['status']) ? $item['status'] : '' ?></td>
                 <td><?= isset($item['response_status']) ? $item['response_status'] : '' ?></td>
                 <td><?= isset($item['remarks']) ? $item['remarks'] : '' ?></td>
+                <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
+                <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

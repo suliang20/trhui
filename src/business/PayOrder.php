@@ -15,7 +15,7 @@ class PayOrder extends Data
 {
     public static $logFile = ROOT . '/data/pay_order.log';
 
-    public function push($merOrderId, $data)
+    public function push($merOrderId, $data, $time)
     {
         try {
             if (empty($merOrderId)) {
@@ -35,8 +35,12 @@ class PayOrder extends Data
                     'payeeAmount' => $item['payeeAmount'],
                     'feeToMerchant' => $item['feeToMerchant'],
                     'transferType' => $item['transferType'],
+                    'autoPayday' => isset($item['autoPayday']) ? $item['autoPayday'] : 0,
                     'feeType' => $item['feeType'],
                     'status' => 0,
+                    'request_time' => $_SERVER['REQUEST_TIME'],
+                    'pay_time' => 0,
+                    'request_time' => $time,
                 ];
                 if (file_exists(static::$logFile)) {
                     $datas = file_get_contents(static::$logFile);
@@ -60,7 +64,7 @@ class PayOrder extends Data
         return false;
     }
 
-    public function update($data)
+    public function update($data, $time)
     {
         try {
             $merOrderId = $data['merOrderId'];
@@ -72,6 +76,7 @@ class PayOrder extends Data
                 if ($item['merOrderId'] == $merOrderId) {
                     $datas[$key]['platformOrderId'] = $data['platformOrderId'];
                     $datas[$key]['status'] = 1;
+                    $datas[$key]['pay_time'] = $time;
                 }
             }
 

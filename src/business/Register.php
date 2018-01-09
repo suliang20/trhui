@@ -15,7 +15,7 @@ class Register extends Data
 {
     public static $logFile = ROOT . '/data/register.log';
 
-    public function push($data)
+    public function push($data, $time)
     {
         try {
             if (empty($data['merUserId'])) {
@@ -31,6 +31,7 @@ class Register extends Data
                 }
                 $datas = [];
             }
+            $data['register_time'] = $time;
             if (empty($datas[$merUserId])) {
                 $datas[$merUserId] = $data;
             }

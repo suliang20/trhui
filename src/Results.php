@@ -131,11 +131,11 @@ class Results
             switch ($requestData['serverCode']) {
                 case 'toRegister':
                     $processObj = new Register();
-                    $res = $processObj->push($this->getResult());
+                    $res = $processObj->push($this->getResult(), $this->date);
                     break;
                 case 'orderTransfer':
                     $processObj = new PayResponse();
-                    $res = $processObj->push($this->getResult());
+                    $res = $processObj->push($this->getResult(), $this->date);
                     break;
                 default:
                     throw new TpamException('不存在的服务代码');

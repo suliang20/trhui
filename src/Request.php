@@ -15,7 +15,7 @@ class Request extends Data
 {
     public static $logFile = ROOT . '/data/request.log';
 
-    public function push($merOrderId, $data)
+    public function push($merOrderId, $data, $time)
     {
         try {
             if (file_exists(static::$logFile)) {
@@ -27,13 +27,14 @@ class Request extends Data
                 }
                 $datas = [];
             }
+            $data['request_time'] = $time;
             if (empty($datas[$merOrderId])) {
                 $datas[$merOrderId] = $data;
             }
             switch ($data['serverCode']) {
                 case 'orderTransfer':
                     $requestObj = new PayRequestOrder();
-                    $res = $requestObj->push($merOrderId, $data);
+                    $res = $requestObj->push($merOrderId, $data, $time);
                     break;
                 default:
                     $res = true;

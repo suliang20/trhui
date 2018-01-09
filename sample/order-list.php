@@ -31,8 +31,11 @@ $orders = $payOrderObj->getAllOrder();
             <th>收款金额</th>
             <th>商户平台收取佣金</th>
             <th>转帐方式</th>
+            <th>自动支付时间(天)</th>
             <th>佣金收取方式</th>
             <th>状态</th>
+            <th>请求时间</th>
+            <th>支付时间</th>
         </tr>
         <?php foreach ($orders as $item): ?>
             <tr>
@@ -43,8 +46,11 @@ $orders = $payOrderObj->getAllOrder();
                 <td><?= isset($item['payeeAmount']) ? $item['payeeAmount'] : '' ?></td>
                 <td><?= isset($item['feeToMerchant']) ? $item['feeToMerchant'] : '' ?></td>
                 <td><?= isset($item['transferType']) ? $item['transferType'] : '' ?></td>
+                <td><?= isset($item['autoPayday']) ? $item['autoPayday'] : 0 ?></td>
                 <td><?= isset($item['feeType']) ? $item['feeType'] : '' ?></td>
                 <td><?= isset($item['status']) ? $item['status'] : '' ?></td>
+                <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
+                <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

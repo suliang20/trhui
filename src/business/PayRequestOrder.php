@@ -15,7 +15,7 @@ class PayRequestOrder extends Data
 {
     public static $logFile = ROOT . '/data/pay_request_order.log';
 
-    public function push($merOrderId, $data)
+    public function push($merOrderId, $data, $time)
     {
         try {
             if (empty($merOrderId)) {
@@ -37,6 +37,8 @@ class PayRequestOrder extends Data
                 'remarks' => '',
                 'request_parameter1' => !empty($data['parameter1']) ? $data['parameter1'] : '',
                 'response_parameter1' => '',
+                'request_time' => $time,
+                'pay_time' => 0,
             ];
             if (file_exists(static::$logFile)) {
                 $datas = file_get_contents(static::$logFile);
@@ -54,7 +56,7 @@ class PayRequestOrder extends Data
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
             $payOrderObj = new PayOrder();
-            if (!$payOrderObj->push($merOrderId, $params)) {
+            if (!$payOrderObj->push($merOrderId, $params, $time)) {
                 $this->errors = array_merge($this->errors, $payOrderObj->errors);
                 throw new TpamException('返回结果处理失败');
             }
@@ -65,7 +67,7 @@ class PayRequestOrder extends Data
         return false;
     }
 
-    public function update($data)
+    public function update($data, $time)
     {
         try {
             $merOrderId = $data['merOrderId'];
@@ -78,6 +80,7 @@ class PayRequestOrder extends Data
             $datas[$merOrderId]['response_status'] = $data['status'];
             $datas[$merOrderId]['status'] = 1;
             $datas[$merOrderId]['response_parameter1'] = $data['parameter1'];
+            $datas[$merOrderId]['pay_time'] = $time;
             if (isset($data['remarks'])) {
                 $datas[$merOrderId]['remarks'] = $data['remarks'];
             }
@@ -85,7 +88,7 @@ class PayRequestOrder extends Data
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
             $payOrderObj = new PayOrder();
-            if (!$payOrderObj->update($data)) {
+            if (!$payOrderObj->update($data, $time)) {
                 $this->errors = array_merge($this->errors, $payOrderObj->errors);
                 throw new TpamException('返回结果处理失败');
             }

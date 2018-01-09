@@ -6,6 +6,7 @@
  */
 ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
+date_default_timezone_set('PRC');//其中PRC为“中华人民共和国”
 
 //  项目根目录
 defined('ROOT') or define('ROOT', dirname(dirname(__FILE__)) . '/');
