@@ -31,6 +31,7 @@ class PayOrder extends Data
                     'merOrderId' => $merOrderId,
                     'platformOrderId' => 0,
                     'orderId' => $orderId,
+                    'payerUserId' => $data['payerUserId'],
                     'payeeUserId' => $item['payeeUserId'],
                     'payeeAmount' => $item['payeeAmount'],
                     'feeToMerchant' => $item['feeToMerchant'],

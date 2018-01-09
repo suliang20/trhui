@@ -28,6 +28,7 @@ $orders = $payOrderObj->getAllOrder();
             <th>清算通系统订响应单号</th>
             <th>交易订单号</th>
             <th>收款方清算通用户ID</th>
+            <th>付款方清算通用户ID</th>
             <th>收款金额</th>
             <th>商户平台收取佣金</th>
             <th>转帐方式</th>
@@ -43,6 +44,7 @@ $orders = $payOrderObj->getAllOrder();
                 <td><?= isset($item['platformOrderId']) ? $item['platformOrderId'] : '' ?></td>
                 <td><?= isset($item['orderId']) ? $item['orderId'] : '' ?></td>
                 <td><?= isset($item['payeeUserId']) ? $item['payeeUserId'] : '' ?></td>
+                <td><?= isset($item['payerUserId']) ? $item['payerUserId'] : '' ?></td>
                 <td><?= isset($item['payeeAmount']) ? $item['payeeAmount'] : '' ?></td>
                 <td><?= isset($item['feeToMerchant']) ? $item['feeToMerchant'] : '' ?></td>
                 <td><?= isset($item['transferType']) ? $item['transferType'] : '' ?></td>
