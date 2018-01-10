@@ -77,7 +77,7 @@ if (is_post()) {
                 <option value="1">企业认证</option>
             </select>
         </div>
-        <button type="button" id="submitPay">授权</button>
+        <button type="button" id="submitPay">认证</button>
     </form>
 </div>
 </body>

@@ -127,22 +127,24 @@ class Results
             if (!$requestData = $requestObj->getRequestByMerOrderId($response['merOrderId'])) {
                 throw new TpamException('请求订单号不存在');
             }
+            $processObj = null;
             switch ($requestData['serverCode']) {
                 case 'toRegister':
                     $processObj = new Register();
-                    $res = $processObj->push($this->getResult(), $this->date);
                     break;
                 case 'orderTransfer':
                     $processObj = new PayResponse();
-                    $res = $processObj->push($this->getResult(), $this->date);
                     break;
                 case 'delayAutoPayday':
                     $processObj = new DelayAutoPayday();
-                    $res = $processObj->push($this->getResult(), $this->date);
                     break;
+//                case 'toAuthen':
+//
+//                    break;
                 default:
                     throw new TpamException('不存在的服务代码');
             }
+            $res = $processObj->push($this->getResult(), $this->date);
             if (!$res) {
                 $this->errors = array_merge($this->errors, $processObj->errors);
                 throw new TpamException('返回结果处理失败');
