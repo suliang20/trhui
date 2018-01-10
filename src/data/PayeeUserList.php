@@ -89,7 +89,7 @@ class PayeeUserList extends DataBase
     public function IsPayeeUserIdSet()
     {
         try {
-            if (!(array_key_exists('payeeUserId', $this->params) && !empty($this->params['payeeUserId']))) {
+            if (!(array_key_exists('payeeUserId', $this->params) && isset($this->params['payeeUserId']))) {
                 throw new TpamException('收款方商户平台账号未设置');
             }
             return true;

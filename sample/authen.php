@@ -8,60 +8,78 @@
 require_once('./config.php');
 require '../vendor/autoload.php';
 
-$inputObj = new \trhui\data\ToAuthen();
-$inputObj->SetNotifyUrl(NOTIFY_URL);
-$inputObj->SetFrontUrl(FRONT_URL);
+if (is_post()) {
+    $result = [
+        'error' => 0,
+        'msg' => '提交错误',
+    ];
+    try {
+        do {
+            if (!isset($_POST['payee_user_id']) || !is_numeric($_POST['payee_user_id'])) {
+                throw new \trhui\TpamException('授权用户ID不存在');
+            }
+            $inputObj = new \trhui\data\ToAuthen();
+            $inputObj->SetNotifyUrl(NOTIFY_URL);
+            $inputObj->SetFrontUrl(FRONT_URL);
+            $inputObj->SetUserId($_POST['payee_user_id']);
+            $inputObj->SetAuthenType($_POST['authed_type']);
 
-$inputObj->SetUserId(USER_ID);
-$inputObj->SetAuthenType(USER_TYPE);
+            $tpam = new \trhui\Tpam();
+            $tpam->serverUrl = SERVER_URL;
+            $tpam->merchantNo = MER_CHANT_NO;
+            $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+            $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+            if (!$res) {
+                foreach ($tpam->errors as $error) {
+                    throw new \trhui\TpamException($error['errorMsg']);
+                }
+            }
+        } while (false);
 
-$tpam = new \trhui\Tpam();
-$tpam->serverUrl = SERVER_URL;
-$tpam->merchantNo = MER_CHANT_NO;
-$tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
-$result = $tpam->frontInterface($inputObj, MER_ORDER_ID);
-if (!$result) {
-    var_dump($tpam->errors);
+        $result['error'] = 1;
+        $result['msg'] = '提交成功';
+        $result['data']['businessData'] = $res;
+        $result['data']['businessUrl'] = $tpam->getUrl();
+    } catch (\trhui\TpamException $e) {
+        $result['msg'] = $e->getMessage();
+    }
+    echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
-//var_dump($result);exit;
 ?>
 
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>用户实名认证</title>
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="trhui.js"></script>
 </head>
 <body>
-<button onclick='sendData("<?= $tpam->getUrl() ?>",<?= $result ?>)'>提交</button>
-<script>
-
-    function sendData(action, data) {
-        var name,
-            form = document.createElement("form"),
-            node = document.createElement("input");
-
-        form.action = action;
-        form.method = 'post';
-
-        for (name in data) {
-            node.name = name;
-            node.value = data[name].toString();
-            form.appendChild(node.cloneNode());
-        }
-
-        // 表单元素需要添加到主文档中.
-        form.style.display = "none";
-        document.body.appendChild(form);
-
-        form.submit();
-
-        // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
-        document.body.removeChild(form);
-    }
-
-</script>
-
+<div>
+    <form action="pay.php" method="post" id="payForm" name="payForm">
+        <div>
+            <label for="payeeUserId">认证用户</label>
+            <select name="payee_user_id" id="payeeUserId">
+                <option value="">请选择用户</option>
+                <?php foreach ((new \trhui\business\Register())->getAll() as $key => $value): ?>
+                    <?php if ($value['authed'] == 1) continue; ?>
+                    <?php if (isset($value['userId'])): ?>
+                        <option value="<?= $value['userId'] ?>" <?= isset($_GET['mobile']) && $_GET['mobile'] == $value['mobile'] ? 'selected="selected"' : '' ?>><?= $value['mobile'] ?></option>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="payeeUserId">认证类型</label>
+            <select name="authed_type" id="authedType">
+                <option value="0">个人认证</option>
+                <option value="1">企业认证</option>
+            </select>
+        </div>
+        <button type="button" id="submitPay">授权</button>
+    </form>
+</div>
 </body>
 </html>
 

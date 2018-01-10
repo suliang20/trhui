@@ -44,7 +44,7 @@ class Accredit extends DataBase
     public function IsUserIdSet()
     {
         try {
-            if (!(array_key_exists('userId', $this->params) && !empty($this->params['userId']))) {
+            if (!(array_key_exists('userId', $this->params) && isset($this->params['userId']))) {
                 throw new TpamException('清算通系统会员ID未设置');
             }
             return true;

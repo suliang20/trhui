@@ -15,16 +15,23 @@ if (is_post()) {
     ];
     try {
         do {
+            if (!isset($_POST['amount']) || !is_numeric($_POST['amount'])) {
+                throw new \trhui\TpamException('支付金额错误');
+            }
+            if (!isset($_POST['payee_user_id']) || !is_numeric($_POST['payee_user_id'])) {
+                throw new \trhui\TpamException('收款用户ID不能为空');
+            }
+            if (!isset($_POST['payer_user_id']) || !is_numeric($_POST['payer_user_id'])) {
+                throw new \trhui\TpamException('付款用户ID不能为空');
+            }
+
             $inputObj = new \trhui\data\OrderTransfer();
             $inputObj->SetNotifyUrl(NOTIFY_URL);
             $inputObj->SetFrontUrl(FRONT_URL);
 
-            if (!isset($_POST['amount']) || !is_numeric($_POST['amount'])) {
-                throw new \trhui\TpamException('支付金额错误');
-            }
             $amount = $_POST['amount'];
             $inputObj->SetAmount($amount * 100);
-            $inputObj->SetPayerUserId(0);
+            $inputObj->SetPayerUserId($_POST['payer_user_id']);
             $inputObj->SetActionType(\trhui\data\OrderTransfer::ACTION_TYPE_CONSUME);
             $inputObj->SetTransferPayType($_POST['transfer_pay_type']);
             $inputObj->SetTopupType($_POST['topup_type']);
@@ -33,7 +40,7 @@ if (is_post()) {
 
             $paramArr1 = [
                 'orderId' => ORDER_ID,
-                'payeeUserId' => 526,
+                'payeeUserId' => $_POST['payee_user_id'],
                 'payeeAmount' => $amount * 100,
                 'feeToMerchant' => 0,
                 'transferType' => $_POST['transfer_type'],
@@ -77,12 +84,24 @@ if (is_post()) {
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>支付</title>
     <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="trhui.js"></script>
 </head>
 
 <body>
 <div>
     <form action="pay.php" method="post" id="payForm" name="payForm">
         <div>
+            <div>
+                <label for="payeeUserId">付款用户</label>
+                <select name="payer_user_id" id="payerUserId">
+                    <option value="0">商户平台</option>
+                    <?php foreach ((new \trhui\business\Register())->getAll() as $key => $value): ?>
+                        <?php if (isset($value['userId'])): ?>
+                            <option value="<?= $value['userId'] ?>" <?= isset($_GET['mobile']) && $_GET['mobile'] == $value['mobile'] ? 'selected="selected"' : '' ?>><?= $value['mobile'] ?></option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <label for="transferPayType">支付方式</label>
             <select name="transfer_pay_type" id="transferPayType">
                 <?php foreach (\trhui\data\OrderTransfer::TRANSFER_PAY_TYPE as $key => $name): ?>
@@ -113,6 +132,7 @@ if (is_post()) {
         <div>
             <label for="payeeUserId">收款用户</label>
             <select name="payee_user_id" id="payeeUserId">
+                <option value="0">商户平台</option>
                 <?php foreach ((new \trhui\business\Register())->getAll() as $key => $value): ?>
                     <?php if (isset($value['userId'])): ?>
                         <option value="<?= $value['userId'] ?>" <?= isset($_GET['mobile']) && $_GET['mobile'] == $value['mobile'] ? 'selected="selected"' : '' ?>><?= $value['mobile'] ?></option>
@@ -127,57 +147,6 @@ if (is_post()) {
 <div>
     <a href="pay-list.php">支付列表</a>&nbsp;<a href="order-list.php">订单列表</a>
 </div>
-<script type="text/javascript">
-    function test() {
-        console.log('test');
-    }
-
-    function sendData(action, data) {
-        var name,
-            form = document.createElement("form"),
-            node = document.createElement("input");
-        form.action = action;
-        form.method = 'post';
-
-        for (name in data) {
-            node.name = name;
-            node.value = data[name].toString();
-            form.appendChild(node.cloneNode());
-        }
-        // 表单元素需要添加到主文档中.
-        form.style.display = "none";
-        document.body.appendChild(form);
-        form.submit();
-        // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
-        document.body.removeChild(form);
-    }
-
-    $(document).ready(function () {
-        $("#submitPay").click(function () {
-            $.ajax({
-                cache: true,
-                type: "POST",
-                url: 'pay.php',//提交的URL
-                data: $('#payForm').serialize(), // 要提交的表单,必须使用name属性
-                async: false,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.error == 0) {
-                        alert(data.msg);
-                    } else if (data.error == 1) {
-//                        console.log(data.data.businessData);
-                        sendData(data.data.businessUrl, data.data.businessData);
-                    } else {
-                        alert('数据异常');
-                    }
-                },
-                error: function (request) {
-                    alert("Connection error");
-                }
-            });
-        });
-    })
-</script>
 </body>
 </html>
 
