@@ -201,7 +201,7 @@ class PayeeUserList extends DataBase
     public function IsFeeTypeSet()
     {
         try {
-            if (!(array_key_exists('feeType', $this->params) && !empty($this->params['feeType']))) {
+            if (!(array_key_exists('feeType', $this->params) && isset($this->params['feeType']))) {
                 throw new TpamException('佣金收取方式未设置');
             }
             return true;
