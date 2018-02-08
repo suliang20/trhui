@@ -9,6 +9,7 @@
 namespace trhui;
 
 use trhui\business\PayRequestOrder;
+use trhui\business\Refund;
 use trhui\data\Data;
 
 class Request extends Data
@@ -35,6 +36,10 @@ class Request extends Data
                 case 'orderTransfer':
                     $requestObj = new PayRequestOrder();
                     $res = $requestObj->push($merOrderId, $data, $time);
+                    break;
+                case 'refund':
+                    $requestObj = new Refund();
+                    $res = $requestObj->push($data, $time);
                     break;
                 default:
                     $res = true;

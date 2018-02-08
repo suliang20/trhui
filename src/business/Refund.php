@@ -11,9 +11,9 @@ namespace trhui\business;
 use trhui\data\Data;
 use trhui\TpamException;
 
-class Authed extends Data
+class Refund extends Data
 {
-    public static $logFile = ROOT . '/data/authed.log';
+    public static $logFile = ROOT . '/data/refund.log';
 
     public function push($data, $time)
     {
@@ -27,20 +27,33 @@ class Authed extends Data
                 $datas = unserialize($datas);
             } else {
                 if (!touch(static::$logFile)) {
-                    throw new TpamException('创建认证日志文件失败');
+                    throw new TpamException('创建退款日志文件失败');
                 }
                 $datas = [];
             }
             if (empty($datas[$merOrderId])) {
-                $datas[$merOrderId] = $data;
+                $params = json_decode($data['params'], true);
+
+                $order['merOrderId'] = $merOrderId;
+                $order['originalPlatformOrderId'] = $params['originalPlatformOrderId'];
+                $order['originalMerOrderId'] = $params['originalMerOrderId'];
+                $order['originalOrderId'] = $params['originalOrderId'];
+                $order['userId'] = $params['userId'];
+                $order['amount'] = $params['amount'];
+                $order['refundType'] = $params['refundType'];
+                $order['platformOrderId'] = '';
+                $order['status'] = -1;
+                $order['requestTime'] = $time;
+                $order['responseTime'] = 0;
+                $datas[$merOrderId] = $order;
+            } else {
+                $datas[$merOrderId]['status'] = $data['status'];
+                $datas[$merOrderId]['platformOrderId'] = $data['platformOrderId'];
+                $datas[$merOrderId]['responseTime'] = $time;
             }
+//            var_dump($datas);exit;
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
-            $payRequestOrderObj = new PayRequestOrder();
-            if (!$payRequestOrderObj->update($data, $time)) {
-                $this->errors = array_merge($this->errors, $payRequestOrderObj->errors);
-                throw new TpamException('更新请求订单失败');
-            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());

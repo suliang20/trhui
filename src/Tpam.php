@@ -151,19 +151,19 @@ class Tpam extends Data
      */
     public function Process()
     {
-//        try {
-//            //  添加请求日志
-//            $requestObj = new Request();
-//            if (!$requestObj->push($this->merOrderId, $this->getValues(), $this->date)) {
-//                $this->errors = array_merge($this->errors, $requestObj->errors);
-//                throw new TpamException('添加请求数据失败');
-//            }
-//            return true;
-//        } catch (TpamException $e) {
-//            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-//        }
-//        return false;
-        return true;
+        try {
+            //  添加请求日志
+            $requestObj = new Request();
+            if (!$requestObj->push($this->merOrderId, $this->getValues(), $this->date)) {
+                $this->errors = array_merge($this->errors, $requestObj->errors);
+                throw new TpamException('添加请求数据失败');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+//        return true;
     }
 
     /**

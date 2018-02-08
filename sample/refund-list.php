@@ -8,9 +8,10 @@
 require_once('./config.php');
 require '../vendor/autoload.php';
 
-$payOrderObj = new \trhui\business\PayOrder();
-$orders = $payOrderObj->getAllOrder();
+$payOrderObj = new \trhui\business\Refund();
+$orders = $payOrderObj->getAll();
 
+var_dump($orders);exit;
 $merOrderId = !empty($_GET['merOrderId']) ? $_GET['merOrderId'] : null;
 if (!empty($merOrderId)) {
     $orders = !empty($orders[$merOrderId]) ? [$orders[$merOrderId]] : [];
@@ -21,7 +22,7 @@ if (!empty($merOrderId)) {
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>订单列表</title>
+    <title>退款订单列表</title>
     <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="trhui.js"></script>
     <style>

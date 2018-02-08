@@ -38,7 +38,7 @@ class PayOrder extends Data
                     'transferType' => $item['transferType'],
                     'autoPayday' => isset($item['autoPayday']) ? $item['autoPayday'] : 0,
                     'feeType' => $item['feeType'],
-                    'status' => 0,
+                    'status' => -1,
                     'request_time' => $_SERVER['REQUEST_TIME'],
                     'pay_time' => 0,
                     'request_time' => $time,
@@ -52,8 +52,8 @@ class PayOrder extends Data
                     }
                     $datas = [];
                 }
-                if (empty($datas[$orderId])) {
-                    $datas[$orderId] = $payOrder;
+                if (empty($datas[$merOrderId])) {
+                    $datas[$merOrderId][$orderId] = $payOrder;
                 }
             }
             $datas = serialize($datas);
@@ -73,11 +73,13 @@ class PayOrder extends Data
             if (!isset($datas[$merOrderId])) {
                 throw new TpamException('订单不存在');
             }
-            foreach ($datas as $key => $item) {
-                if ($item['merOrderId'] == $merOrderId) {
-                    $datas[$key]['platformOrderId'] = $data['platformOrderId'];
-                    $datas[$key]['status'] = 1;
-                    $datas[$key]['pay_time'] = $time;
+            foreach ($datas as $key => $value) {
+                foreach ($value as $k => $item) {
+                    if ($item['merOrderId'] == $merOrderId) {
+                        $datas[$key][$k]['platformOrderId'] = $data['platformOrderId'];
+                        $datas[$key][$k]['status'] = $data['status'];
+                        $datas[$key][$k]['pay_time'] = $time;
+                    }
                 }
             }
 
@@ -109,10 +111,19 @@ class PayOrder extends Data
     public function getOneByMerOrderId($merUserId)
     {
         $orders = $this->getAllOrder();
+//        var_dump($orders);exit;
         if (!isset($orders[$merUserId])) {
             return false;
         }
         return $orders[$merUserId];
     }
 
+    public function getPayOrder($merUserId, $orderId)
+    {
+        $orders = $this->getAllOrder();
+        if (!isset($orders[$merUserId][$orderId])) {
+            return false;
+        }
+        return $orders[$merUserId][$orderId];
+    }
 }

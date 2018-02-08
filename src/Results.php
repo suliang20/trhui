@@ -9,6 +9,7 @@
 namespace trhui;
 
 use trhui\business\PayResponse;
+use trhui\business\Refund;
 use trhui\business\Register;
 use trhui\business\DelayAutoPayday;
 use trhui\data\ResultCode;
@@ -64,6 +65,11 @@ class Results
      * @var
      */
     protected $result;
+    /**
+     * 返回对象
+     * @var
+     */
+    protected $resultObj;
 
     /**
      * 处理入口
@@ -77,7 +83,9 @@ class Results
                 throw new TpamException('数据错误');
             }
             foreach ($data as $key => $value) {
-                if (!is_string($key) || !is_string($value)) {
+                if ($key == 'resultObj') {
+                    $this->$key = json_encode($value, JSON_UNESCAPED_UNICODE);
+                } elseif (!is_string($key) || !is_string($value)) {
                     throw new TpamException('数据异常');
                 }
                 $this->$key = $value;
@@ -111,11 +119,13 @@ class Results
         try {
             //  记录响应日志
             $response = $this->getResult();
+
             $responseObj = new Response();
             $response['sign'] = $this->sign;
             $response['code'] = $this->code;
             $response['msg'] = $this->msg;
             $response['date'] = $this->date;
+            $response['returnObj'] = $this->resultObj;
             if (!$responseObj->push($response['merOrderId'], $response)) {
                 throw new TpamException('记录响应日志失败');
             }
@@ -137,6 +147,9 @@ class Results
                     break;
                 case 'delayAutoPayday':
                     $processObj = new DelayAutoPayday();
+                    break;
+                case 'refund':
+                    $processObj = new Refund();
                     break;
 //                case 'toAuthen':
 //
@@ -172,6 +185,7 @@ class Results
                 'sign' => $this->sign,
                 'msg' => $this->msg,
                 'date' => $this->date,
+                'date' => $this->resultObj,
             ];
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
