@@ -47,7 +47,7 @@ try {
         $inputObj->SetAmount($payOrder['payeeAmount']);
         $inputObj->SetRefundType(\trhui\data\Refund::REFUND_TYPE_TRANSACTION);
 
-        $tpam = new \trhui\Tpam();
+        $tpam = new \trhui\extend\TpamExtend();
         $tpam->serverUrl = SERVER_URL;
         $tpam->merchantNo = MER_CHANT_NO;
         $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
@@ -99,8 +99,8 @@ exit;
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>支付列表</title>
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="trhui.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/trhui.js"></script>
 </head>
 
 <body>

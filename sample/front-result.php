@@ -22,8 +22,8 @@ if (!$res) {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>操作成功页面</title>
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="trhui.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/trhui.js"></script>
 </head>
 <body>
 <div>

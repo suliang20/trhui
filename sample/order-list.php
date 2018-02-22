@@ -22,8 +22,8 @@ if (!empty($merOrderId)) {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>订单列表</title>
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="trhui.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/trhui.js"></script>
     <style>
         table {
             border-collapse: collapse;

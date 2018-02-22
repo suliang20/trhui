@@ -17,8 +17,8 @@ $orders = $payRequestOrderObj->getAllOrder();
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>支付列表</title>
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="trhui.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/trhui.js"></script>
 </head>
 
 <body>
@@ -38,7 +38,6 @@ $orders = $payRequestOrderObj->getAllOrder();
             <th>摘要备注</th>
             <th>请求时间</th>
             <th>支付时间</th>
-            <th>操作</th>
         </tr>
         <?php foreach ($orders as $item): ?>
             <?php
@@ -67,7 +66,6 @@ $orders = $payRequestOrderObj->getAllOrder();
                 <td><?= isset($item['remarks']) ? $item['remarks'] : '' ?></td>
                 <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
                 <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
-                <td><?= $item['response_status'] == 0 ? '<a href="pay-payee-list.php?merOrderId=' . $item['merOrderId'] . '">退款</a>' : '' ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

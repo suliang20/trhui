@@ -55,7 +55,7 @@ if (is_post()) {
             }
             $inputObj->SetPayeeUserList($payeeUserListArrObj->getParamsArr());
 
-            $tpam = new \trhui\Tpam();
+            $tpam = new \trhui\extend\TpamExtend();
             $tpam->serverUrl = SERVER_URL;
             $tpam->merchantNo = MER_CHANT_NO;
             $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
@@ -91,8 +91,8 @@ if (is_post()) {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>支付</title>
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="trhui.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/trhui.js"></script>
 </head>
 
 <body>

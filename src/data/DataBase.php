@@ -43,6 +43,18 @@ class DataBase extends Data
         return $this->params['parameter1'];
     }
 
+    //  TODO   扩展数据
+
+    public function SetExtendData($value)
+    {
+        $this->params['extendData'] = $value;
+    }
+
+    public function GetExtendData()
+    {
+        return $this->params['extendData'];
+    }
+
     /**
      * 获取服务接口
      * @return mixed

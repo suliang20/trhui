@@ -30,8 +30,8 @@ class Tpam extends Data
      * 商户私钥
      * @var
      */
-    protected $rsaPrivateKey;
-    protected $url;
+    public $rsaPrivateKey;
+    public $url;
 
 
     /**
@@ -74,25 +74,30 @@ class Tpam extends Data
 
 
     /**
-     * 订单号
+     * 订单号(必填)
      * @var
      */
-    protected $merOrderId;
+    public $merOrderId;
     /**
-     * 签名，由merOrderId + merchantNo+date+params根据私钥生成如果有参数为null，签名串中应当做空字符串("")来处理
+     * 签名，由merOrderId + merchantNo+date+params根据私钥生成如果有参数为null，签名串中应当做空字符串("")来处理(必填)
      * @var
      */
-    protected $sign;
+    public $sign;
     /**
-     * 业务类型编号（采用接口名称interface后的字符）如注册：toRegister
+     * 业务类型编号（采用接口名称interface后的字符）如注册：toRegister(必填)
      * @var
      */
-    protected $serverCode;
+    public $serverCode;
     /**
-     * 业务参数，json格式
+     * 业务参数，json格式(必填)
      * @var
      */
-    protected $params;
+    public $params;
+    /**
+     * 扩展数据
+     * @var
+     */
+    public $extendData = [];
 
     public function __construct()
     {
@@ -151,19 +156,7 @@ class Tpam extends Data
      */
     public function Process()
     {
-        try {
-            //  添加请求日志
-            $requestObj = new Request();
-            if (!$requestObj->push($this->merOrderId, $this->getValues(), $this->date)) {
-                $this->errors = array_merge($this->errors, $requestObj->errors);
-                throw new TpamException('添加请求数据失败');
-            }
-            return true;
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-//        return true;
+        return true;
     }
 
     /**
@@ -211,6 +204,7 @@ class Tpam extends Data
                 'version' => $this->version,
                 'params' => $this->params,
                 'date' => $this->date,
+                'extendData' => $this->extendData,
             ];
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
@@ -303,9 +297,21 @@ class Tpam extends Data
      * 生成签名
      * @return bool
      */
-    public function MakeSign()
+    public function MakeSign($merOrderId = null, $merchantNo = null, $date = null, $params = null)
     {
         try {
+            if (!empty($merOrderId)) {
+                $this->merOrderId = $merOrderId;
+            }
+            if (!empty($merchantNo)) {
+                $this->merchantNo = $merchantNo;
+            }
+            if (!empty($date)) {
+                $this->date = $date;
+            }
+            if (!empty($params)) {
+                $this->params = $params;
+            }
             $string = $this->merOrderId . $this->merchantNo . $this->date . $this->params;
             $this->sign = $this->sign($string);
             if (!$this->sign) {
