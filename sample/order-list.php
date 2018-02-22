@@ -27,11 +27,12 @@ if (!empty($merOrderId)) {
     <style>
         table {
             border-collapse: collapse;
-            font-size: 10px;
+            font-size: 6px;
         }
 
         table, th, td {
             border: 1px solid black;
+            font-size: 6px;
         }
     </style>
 </head>
@@ -85,10 +86,14 @@ if (!empty($merOrderId)) {
                     <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
                     <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
                     <td>
-                        <a href="javascript:;" class="delay-auto-payday" value="<?= $item['merOrderId'] ?>">延长自动转账</a>
+                        <?php if ($item['status'] == 0): ?>
+                            <a href="javascript:;" class="delay-auto-payday"
+                               value="<?= $item['merOrderId'] ?>">延长自动转账</a>
+                        <?php endif; ?>
                     </td>
                     <td>
                         <?= $item['status'] == 0 ? '<a href="refund.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">退款</a>' : '' ?>
+                        <?= $item['status'] == 0 ? '<a href="order-transfer-audit.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">审核</a>' : '' ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

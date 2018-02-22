@@ -21,8 +21,8 @@ class ToRegister extends DataBase
 {
     public function __construct()
     {
-        $this->serverInterface = '/interface/toRegister';
-        $this->serverCode = 'toRegister';
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_TO_REGISTER];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_TO_REGISTER];
     }
 
     /**

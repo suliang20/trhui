@@ -8,7 +8,7 @@
 require_once('./config.php');
 require '../vendor/autoload.php';
 
-$result = new \trhui\Results();
+$result = new \trhui\extend\Results();
 $result->tpamPublicKeyPath = PUBLIC_KEY_PATH;
 $res = $result->handle($_POST);
 var_dump($res);

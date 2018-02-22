@@ -134,8 +134,8 @@ class OrderTransfer extends DataBase
 
     public function __construct()
     {
-        $this->serverInterface = '/interface/orderTransfer';
-        $this->serverCode = 'orderTransfer';
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_ORDER_TRANSFER];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_ORDER_TRANSFER];
     }
 
     /**

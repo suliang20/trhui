@@ -30,7 +30,7 @@ try {
     $inputObj->SetUserId($orderInfo['payerUserId']);
     $inputObj->SetDays(1);
 
-    $tpam = new \trhui\extend\TpamExtend();
+    $tpam = new \trhui\extend\Tpam();
     $tpam->serverUrl = SERVER_URL;
     $tpam->merchantNo = MER_CHANT_NO;
     $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
@@ -47,7 +47,7 @@ try {
         }
     }
 
-    $resultObj = new \trhui\Results();
+    $resultObj = new \trhui\extend\Results();
     $resultObj->tpamPublicKeyPath = PUBLIC_KEY_PATH;
     $resultRes = $resultObj->handle($postRes);
     if (!$resultRes) {

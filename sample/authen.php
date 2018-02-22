@@ -24,7 +24,7 @@ if (is_post()) {
             $inputObj->SetUserId($_POST['payee_user_id']);
             $inputObj->SetAuthenType($_POST['authed_type']);
 
-            $tpam = new \trhui\extend\TpamExtend();
+            $tpam = new \trhui\extend\Tpam();
             $tpam->serverUrl = SERVER_URL;
             $tpam->merchantNo = MER_CHANT_NO;
             $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;

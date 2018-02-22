@@ -33,7 +33,7 @@ if (is_post()) {
             $inputObj->SetMerUserId($merUserId);
             $inputObj->SetMobile($mobile);
 
-            $tpam = new \trhui\extend\TpamExtend();
+            $tpam = new \trhui\extend\Tpam();
             $tpam->serverUrl = SERVER_URL;
             $tpam->merchantNo = MER_CHANT_NO;
             $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;

@@ -9,10 +9,9 @@
 namespace trhui\extend;
 
 use trhui\Request;
-use trhui\Tpam;
 use trhui\TpamException;
 
-class TpamExtend extends Tpam
+class Tpam extends \trhui\Tpam
 {
     /**
      * 请求处理

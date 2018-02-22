@@ -35,8 +35,8 @@ class Refund extends DataBase
 
     public function __construct()
     {
-        $this->serverInterface = '/interface/refund';
-        $this->serverCode = 'refund';
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_REFUND];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_REFUND];
     }
 
     /**

@@ -55,7 +55,7 @@ if (is_post()) {
             }
             $inputObj->SetPayeeUserList($payeeUserListArrObj->getParamsArr());
 
-            $tpam = new \trhui\extend\TpamExtend();
+            $tpam = new \trhui\extend\Tpam();
             $tpam->serverUrl = SERVER_URL;
             $tpam->merchantNo = MER_CHANT_NO;
             $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;

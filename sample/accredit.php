@@ -23,7 +23,7 @@ if (is_post()) {
             $inputObj->SetFrontUrl(FRONT_URL);
             $inputObj->SetUserId($_POST['payee_user_id']);
 
-            $tpam = new \trhui\extend\TpamExtend();
+            $tpam = new \trhui\extend\Tpam();
             $tpam->serverUrl = SERVER_URL;
             $tpam->merchantNo = MER_CHANT_NO;
             $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;

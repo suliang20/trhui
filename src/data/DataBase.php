@@ -17,6 +17,50 @@ use trhui\TpamException;
  */
 class DataBase extends Data
 {
+
+    const SERVER_ORDER_TRANSFER = 'orderTransfer';
+    const SERVER_ORDER_TRANSFER_AUDIT = 'orderTransferAudit';
+    const SERVER_ACCREDIT = 'accredit';
+    const SERVER_DELAY_AUTO_PAYDAY = 'delayAutoPayday';
+    const SERVER_REFUND = 'refund';
+    const SERVER_TO_AUTHEN = 'toAuthen';
+    const SERVER_TO_REGISTER = 'toRegister';
+
+    public static $SERVER = [
+        self::SERVER_ORDER_TRANSFER => [
+            'interface' => '/interface/orderTransfer',
+            'code' => 'orderTransfer',
+        ],
+        self::SERVER_ORDER_TRANSFER_AUDIT => [
+            'interface' => '/interface/orderTransferAudit',
+            'code' => 'orderTransferAudit',
+        ],
+        self::SERVER_ACCREDIT => [
+            'interface' => '/interface/accredit',
+            'code' => 'accredit',
+        ],
+    ];
+
+    public static $SERVER_INTERFACE = [
+        self::SERVER_ORDER_TRANSFER => '/interface/orderTransfer',
+        self::SERVER_ORDER_TRANSFER_AUDIT => '/interface/orderTransferAudit',
+        self::SERVER_ACCREDIT => '/interface/accredit',
+        self::SERVER_DELAY_AUTO_PAYDAY => '/interface/delayAutoPayday',
+        self::SERVER_REFUND => '/interface/refund',
+        self::SERVER_TO_AUTHEN => '/interface/toAuthen',
+        self::SERVER_TO_REGISTER => '/interface/toRegister',
+    ];
+
+    public static $SERVER_CODE = [
+        self::SERVER_ORDER_TRANSFER => 'orderTransfer',
+        self::SERVER_ORDER_TRANSFER_AUDIT => 'orderTransferAudit',
+        self::SERVER_ACCREDIT => 'accredit',
+        self::SERVER_DELAY_AUTO_PAYDAY => 'delayAutoPayday',
+        self::SERVER_REFUND => 'refund',
+        self::SERVER_TO_AUTHEN => 'toAuthen',
+        self::SERVER_TO_REGISTER => 'toRegister',
+    ];
+
     protected $params = array();
 
     /**

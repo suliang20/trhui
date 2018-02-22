@@ -47,7 +47,7 @@ try {
         $inputObj->SetAmount($payOrder['payeeAmount']);
         $inputObj->SetRefundType(\trhui\data\Refund::REFUND_TYPE_TRANSACTION);
 
-        $tpam = new \trhui\extend\TpamExtend();
+        $tpam = new \trhui\extend\Tpam();
         $tpam->serverUrl = SERVER_URL;
         $tpam->merchantNo = MER_CHANT_NO;
         $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
@@ -71,7 +71,7 @@ try {
 //    $postRes = json_decode($postRes, true);
 //    var_dump($postRes);exit;
 
-    $resultObj = new \trhui\Results();
+    $resultObj = new \trhui\extend\Results();
     $resultObj->tpamPublicKeyPath = PUBLIC_KEY_PATH;
     $resultRes = $resultObj->handle($postRes);
 

@@ -23,8 +23,8 @@ class DelayAutoPayday extends DataBase
 {
     public function __construct()
     {
-        $this->serverInterface = '/interface/delayAutoPayday';
-        $this->serverCode = 'delayAutoPayday';
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_DELAY_AUTO_PAYDAY];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_DELAY_AUTO_PAYDAY];
     }
 
     /**

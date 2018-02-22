@@ -204,7 +204,6 @@ class Tpam extends Data
                 'version' => $this->version,
                 'params' => $this->params,
                 'date' => $this->date,
-                'extendData' => $this->extendData,
             ];
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());

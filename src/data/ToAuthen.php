@@ -22,8 +22,8 @@ class ToAuthen extends DataBase
 
     public function __construct()
     {
-        $this->serverInterface = '/interface/toAuthen';
-        $this->serverCode = 'toAuthen';
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_TO_AUTHEN];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_TO_AUTHEN];
     }
 
     /**

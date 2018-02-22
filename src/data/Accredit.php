@@ -23,8 +23,8 @@ class Accredit extends DataBase
 
     public function __construct()
     {
-        $this->serverInterface = '/interface/accredit';
-        $this->serverCode = 'accredit';
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_ACCREDIT];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_ACCREDIT];
     }
 
     /**
