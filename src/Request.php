@@ -8,6 +8,7 @@
 
 namespace trhui;
 
+use trhui\business\ModifyPhone;
 use trhui\business\PayRequestOrder;
 use trhui\business\Refund;
 use trhui\data\Data;
@@ -40,6 +41,11 @@ class Request extends Data
                 case 'refund':
                     $requestObj = new Refund();
                     $res = $requestObj->push($data, $time);
+                    break;
+                case 'modifyPhone':
+                    $requestObj = new ModifyPhone();
+                    $res = $requestObj->push($data, $time);
+                    break;
                     break;
                 default:
                     $res = true;

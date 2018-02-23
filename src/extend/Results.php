@@ -9,6 +9,7 @@
 namespace trhui\extend;
 
 use trhui\business\DelayAutoPayday;
+use trhui\business\ModifyPhone;
 use trhui\business\PayResponse;
 use trhui\business\Refund;
 use trhui\business\Register;
@@ -60,6 +61,9 @@ class Results extends \trhui\Results
                     break;
                 case 'refund':
                     $processObj = new Refund();
+                    break;
+                case 'modifyPhone':
+                    $processObj = new ModifyPhone();
                     break;
 //                case 'toAuthen':
 //

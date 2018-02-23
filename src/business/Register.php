@@ -32,6 +32,7 @@ class Register extends Data
                 $datas = [];
             }
             $data['register_time'] = $time;
+            $data['update_time'] = $time;
             if (empty($datas[$merUserId])) {
                 $datas[$merUserId] = $data;
             }
@@ -60,6 +61,11 @@ class Register extends Data
         return false;
     }
 
+    /**
+     * 根据商户用户ID获取用户数据
+     * @param $merUserId
+     * @return bool
+     */
     public function getUserByMerUserId($merUserId)
     {
         try {
@@ -78,6 +84,30 @@ class Register extends Data
         return false;
     }
 
+    /**
+     * 根据清算通用户ID获取用户数据
+     * @param $userId
+     * @return bool
+     */
+    public function getUserByUserId($userId)
+    {
+        try {
+            $allUser = $this->getAll();
+            foreach ($allUser as $value) {
+                if (isset($value['userId']) && $value['userId'] == $userId) {
+                    return $value;
+                }
+            }
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
+     * 获取新的商户用户ID
+     * @return int|mixed
+     */
     public function getNewMerUserId()
     {
         $allUser = $this->getAll();
@@ -88,6 +118,11 @@ class Register extends Data
         }
     }
 
+    /**
+     * 检查手机号是否已存在
+     * @param $mobile
+     * @return bool
+     */
     public function hasMobile($mobile)
     {
         $allUser = $this->getAll();
@@ -98,6 +133,56 @@ class Register extends Data
         }
         return false;
     }
+
+    /**
+     * 检查清算通用户ID是否存在
+     * @param $userId
+     * @return bool
+     */
+    public function hasUserId($userId)
+    {
+        $allUser = $this->getAll();
+        foreach ($allUser as $value) {
+            if (isset($value['merUserId']) && $value['userId'] == $userId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 修改手机号
+     * @param $userId
+     * @param $newPhone
+     * @return bool
+     */
+    public function modifyPhone($userId, $newPhone, $time)
+    {
+        try {
+            if (file_exists(static::$logFile)) {
+                $datas = file_get_contents(static::$logFile);
+                $datas = unserialize($datas);
+            } else {
+                if (!touch(static::$logFile)) {
+                    throw new TpamException('创建注册日志文件失败');
+                }
+                $datas = [];
+            }
+            foreach ($datas as $key => $value) {
+                if ($value['userId'] == $userId) {
+                    $datas[$key]['mobile'] = $newPhone;
+                    $datas[$key]['update_time'] = $time;
+                }
+            }
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
 
     /**
      * 验证手机号码格式

@@ -26,6 +26,7 @@ class DataBase extends Data
     const SERVER_TO_AUTHEN = 'toAuthen';
     const SERVER_TO_REGISTER = 'toRegister';
     const SERVER_QUERY = 'query';
+    const SERVER_MODIFY_PHONE = 'modifyPhone';
 
     public static $SERVER = [
         self::SERVER_ORDER_TRANSFER => [
@@ -51,6 +52,7 @@ class DataBase extends Data
         self::SERVER_TO_AUTHEN => '/interface/toAuthen',
         self::SERVER_TO_REGISTER => '/interface/toRegister',
         self::SERVER_QUERY => '/interface/query',
+        self::SERVER_MODIFY_PHONE=> '/interface/modifyPhone',
     ];
 
     public static $SERVER_CODE = [
@@ -62,6 +64,7 @@ class DataBase extends Data
         self::SERVER_TO_AUTHEN => 'toAuthen',
         self::SERVER_TO_REGISTER => 'toRegister',
         self::SERVER_QUERY => 'query',
+        self::SERVER_MODIFY_PHONE=> 'modifyPhone',
     ];
 
     protected $params = array();

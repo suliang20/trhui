@@ -63,6 +63,17 @@ if (is_post()) {
     <title>用户注册示例</title>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/trhui.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            font-size: 6px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            font-size: 6px;
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -100,7 +111,10 @@ if (is_post()) {
                     <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
                     <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
                     <td><?= isset($item['register_time']) ? date('Y-m-d H:i:s', substr($item['register_time'], 0, -3)) : '' ?></td>
-                    <td><a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a></td>
+                    <td>
+                        <a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a>
+                        <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
+                    </td>
                 </tr>
             <?php endif; ?>
         <?php endforeach; ?>
