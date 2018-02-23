@@ -88,9 +88,6 @@ class OrderTransferAudit extends DataBase
     public function IsOriginalOrderIdSet()
     {
         try {
-            if (!(array_key_exists('originalOrderId', $this->params) && !empty($this->params['originalOrderId']))) {
-                throw new TpamException('原业务系统交易订单号未设置');
-            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());

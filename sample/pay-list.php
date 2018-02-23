@@ -9,7 +9,7 @@ require_once('./config.php');
 require '../vendor/autoload.php';
 
 $payRequestOrderObj = new \trhui\business\PayRequestOrder();
-$orders = $payRequestOrderObj->getAllOrder();
+$orders = $payRequestOrderObj->getAll();
 
 ?>
 
@@ -19,6 +19,17 @@ $orders = $payRequestOrderObj->getAllOrder();
     <title>支付列表</title>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/trhui.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            font-size: 6px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            font-size: 6px;
+        }
+    </style>
 </head>
 
 <body>
@@ -38,6 +49,7 @@ $orders = $payRequestOrderObj->getAllOrder();
             <th>摘要备注</th>
             <th>请求时间</th>
             <th>支付时间</th>
+            <th>操作</th>
         </tr>
         <?php foreach ($orders as $item): ?>
             <?php
@@ -66,6 +78,11 @@ $orders = $payRequestOrderObj->getAllOrder();
                 <td><?= isset($item['remarks']) ? $item['remarks'] : '' ?></td>
                 <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
                 <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
+                <td>
+                    <?php if ($item['response_status'] == 2): ?>
+                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">查询</a>
+                    <?php endif; ?>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>

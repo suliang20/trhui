@@ -25,6 +25,7 @@ class DataBase extends Data
     const SERVER_REFUND = 'refund';
     const SERVER_TO_AUTHEN = 'toAuthen';
     const SERVER_TO_REGISTER = 'toRegister';
+    const SERVER_QUERY = 'query';
 
     public static $SERVER = [
         self::SERVER_ORDER_TRANSFER => [
@@ -49,6 +50,7 @@ class DataBase extends Data
         self::SERVER_REFUND => '/interface/refund',
         self::SERVER_TO_AUTHEN => '/interface/toAuthen',
         self::SERVER_TO_REGISTER => '/interface/toRegister',
+        self::SERVER_QUERY => '/interface/query',
     ];
 
     public static $SERVER_CODE = [
@@ -59,6 +61,7 @@ class DataBase extends Data
         self::SERVER_REFUND => 'refund',
         self::SERVER_TO_AUTHEN => 'toAuthen',
         self::SERVER_TO_REGISTER => 'toRegister',
+        self::SERVER_QUERY => 'query',
     ];
 
     protected $params = array();

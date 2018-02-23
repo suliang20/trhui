@@ -65,6 +65,9 @@ try {
 //        }
 //    }
 //
+//    var_dump($tpam->errors);
+//    var_dump($postRes);exit;
+//
 //    $resultObj = new \trhui\extend\Results();
 //    $resultObj->tpamPublicKeyPath = PUBLIC_KEY_PATH;
 //    $resultRes = $resultObj->handle($postRes);

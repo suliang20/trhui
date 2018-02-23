@@ -76,7 +76,9 @@ class PayOrder extends Data
             foreach ($datas as $key => $value) {
                 foreach ($value as $k => $item) {
                     if ($item['merOrderId'] == $merOrderId) {
-                        $datas[$key][$k]['platformOrderId'] = $data['platformOrderId'];
+                        if (!empty($data['platformOrderId'])) {
+                            $datas[$key][$k]['platformOrderId'] = $data['platformOrderId'];
+                        }
                         $datas[$key][$k]['status'] = $data['status'];
                         $datas[$key][$k]['pay_time'] = $time;
                     }

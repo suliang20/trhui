@@ -94,6 +94,7 @@ if (!empty($merOrderId)) {
                     <td>
                         <?= $item['status'] == 0 ? '<a href="refund.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">退款</a>' : '' ?>
                         <?= $item['status'] == 0 ? '<a href="order-transfer-audit.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">审核</a>' : '' ?>
+                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">查询</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

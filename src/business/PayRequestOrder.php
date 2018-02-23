@@ -71,16 +71,18 @@ class PayRequestOrder extends Data
     {
         try {
             $merOrderId = $data['merOrderId'];
-            $datas = $this->getAllOrder();
+            $datas = $this->getAll();
             if (!isset($datas[$merOrderId])) {
                 throw new TpamException('订单不存在');
             }
             $datas[$merOrderId]['platformOrderId'] = $data['platformOrderId'];
             $datas[$merOrderId]['response_amount'] = $data['amount'];
             $datas[$merOrderId]['response_status'] = $data['status'];
-            $datas[$merOrderId]['status'] = 1;
+            if ($data['status'] == 1) {
+                $datas[$merOrderId]['status'] = 1;
+                $datas[$merOrderId]['pay_time'] = $time;
+            }
             $datas[$merOrderId]['response_parameter1'] = $data['parameter1'];
-            $datas[$merOrderId]['pay_time'] = $time;
             if (isset($data['remarks'])) {
                 $datas[$merOrderId]['remarks'] = $data['remarks'];
             }
@@ -99,7 +101,40 @@ class PayRequestOrder extends Data
         return false;
     }
 
-    public function getAllOrder()
+    public function queryUpdate($data, $time)
+    {
+        try {
+            $merOrderId = $data['originalMerOrderId'];
+            $datas = $this->getAll();
+            if (!isset($datas[$merOrderId])) {
+                throw new TpamException('订单不存在');
+            }
+            if (!empty($data['platformOrderId'])) {
+                $datas[$merOrderId]['platformOrderId'] = $data['platformOrderId'];
+            }
+            $datas[$merOrderId]['response_amount'] = $data['amount'];
+            $datas[$merOrderId]['response_status'] = $data['status'];
+            if ($data['status'] == 1) {
+                $datas[$merOrderId]['status'] = 1;
+                $datas[$merOrderId]['pay_time'] = $time;
+            }
+
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            $payOrderObj = new PayOrder();
+            $data['merOrderId'] = $data['originalMerOrderId'];
+            if (!$payOrderObj->update($data, $time)) {
+                $this->errors = array_merge($this->errors, $payOrderObj->errors);
+                throw new TpamException('返回结果处理失败');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    public function getAll()
     {
         try {
             if (file_exists(static::$logFile)) {
