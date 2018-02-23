@@ -114,6 +114,7 @@ if (is_post()) {
                     <td>
                         <a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a>
                         <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
+                        <a href="member-login.php?userId=<?= $item['userId'] ?>">会员自助登录</a>
                     </td>
                 </tr>
             <?php endif; ?>

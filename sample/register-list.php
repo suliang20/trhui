@@ -43,7 +43,11 @@ $registers = $registerObj->getAll();
                     <td><?= isset($item['merOrderId']) ? $item['merOrderId'] : '' ?></td>
                     <td><?= isset($item['mobile']) ? $item['mobile'] : '' ?></td>
                     <td><?= isset($item['register_time']) ? date('Y-m-d H:i:s', substr($item['register_time'], 0, -3)) : '' ?></td>
-                    <td><a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a></td>
+                    <td>
+                        <a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a>
+                        <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
+                        <a href="member-login.php?userId=<?= $item['userId'] ?>">会员自助登录</a>
+                    </td>
                 </tr>
             <?php endif; ?>
         <?php endforeach; ?>

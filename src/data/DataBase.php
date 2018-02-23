@@ -27,32 +27,34 @@ class DataBase extends Data
     const SERVER_TO_REGISTER = 'toRegister';
     const SERVER_QUERY = 'query';
     const SERVER_MODIFY_PHONE = 'modifyPhone';
+    const SERVER_MEMBER_LOGIN = 'memberLogin';
 
     public static $SERVER = [
         self::SERVER_ORDER_TRANSFER => [
-            'interface' => '/interface/orderTransfer',
+            'interface' => '/tpam/service/interface/orderTransfer',
             'code' => 'orderTransfer',
         ],
         self::SERVER_ORDER_TRANSFER_AUDIT => [
-            'interface' => '/interface/orderTransferAudit',
+            'interface' => '/tpam/service/interface/orderTransferAudit',
             'code' => 'orderTransferAudit',
         ],
         self::SERVER_ACCREDIT => [
-            'interface' => '/interface/accredit',
+            'interface' => '/tpam/service/interface/accredit',
             'code' => 'accredit',
         ],
     ];
 
     public static $SERVER_INTERFACE = [
-        self::SERVER_ORDER_TRANSFER => '/interface/orderTransfer',
-        self::SERVER_ORDER_TRANSFER_AUDIT => '/interface/orderTransferAudit',
-        self::SERVER_ACCREDIT => '/interface/accredit',
-        self::SERVER_DELAY_AUTO_PAYDAY => '/interface/delayAutoPayday',
-        self::SERVER_REFUND => '/interface/refund',
-        self::SERVER_TO_AUTHEN => '/interface/toAuthen',
-        self::SERVER_TO_REGISTER => '/interface/toRegister',
-        self::SERVER_QUERY => '/interface/query',
-        self::SERVER_MODIFY_PHONE=> '/interface/modifyPhone',
+        self::SERVER_ORDER_TRANSFER => '/tpam/service/interface/orderTransfer',
+        self::SERVER_ORDER_TRANSFER_AUDIT => '/tpam/service/interface/orderTransferAudit',
+        self::SERVER_ACCREDIT => '/tpam/service/interface/accredit',
+        self::SERVER_DELAY_AUTO_PAYDAY => '/tpam/service/interface/delayAutoPayday',
+        self::SERVER_REFUND => '/tpam/service/interface/refund',
+        self::SERVER_TO_AUTHEN => '/tpam/service/interface/toAuthen',
+        self::SERVER_TO_REGISTER => '/tpam/service/interface/toRegister',
+        self::SERVER_QUERY => '/tpam/service/interface/query',
+        self::SERVER_MODIFY_PHONE => '/tpam/service/interface/modifyPhone',
+        self::SERVER_MEMBER_LOGIN => '/club/service/interface/memberLogin',
     ];
 
     public static $SERVER_CODE = [
@@ -64,7 +66,8 @@ class DataBase extends Data
         self::SERVER_TO_AUTHEN => 'toAuthen',
         self::SERVER_TO_REGISTER => 'toRegister',
         self::SERVER_QUERY => 'query',
-        self::SERVER_MODIFY_PHONE=> 'modifyPhone',
+        self::SERVER_MODIFY_PHONE => 'modifyPhone',
+        self::SERVER_MEMBER_LOGIN => 'memberLogin',
     ];
 
     protected $params = array();

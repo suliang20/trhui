@@ -12,8 +12,8 @@ use trhui\TpamException;
 
 
 /**
- * 注册参数
- * TODO 请求地址：/interface/toRegister
+ * 修改会员手机号
+ * TODO 请求地址：/tpam/service/interface/modifyPhone
  * Class ToRegister
  * @package trhui\data
  */

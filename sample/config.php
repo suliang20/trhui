@@ -27,7 +27,7 @@ if (file_exists(CONFIG_LOCAL)) {
     //  商户号
     defined('MER_CHANT_NO') or define('MER_CHANT_NO', 'test');
     //  招商清算通服务地址
-    defined('SERVER_URL') or define('SERVER_URL', 'http://cmbtest.trhui.com/tpam/service/');
+    defined('SERVER_URL') or define('SERVER_URL', 'http://cmbtest.trhui.com/');
 
 
     //  回调地址
