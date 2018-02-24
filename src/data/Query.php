@@ -19,7 +19,7 @@ use trhui\TpamException;
  * 当退款的业务系统订单号中包含多个商品时：以下整单“原商户订单号”为一单
  * 部分退款需传入交易金额(小于等于原交易金额)，退款多少商户服务费(小于等于原商户服务费)，费用不传则默认为整单退款。
  * 注：本接口已分开手续费和支付费用，如果商户通过接口退款时出现退款金额少于原支付金额，当交易自动确认时间到时会自动支付对接系统自行处理好账务数据。
- * Class OrderTransferAudit
+ * Class Query
  * @package trhui\data
  */
 class Query extends DataBase

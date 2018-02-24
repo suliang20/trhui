@@ -10,11 +10,10 @@ namespace trhui\data;
 
 use trhui\TpamException;
 
-
 /**
  * 修改会员手机号
  * TODO 请求地址：/tpam/service/interface/modifyPhone
- * Class ToRegister
+ * Class ModifyPhone
  * @package trhui\data
  */
 class ModifyPhone extends DataBase

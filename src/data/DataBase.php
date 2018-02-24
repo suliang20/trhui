@@ -26,6 +26,8 @@ class DataBase extends Data
     const SERVER_TO_AUTHEN = 'toAuthen';
     const SERVER_TO_REGISTER = 'toRegister';
     const SERVER_QUERY = 'query';
+
+    const SERVER_MODIFY_PASSWORD = 'modifyPassword';
     const SERVER_MODIFY_PHONE = 'modifyPhone';
     const SERVER_MEMBER_LOGIN = 'memberLogin';
     const SERVER_ACCREDIT_NEW = 'accreditNew';
@@ -54,6 +56,8 @@ class DataBase extends Data
         self::SERVER_TO_AUTHEN => '/tpam/service/interface/toAuthen',
         self::SERVER_TO_REGISTER => '/tpam/service/interface/toRegister',
         self::SERVER_QUERY => '/tpam/service/interface/query',
+
+        self::SERVER_MODIFY_PASSWORD => '/tpam/service/interface/modifyPassword',
         self::SERVER_MODIFY_PHONE => '/tpam/service/interface/modifyPhone',
         self::SERVER_MEMBER_LOGIN => '/club/service/interface/memberLogin',
         self::SERVER_ACCREDIT_NEW => '/tpam/service/interface/accreditNew',
@@ -68,6 +72,8 @@ class DataBase extends Data
         self::SERVER_TO_AUTHEN => 'toAuthen',
         self::SERVER_TO_REGISTER => 'toRegister',
         self::SERVER_QUERY => 'query',
+
+        self::SERVER_MODIFY_PASSWORD => 'modifyPassword',
         self::SERVER_MODIFY_PHONE => 'modifyPhone',
         self::SERVER_MEMBER_LOGIN => 'memberLogin',
         self::SERVER_ACCREDIT_NEW => 'accreditNew',

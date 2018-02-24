@@ -13,20 +13,17 @@ $result = [
     'msg' => '提交错误',
 ];
 try {
-    $userId = !empty($_GET['userId']) ? $_GET['userId'] : null;
-    if (empty($userId)) {
-        $userId = !empty($_POST['userId']) ? $_POST['userId'] : null;
+    if (empty($_GET['userId'])) {
+        throw new \trhui\TpamException('数据错误');
     }
-
-    if (empty($userId)) {
-        throw new \Exception('清算通用户ID不能为空');
-    }
+    $userId = $_GET['userId'];
     $registerObj = new \trhui\business\Register();
     if (!$registerObj->hasUserId($userId)) {
-        throw new \Exception('用户不存在');
+        throw new \Exception('清算通用户ID不存在');
     }
 
-    $inputObj = new \trhui\data\MemberLogin();
+    $inputObj = new \trhui\data\ModifyPassword();
+    $inputObj->SetFrontUrl(FRONT_URL);
     $inputObj->SetUserId($userId);
 
     $tpam = new \trhui\extend\Tpam();
@@ -36,25 +33,25 @@ try {
     $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
     if (!$res) {
         foreach ($tpam->errors as $error) {
-            throw new \Exception($error['errorMsg']);
+            throw new \trhui\TpamException($error['errorMsg']);
         }
     }
-
-} catch (\Exception $e) {
+} catch (\trhui\TpamException $e) {
     $result['msg'] = $e->getMessage();
 }
-
 ?>
 
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>会员自助登录</title>
+    <title>交易密码修改示例</title>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/trhui.js"></script>
 </head>
-
 <body>
+<?php if ($result['error'] == 0): ?>
+    <p><?= $result['msg'] ?></p>
+<?php endif; ?>
 <script type="text/javascript">
     var url = '<?= $tpam->getUrl() ?>';
     var data = <?=json_encode($res, JSON_UNESCAPED_UNICODE)?>;

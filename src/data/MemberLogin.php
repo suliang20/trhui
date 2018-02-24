@@ -10,13 +10,12 @@ namespace trhui\data;
 
 use trhui\TpamException;
 
-
 /**
  * 会员自助登录
  * 后台接口
  * 商户会员登录
  * TODO 请求地址：/club/service/interface/memberLogin
- * Class ToRegister
+ * Class MemberLogin
  * @package trhui\data
  */
 class MemberLogin extends DataBase

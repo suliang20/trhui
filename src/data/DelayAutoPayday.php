@@ -10,13 +10,12 @@ namespace trhui\data;
 
 use trhui\TpamException;
 
-
 /**
  * 延长自动转账时间
  * TODO 请求地址：/interface/delayAutoPayday
  * 当转账方式为托管转账时，会员交易产生纠纷或托管时间快时，卖方还没履行完义务时，会员可申请延长支付时间。
  * PS:当天默认审核的单据无法延长审核时间
- * Class ToRegister
+ * Class DelayAutoPayday
  * @package trhui\data
  */
 class DelayAutoPayday extends DataBase
