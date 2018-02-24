@@ -8,11 +8,14 @@
 
 namespace trhui\extend;
 
+use trhui\business\AccreditNew;
 use trhui\business\DelayAutoPayday;
 use trhui\business\ModifyPhone;
 use trhui\business\PayResponse;
 use trhui\business\Refund;
 use trhui\business\Register;
+use trhui\data\Data;
+use trhui\data\DataBase;
 use trhui\data\ResultCode;
 use trhui\Request;
 use trhui\Response;
@@ -50,20 +53,23 @@ class Results extends \trhui\Results
             }
             $processObj = null;
             switch ($requestData['serverCode']) {
-                case 'toRegister':
+                case DataBase::SERVER_TO_REGISTER:
                     $processObj = new Register();
                     break;
-                case 'orderTransfer':
+                case DataBase::SERVER_ORDER_TRANSFER:
                     $processObj = new PayResponse();
                     break;
-                case 'delayAutoPayday':
+                case DataBase::SERVER_DELAY_AUTO_PAYDAY:
                     $processObj = new DelayAutoPayday();
                     break;
-                case 'refund':
+                case DataBase::SERVER_REFUND:
                     $processObj = new Refund();
                     break;
-                case 'modifyPhone':
+                case DataBase::SERVER_MODIFY_PHONE:
                     $processObj = new ModifyPhone();
+                    break;
+                case DataBase::SERVER_ACCREDIT_NEW:
+                    $processObj = new AccreditNew();
                     break;
 //                case 'toAuthen':
 //

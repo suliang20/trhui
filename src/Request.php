@@ -8,10 +8,12 @@
 
 namespace trhui;
 
+use trhui\business\AccreditNew;
 use trhui\business\ModifyPhone;
 use trhui\business\PayRequestOrder;
 use trhui\business\Refund;
 use trhui\data\Data;
+use trhui\data\DataBase;
 
 class Request extends Data
 {
@@ -34,18 +36,21 @@ class Request extends Data
                 $datas[$merOrderId] = $data;
             }
             switch ($data['serverCode']) {
-                case 'orderTransfer':
+                case DataBase::SERVER_ORDER_TRANSFER:
                     $requestObj = new PayRequestOrder();
                     $res = $requestObj->push($merOrderId, $data, $time);
                     break;
-                case 'refund':
+                case DataBase::SERVER_REFUND:
                     $requestObj = new Refund();
                     $res = $requestObj->push($data, $time);
                     break;
-                case 'modifyPhone':
+                case DataBase::SERVER_MODIFY_PHONE:
                     $requestObj = new ModifyPhone();
                     $res = $requestObj->push($data, $time);
                     break;
+                case DataBase::SERVER_ACCREDIT_NEW:
+                    $requestObj = new AccreditNew();
+                    $res = $requestObj->push($data, $time);
                     break;
                 default:
                     $res = true;

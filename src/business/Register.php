@@ -183,6 +183,41 @@ class Register extends Data
         return false;
     }
 
+    /**
+     * 更新授权数据
+     * @param $userId
+     * @param $accreditType
+     * @param $data
+     * @param $time
+     * @return bool
+     */
+    public function updateAccredit($userId, $accreditType, $data, $time)
+    {
+        try {
+            if (file_exists(static::$logFile)) {
+                $datas = file_get_contents(static::$logFile);
+                $datas = unserialize($datas);
+            } else {
+                if (!touch(static::$logFile)) {
+                    throw new TpamException('创建注册日志文件失败');
+                }
+                $datas = [];
+            }
+            foreach ($datas as $key => $value) {
+                if ($value['userId'] == $userId) {
+                    $datas[$key]['accredit'][$accreditType] = $data;
+                    $datas[$key]['update_time'] = $time;
+                }
+            }
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
 
     /**
      * 验证手机号码格式

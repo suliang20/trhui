@@ -73,13 +73,13 @@ if (is_post()) {
 </head>
 <body>
 <div>
-    <form action="" method="post" id="payForm" name="payForm">
+    <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
             <label for="mobile">用户新手机号</label>
             <input type="text" name="newPhone" id="newPhone">
             <input type="hidden" name="userId" id="userId" value="<?= $_GET['userId'] ?>">
         </div>
-        <button type="button" id="submit">提交修改</button>
+        <button type="button" id="trhuiSubmit">提交修改</button>
         <a href="register.php">返回注册页面</a>
     </form>
 </div>

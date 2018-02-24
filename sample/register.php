@@ -77,12 +77,12 @@ if (is_post()) {
 </head>
 <body>
 <div>
-    <form action="" method="post" id="payForm" name="payForm">
+    <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
             <label for="mobile">用户手机号</label>
             <input type="text" name="mobile" id="mobile">
         </div>
-        <button type="button" id="submitPay">提交注册</button>
+        <button type="button" id="trhuiSubmit">提交注册</button>
         <a href="pay.php">支付</a>
     </form>
 </div>
@@ -114,6 +114,7 @@ if (is_post()) {
                     <td>
                         <a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a>
                         <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
+                        <a href="accredit-new.php?userId=<?= $item['userId'] ?>">授权</a>
                         <a href="member-login.php?userId=<?= $item['userId'] ?>">会员自助登录</a>
                     </td>
                 </tr>

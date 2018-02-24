@@ -57,7 +57,7 @@ if (is_post()) {
 </head>
 <body>
 <div>
-    <form action="pay.php" method="post" id="payForm" name="payForm">
+    <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
             <label for="payeeUserId">认证用户</label>
             <select name="payee_user_id" id="payeeUserId">
@@ -77,7 +77,7 @@ if (is_post()) {
                 <option value="1">企业认证</option>
             </select>
         </div>
-        <button type="button" id="submitPay">认证</button>
+        <button type="button" id="trhuiSubmit">认证</button>
     </form>
 </div>
 </body>

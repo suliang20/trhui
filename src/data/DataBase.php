@@ -28,6 +28,7 @@ class DataBase extends Data
     const SERVER_QUERY = 'query';
     const SERVER_MODIFY_PHONE = 'modifyPhone';
     const SERVER_MEMBER_LOGIN = 'memberLogin';
+    const SERVER_ACCREDIT_NEW = 'accreditNew';
 
     public static $SERVER = [
         self::SERVER_ORDER_TRANSFER => [
@@ -55,6 +56,7 @@ class DataBase extends Data
         self::SERVER_QUERY => '/tpam/service/interface/query',
         self::SERVER_MODIFY_PHONE => '/tpam/service/interface/modifyPhone',
         self::SERVER_MEMBER_LOGIN => '/club/service/interface/memberLogin',
+        self::SERVER_ACCREDIT_NEW => '/tpam/service/interface/accreditNew',
     ];
 
     public static $SERVER_CODE = [
@@ -68,6 +70,7 @@ class DataBase extends Data
         self::SERVER_QUERY => 'query',
         self::SERVER_MODIFY_PHONE => 'modifyPhone',
         self::SERVER_MEMBER_LOGIN => 'memberLogin',
+        self::SERVER_ACCREDIT_NEW => 'accreditNew',
     ];
 
     protected $params = array();

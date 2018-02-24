@@ -49,12 +49,12 @@ $(document).ready(function () {
         });
     });
 
-    $("#submit").click(function () {
+    $("#trhuiSubmit").click(function () {
         $.ajax({
             cache: true,
             type: "POST",
             url: window.location.href,//提交的URL
-            data: $('#payForm').serialize(), // 要提交的表单,必须使用name属性
+            data: $('#trhuiForm').serialize(), // 要提交的表单,必须使用name属性
             async: false,
             dataType: 'json',
             success: function (data) {

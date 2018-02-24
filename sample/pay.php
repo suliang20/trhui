@@ -98,7 +98,7 @@ if (is_post()) {
 <body>
 <div>
     <div>
-        <form action="pay.php" method="post" id="payForm" name="payForm">
+        <form action="" method="post" id="trhuiForm" name="trhuiForm">
             <div>
                 <div>
                     <label for="payeeUserId">付款用户</label>
@@ -149,7 +149,7 @@ if (is_post()) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <button type="button" id="submitPay">提交支付</button>
+            <button type="button" id="trhuiSubmit">提交支付</button>
             <a href="register.php">注册用户</a>
         </form>
     </div>
