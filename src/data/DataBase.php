@@ -21,11 +21,12 @@ class DataBase extends Data
     const SERVER_TO_REGISTER = 'toRegister';
     const SERVER_TO_AUTHEN = 'toAuthen';
     const SERVER_ORDER_TRANSFER = 'orderTransfer';
+    const SERVER_REFUND_ALL = 'refundAll';
+    const SERVER_REFUND = 'refund';
 
     const SERVER_ORDER_TRANSFER_AUDIT = 'orderTransferAudit';
     const SERVER_ACCREDIT = 'accredit';
     const SERVER_DELAY_AUTO_PAYDAY = 'delayAutoPayday';
-    const SERVER_REFUND = 'refund';
     const SERVER_QUERY = 'query';
 
     const SERVER_MODIFY_PASSWORD = 'modifyPassword';
@@ -52,11 +53,12 @@ class DataBase extends Data
         self::SERVER_TO_REGISTER => '/tpam/service/interface/toRegister',
         self::SERVER_TO_AUTHEN => '/tpam/service/interface/toAuthen',
         self::SERVER_ORDER_TRANSFER => '/tpam/service/interface/orderTransfer',
+        self::SERVER_REFUND_ALL => '/tpam/service/interface/refundAll',
+        self::SERVER_REFUND => '/tpam/service/interface/refund',
 
         self::SERVER_ORDER_TRANSFER_AUDIT => '/tpam/service/interface/orderTransferAudit',
         self::SERVER_ACCREDIT => '/tpam/service/interface/accredit',
         self::SERVER_DELAY_AUTO_PAYDAY => '/tpam/service/interface/delayAutoPayday',
-        self::SERVER_REFUND => '/tpam/service/interface/refund',
         self::SERVER_QUERY => '/tpam/service/interface/query',
 
         self::SERVER_MODIFY_PASSWORD => '/tpam/service/interface/modifyPassword',
@@ -69,11 +71,12 @@ class DataBase extends Data
         self::SERVER_TO_REGISTER => 'toRegister',
         self::SERVER_TO_AUTHEN => 'toAuthen',
         self::SERVER_ORDER_TRANSFER => 'orderTransfer',
+        self::SERVER_REFUND_ALL => 'refundAll',
+        self::SERVER_REFUND => 'refund',
 
         self::SERVER_ORDER_TRANSFER_AUDIT => 'orderTransferAudit',
         self::SERVER_ACCREDIT => 'accredit',
         self::SERVER_DELAY_AUTO_PAYDAY => 'delayAutoPayday',
-        self::SERVER_REFUND => 'refund',
         self::SERVER_QUERY => 'query',
 
         self::SERVER_MODIFY_PASSWORD => 'modifyPassword',

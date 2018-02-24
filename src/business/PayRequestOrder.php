@@ -150,4 +150,47 @@ class PayRequestOrder extends Data
         return false;
     }
 
+    /**
+     * 获取交易订单
+     * @param $merUserId
+     * @return bool|mixed
+     */
+    public function getTransferOrder($merUserId)
+    {
+        $orders = $this->getAll();
+        if (!isset($orders[$merUserId])) {
+            return false;
+        }
+        return $orders[$merUserId];
+    }
+
+    /**
+     * 交易订单全额退款
+     * @param $merOrderId
+     * @param $time
+     * @return bool
+     */
+    public function transferOrderRefundAll($merOrderId,$time)
+    {
+        try {
+            $datas = $this->getAll();
+            if (!isset($datas[$merOrderId])) {
+                throw new TpamException('订单不存在');
+            }
+            $datas[$merOrderId]['refund_status'] = 1;
+            $datas[$merOrderId]['refund_time'] = $time;
+
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            $payOrderObj = new PayOrder();
+            if (!$payOrderObj->payOrderRefundAll($merOrderId, $time)) {
+                $this->errors = array_merge($this->errors, $payOrderObj->errors);
+                throw new TpamException('全额退款更新支付订单失败');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
 }

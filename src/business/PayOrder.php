@@ -120,6 +120,12 @@ class PayOrder extends Data
         return $orders[$merUserId];
     }
 
+    /**
+     * 获取付款订单
+     * @param $merUserId
+     * @param $orderId
+     * @return bool
+     */
     public function getPayOrder($merUserId, $orderId)
     {
         $orders = $this->getAllOrder();
@@ -127,5 +133,38 @@ class PayOrder extends Data
             return false;
         }
         return $orders[$merUserId][$orderId];
+    }
+
+    /**
+     * 支付订单全额退款
+     * @param $merOrderId
+     * @param $time
+     * @return bool
+     */
+    public function payOrderRefundAll($merOrderId, $time)
+    {
+        try {
+            $datas = $this->getAllOrder();
+            if (!isset($datas[$merOrderId])) {
+                throw new TpamException('订单不存在');
+            }
+            foreach ($datas as $key => $value) {
+                foreach ($value as $k => $item) {
+                    if ($item['merOrderId'] == $merOrderId) {
+                        $datas[$key][$k]['refund_status'] = 1;
+                        $datas[$key][$k]['refund_type'] = 1;
+                        $datas[$key][$k]['refund_amount'] = $item['payeeAmount'] + $item['feeToMerchant'];
+                        $datas[$key][$k]['refund_time'] = $time;
+                    }
+                }
+            }
+
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 }

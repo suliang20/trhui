@@ -81,6 +81,8 @@ $orders = $payRequestOrderObj->getAll();
                 <td>
                     <?php if ($item['response_status'] == 2): ?>
                         <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">查询</a>
+                    <?php elseif ($item['response_status'] == 0): ?>
+                        <a href="refund-all.php?merOrderId=<?= $item['merOrderId'] ?>">全额退款</a>
                     <?php endif; ?>
                 </td>
             </tr>

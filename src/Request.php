@@ -12,6 +12,7 @@ use trhui\business\AccreditNew;
 use trhui\business\ModifyPhone;
 use trhui\business\PayRequestOrder;
 use trhui\business\Refund;
+use trhui\business\RefundAll;
 use trhui\data\Data;
 use trhui\data\DataBase;
 
@@ -39,6 +40,10 @@ class Request extends Data
                 case DataBase::SERVER_ORDER_TRANSFER:
                     $requestObj = new PayRequestOrder();
                     $res = $requestObj->push($merOrderId, $data, $time);
+                    break;
+                case DataBase::SERVER_REFUND_ALL:
+                    $requestObj = new RefundAll();
+                    $res = $requestObj->push($data, $time);
                     break;
                 case DataBase::SERVER_REFUND:
                     $requestObj = new Refund();

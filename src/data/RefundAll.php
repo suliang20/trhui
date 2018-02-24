@@ -12,32 +12,20 @@ use trhui\TpamException;
 
 
 /**
- * 部分退款
- * 后台接口，具体退款状态以异步回调为准。
- * TODO 请求地址：/interface/refund
- * ps:仅支持托管转账未审核的部份退款，可多次退款
- * 支持直接转账当天全额退款
- * 退款是原路退回的
- *
- * 目前支持手机wap支付、微信扫码、支付宝扫码、公众号支付、支付宝服务窗支付、微信B扫C、支付宝B扫C的转账退款
- * Class Refund
+ * 全额退款
+ * 后台接口
+ * TODO 请求地址：/tpam/service/interface/refundAll
+ * ps:支持延时到账支付全部退款和直接支付全部退款，对于整个支付订单中有产生退款的都不能调用该接口
+ * Class RefundAll
  * @package trhui\data
  */
-class Refund extends DataBase
+class RefundAll extends DataBase
 {
-    /**
-     * 退款业务类型：
-     * 1：交易退款（转账退款）
-     */
-    const REFUND_TYPE_TRANSACTION = 1;      //  退款业务类型
-    const REFUND_TYPE = [
-        '1' => '退款业务类型'
-    ];
 
     public function __construct()
     {
-        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_REFUND];
-        $this->serverCode = self::$SERVER_CODE[self::SERVER_REFUND];
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_REFUND_ALL];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_REFUND_ALL];
     }
 
     /**
@@ -60,65 +48,6 @@ class Refund extends DataBase
         try {
             if (!(array_key_exists('userId', $this->params) && isset($this->params['userId']))) {
                 throw new TpamException('清算通系统会员ID未设置');
-            }
-            return true;
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-    }
-
-    /**
-     * 退款业务类型
-     * 1：交易退款（转账退款）
-     * @param $value
-     */
-    public function SetRefundType($value)
-    {
-        $this->params['refundType'] = $value;
-    }
-
-    public function GetRefundType()
-    {
-        return $this->params['refundType'];
-    }
-
-    public function IsRefundTypeSet()
-    {
-        try {
-            if (!(array_key_exists('refundType', $this->params) && isset($this->params['refundType']))) {
-                throw new TpamException('退款业务类型未设置');
-            }
-            return true;
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-    }
-
-    /**
-     * 退款金额
-     * 金额，单位分
-     * @param $value
-     */
-    public function SetAmount($value)
-    {
-        $this->params['amount'] = $value;
-    }
-
-    public function GetAmount()
-    {
-        return $this->params['amount'];
-    }
-
-    public function IsAmountSet()
-    {
-        try {
-            if (!(array_key_exists('amount', $this->params) && !empty($this->params['amount']))) {
-                throw new TpamException('退款金额未设置');
-            }
-            if ($this->params['amount'] <= 0) {
-                throw new TpamException('退款金额必须大于0');
             }
             return true;
         } catch (TpamException $e) {
@@ -174,34 +103,6 @@ class Refund extends DataBase
         try {
             if (!(array_key_exists('originalMerOrderId', $this->params) && !empty($this->params['originalMerOrderId']))) {
                 throw new TpamException('原商户平台转账请求订单号');
-            }
-            return true;
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-    }
-
-    /**
-     * 原商户平台交易订单号
-     * 原商户平台交易订单号，即需要延期的订单
-     * @param $value
-     */
-    public function SetOriginalOrderId($value)
-    {
-        $this->params['originalOrderId'] = $value;
-    }
-
-    public function GetOriginalOrderId()
-    {
-        return $this->params['originalOrderId'];
-    }
-
-    public function IsOriginalOrderIdSet()
-    {
-        try {
-            if (!(array_key_exists('originalOrderId', $this->params) && !empty($this->params['originalOrderId']))) {
-                throw new TpamException('原商户平台交易订单号未设置');
             }
             return true;
         } catch (TpamException $e) {
