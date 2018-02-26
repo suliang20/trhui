@@ -15,6 +15,7 @@ use trhui\business\PayResponse;
 use trhui\business\Refund;
 use trhui\business\RefundAll;
 use trhui\business\Register;
+use trhui\business\ToWithdraw;
 use trhui\data\Data;
 use trhui\data\DataBase;
 use trhui\data\ResultCode;
@@ -69,6 +70,10 @@ class Results extends \trhui\Results
                 case DataBase::SERVER_DELAY_AUTO_PAYDAY:
                     $processObj = new DelayAutoPayday();
                     break;
+                case DataBase::SERVER_TO_WITHDRAW:
+                    $processObj = new ToWithdraw();
+                    break;
+
 
                 case DataBase::SERVER_MODIFY_PHONE:
                     $processObj = new ModifyPhone();

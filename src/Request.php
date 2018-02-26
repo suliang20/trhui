@@ -13,6 +13,7 @@ use trhui\business\ModifyPhone;
 use trhui\business\PayRequestOrder;
 use trhui\business\Refund;
 use trhui\business\RefundAll;
+use trhui\business\ToWithdraw;
 use trhui\data\Data;
 use trhui\data\DataBase;
 
@@ -49,6 +50,12 @@ class Request extends Data
                     $requestObj = new Refund();
                     $res = $requestObj->push($data, $time);
                     break;
+                case DataBase::SERVER_TO_WITHDRAW:
+                    $requestObj = new ToWithdraw();
+                    $res = $requestObj->push($data, $time);
+                    break;
+
+
                 case DataBase::SERVER_MODIFY_PHONE:
                     $requestObj = new ModifyPhone();
                     $res = $requestObj->push($data, $time);

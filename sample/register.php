@@ -100,6 +100,7 @@ if (is_post()) {
             <th>手机号</th>
             <th>注册时间</th>
             <th>操作</th>
+            <th>结算</th>
         </tr>
         <?php foreach ((new \trhui\business\Register())->getAll() as $item): ?>
             <?php if (isset($item['userId'])): ?>
@@ -117,6 +118,10 @@ if (is_post()) {
                         <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
                         <a href="member-login.php?userId=<?= $item['userId'] ?>">会员自助登录</a>
                         <a href="accredit-new.php?userId=<?= $item['userId'] ?>">授权</a>
+                    </td>
+                    <td>
+                        <a href="to-withdraw.php?userId=<?= $item['userId'] ?>">结算</a>
+                        <a href="to-withdraw-list.php?userId=<?= $item['userId'] ?>">结算列表</a>
                     </td>
                 </tr>
             <?php endif; ?>

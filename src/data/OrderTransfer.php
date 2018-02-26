@@ -167,8 +167,7 @@ class OrderTransfer extends DataBase
     }
 
     /**
-     * 付款方清算通账号未
-     * 注：未注册使用0
+     * 清算通系统会员ID
      * @param $value
      */
     public function SetPayerUserId($value)
