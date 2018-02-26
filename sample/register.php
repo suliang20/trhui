@@ -59,21 +59,10 @@ if (is_post()) {
 
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>用户注册示例</title>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/trhui.js"></script>
-    <style>
-        table {
-            border-collapse: collapse;
-            font-size: 6px;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-            font-size: 6px;
-        }
-    </style>
+    <?php
+    require_once "common-js-style.php";
+    ?>
 </head>
 <body>
 <div>
@@ -83,12 +72,11 @@ if (is_post()) {
             <input type="text" name="mobile" id="mobile">
         </div>
         <button type="button" id="trhuiSubmit">提交注册</button>
-        <a href="pay.php">支付</a>
     </form>
 </div>
-<div>
-    <a href="register-list.php">注册列表</a>
-</div>
+<?php
+require_once "common-link.php";
+?>
 <div>
     <table border="2">
         <tr>

@@ -1,13 +1,14 @@
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>招商银行清算通测试</title>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/trhui.js"></script>
+    <?php
+    require_once "common-js-style.php";
+    ?>
 </head>
 
 <body>
-<p><a href="register.php">注册</a></p>
-<p><a href="pay.php">支付</a></p>
+<?php
+require_once "common-link.php";
+?>
 </body>
 </html>

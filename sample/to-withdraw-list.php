@@ -13,23 +13,16 @@ require '../vendor/autoload.php';
 
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>结算订单列表</title>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/trhui.js"></script>
-    <style>
-        table {
-            border-collapse: collapse;
-            font-size: 10px;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-    </style>
+    <?php
+    require_once "common-js-style.php";
+    ?>
 </head>
 
 <body>
+<?php
+require_once "common-link.php";
+?>
 <div>
     <table>
         <tr>
