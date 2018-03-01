@@ -148,7 +148,7 @@ class ToWithdraw extends DataBase
     public function IsFeeToMerchantSet()
     {
         try {
-            if (!is_int($this->params['feeToMerchant'])) {
+            if (!empty($this->params['feeToMerchant']) && floor($this->params['feeToMerchant']) != $this->params['feeToMerchant']) {
                 throw new TpamException('商户平台收取佣金非整数');
             }
             return true;
@@ -177,7 +177,7 @@ class ToWithdraw extends DataBase
     public function IsIsNeedForAuditSet()
     {
         try {
-            if (!is_int($this->params['isNeedForAudit'])) {
+            if (!empty($this->params['isNeedForAudit']) && floor($this->params['isNeedForAudit']) != $this->params['isNeedForAudit']) {
                 throw new TpamException('是否需要审核参数非整数');
             }
             return true;
