@@ -29,6 +29,7 @@ class DataBase extends Data
 
     const SERVER_ACCREDIT = 'accredit';
     const SERVER_QUERY = 'query';
+    const SERVER_GET_BALANCE = 'getBalance';
 
     const SERVER_MODIFY_PASSWORD = 'modifyPassword';
     const SERVER_MODIFY_PHONE = 'modifyPhone';
@@ -62,6 +63,7 @@ class DataBase extends Data
 
         self::SERVER_ACCREDIT => '/tpam/service/interface/accredit',
         self::SERVER_QUERY => '/tpam/service/interface/query',
+        self::SERVER_GET_BALANCE=> '/tpam/service/interface/getBalance',
 
         self::SERVER_MODIFY_PASSWORD => '/tpam/service/interface/modifyPassword',
         self::SERVER_MODIFY_PHONE => '/tpam/service/interface/modifyPhone',
@@ -81,6 +83,7 @@ class DataBase extends Data
 
         self::SERVER_ACCREDIT => 'accredit',
         self::SERVER_QUERY => 'query',
+        self::SERVER_GET_BALANCE=> 'getBalance',
 
         self::SERVER_MODIFY_PASSWORD => 'modifyPassword',
         self::SERVER_MODIFY_PHONE => 'modifyPhone',

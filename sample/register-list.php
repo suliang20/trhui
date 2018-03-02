@@ -56,6 +56,7 @@ require_once "common-link.php";
                         <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
                         <a href="member-login.php?userId=<?= $item['userId'] ?>">会员自助登录</a>
                         <a href="accredit-new.php?userId=<?= $item['userId'] ?>">授权</a>
+                        <a href="get-balance.php?userId=<?= $item['userId'] ?>">帐户查询</a>
                     </td>
                     <td>
                         <a href="to-withdraw.php?userId=<?= $item['userId'] ?>">结算</a>

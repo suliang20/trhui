@@ -13,7 +13,7 @@
     </p>
     <p>
         <a href="register.php">注册</a>
-        <a href="register-list.php">注册列表</a>
+        <a href="register-list.php">用户列表</a>
     </p>
     <p>
         <a href="pay.php">支付</a>
