@@ -34,21 +34,22 @@ require_once "common-link.php";
     <table>
         <tr>
             <th>商户订单号</th>
-            <th>清算通系统订响应单号</th>
+            <th>响应单号</th>
             <th>交易订单号</th>
-            <th>收款方清算通用户ID</th>
-            <th>付款方清算通用户ID</th>
+            <th>收款方ID</th>
+            <th>付款方用户ID</th>
             <th>收款金额</th>
-            <th>商户平台收取佣金</th>
+            <th>佣金</th>
             <th>转帐方式</th>
-            <th>自动支付时间(天)</th>
-            <th>佣金收取方式</th>
+            <th>自动支付(天)</th>
+            <th>佣金方式</th>
             <th>状态</th>
             <th>请求时间</th>
             <th>支付时间</th>
             <th>自动审核时间</th>
             <th>延长自动转账</th>
             <th>操作</th>
+            <th>查询</th>
         </tr>
         <?php foreach ($orders as $order): ?>
             <?php foreach ($order as $item): ?>
@@ -88,7 +89,10 @@ require_once "common-link.php";
                     <td>
                         <?= $item['status'] == 0 ? '<a href="refund.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">退款</a>' : '' ?>
                         <?= $item['status'] == 0 ? '<a href="order-transfer-audit.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">审核</a>' : '' ?>
-                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">查询</a>
+                    </td>
+                    <td>
+                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">支付查询</a>
+                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_TRANSFER_AUDIT?>">支付审核查询</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

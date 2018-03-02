@@ -13,52 +13,55 @@ $result = [
     'msg' => '提交错误',
 ];
 try {
-        $merOrderId = !empty($_GET['merOrderId']) ? $_GET['merOrderId'] : null;
-        if (empty($merOrderId)) {
-            $merOrderId = !empty($_POST['merOrderId']) ? $_POST['merOrderId'] : null;
-        }
-        $orderId = !empty($_GET['orderId']) ? $_GET['orderId'] : null;
-        if (empty($orderId)) {
-            $orderId = !empty($_POST['orderId']) ? $_POST['orderId'] : null;
-        }
-        $action = !empty($_GET['action']) ? $_GET['action'] : null;
-        if (empty($action)) {
-            $action = !empty($_POST['action']) ? $_POST['action'] : null;
-        }
+    $merOrderId = !empty($_GET['merOrderId']) ? $_GET['merOrderId'] : null;
+    if (empty($merOrderId)) {
+        $merOrderId = !empty($_POST['merOrderId']) ? $_POST['merOrderId'] : null;
+    }
+    $orderId = !empty($_GET['orderId']) ? $_GET['orderId'] : null;
+    if (empty($orderId)) {
+        $orderId = !empty($_POST['orderId']) ? $_POST['orderId'] : null;
+    }
+    $action = !empty($_GET['action']) ? $_GET['action'] : null;
+    if (empty($action)) {
+        $action = !empty($_POST['action']) ? $_POST['action'] : null;
+    }
 
-        if (empty($merOrderId)) {
-            throw new \Exception('商户订单号不能为空');
-        }
+    if (empty($merOrderId)) {
+        throw new \Exception('商户订单号不能为空');
+    }
 
-        if (empty($action)) {
-            throw new \Exception('查询类型不能为空');
-        }
+    if (empty($action)) {
+        throw new \Exception('查询类型不能为空');
+    }
 
 
-        $inputObj = new \trhui\data\Query();
+    $inputObj = new \trhui\data\Query();
 //        $inputObj->SetNotifyUrl(NOTIFY_URL);
-        $inputObj->SetOriginalMerOrderId($merOrderId);
-        if (!empty($orderId)) {
-            $inputObj->SetOriginalOrderId($orderId);
-        }
-        $inputObj->SetAction($action);
+    $inputObj->SetOriginalMerOrderId($merOrderId);
+    if (!empty($orderId)) {
+        $inputObj->SetOriginalOrderId($orderId);
+    }
+    $inputObj->SetAction($action);
 
-        $tpam = new \trhui\extend\Tpam();
-        $tpam->serverUrl = SERVER_URL;
-        $tpam->merchantNo = MER_CHANT_NO;
-        $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
-        $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
-        if (!$res) {
-            foreach ($tpam->errors as $error) {
-                throw new \Exception($error['errorMsg']);
-            }
+    $tpam = new \trhui\extend\Tpam();
+    $tpam->serverUrl = SERVER_URL;
+    $tpam->merchantNo = MER_CHANT_NO;
+    $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+    $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+    if (!$res) {
+        foreach ($tpam->errors as $error) {
+            throw new \Exception($error['errorMsg']);
         }
-
-        if (!$postRes = $tpam->postCurl($res, $tpam->getUrl())) {
-            foreach ($tpam->errors as $error) {
-                throw new \Exception($error['errorMsg']);
-            }
+    }
+//var_dump($res);exit;
+//    echo json_encode($res);exit;
+    if (!$postRes = $tpam->postCurl($res, $tpam->getUrl())) {
+        foreach ($tpam->errors as $error) {
+            throw new \Exception($error['errorMsg']);
         }
+    }
+//    echo json_encode($postRes);exit;
+//    var_dump($postRes);exit;
 
     $resultObj = new \trhui\extend\QueryResults();
     $resultObj->tpamPublicKeyPath = PUBLIC_KEY_PATH;

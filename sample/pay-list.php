@@ -71,9 +71,9 @@ require_once "common-link.php";
                 <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
                 <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
                 <td>
-                    <?php if ($item['response_status'] == 2): ?>
-                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">查询</a>
-                    <?php elseif ($item['response_status'] == 0): ?>
+                    <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">支付查询</a>
+                    <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&action=<?= \trhui\data\Query::ACTION_TRANSFER_AUDIT ?>">支付到账查询</a>
+                    <?php if ($item['response_status'] == 0): ?>
                         <a href="refund-all.php?merOrderId=<?= $item['merOrderId'] ?>">全额退款</a>
                     <?php endif; ?>
                 </td>

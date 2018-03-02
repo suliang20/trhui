@@ -36,7 +36,8 @@ class QueryResults extends \trhui\Results
                 throw new TpamException(ResultCode::RESULT_CODE[$this->code]);
             }
             $requestObj = new Request();
-            if (!$requestData = $requestObj->getRequestByMerOrderId($return['originalMerOrderId'])) {
+            if (empty($return['originalMerOrderId']) || !$requestData = $requestObj->getRequestByMerOrderId($return['originalMerOrderId'])) {
+                var_dump($return);
                 throw new TpamException('请求订单号不存在');
             }
 //            var_dump($return);

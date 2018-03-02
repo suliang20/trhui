@@ -26,7 +26,6 @@ try {
         throw new \trhui\TpamException('支付订单不存在');
     }
 
-//    var_dump($orderInfo);exit;
     $inputObj = new \trhui\data\DelayAutoPayday();
     $inputObj->SetNotifyUrl(NOTIFY_URL);
     $inputObj->SetFrontUrl(FRONT_URL);
