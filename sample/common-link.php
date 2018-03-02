@@ -17,8 +17,8 @@
     </p>
     <p>
         <a href="pay.php">支付</a>
-        <a href="order-list.php">支付列表</a>
-        <a href="pay-list.php">付款列表</a>
+        <a href="pay-list.php">支付列表</a>
+        <a href="order-list.php">支付订单列表</a>
     </p>
     <p>
         <a href="refund-list.php">部分退款列表</a>

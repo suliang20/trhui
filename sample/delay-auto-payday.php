@@ -17,11 +17,16 @@ try {
         throw new \trhui\TpamException('交易订单号不能为空');
     }
     $merOrderId = $_POST['merOrderId'];
-    $registerObj = new \trhui\business\PayOrder();
-    if (!$orderInfo = $registerObj->getOneByMerOrderId($merOrderId)) {
-        throw new \trhui\TpamException('交易详情不存在');
+    if (empty($_POST['orderId'])) {
+        throw new \trhui\TpamException('支付订单号不能为空');
+    }
+    $orderId= $_POST['orderId'];
+    $payOrderObj = new \trhui\business\PayOrder();
+    if (!$orderInfo = $payOrderObj->getPayOrder($merOrderId,$orderId)) {
+        throw new \trhui\TpamException('支付订单不存在');
     }
 
+//    var_dump($orderInfo);exit;
     $inputObj = new \trhui\data\DelayAutoPayday();
     $inputObj->SetNotifyUrl(NOTIFY_URL);
     $inputObj->SetFrontUrl(FRONT_URL);

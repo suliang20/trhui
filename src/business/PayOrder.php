@@ -41,7 +41,8 @@ class PayOrder extends Data
                     'status' => -1,
                     'request_time' => $_SERVER['REQUEST_TIME'],
                     'pay_time' => 0,
-                    'request_time' => $time,
+                    'autoStatus' => -1,
+                    'autoAuditDate' => 0,
                 ];
                 if (file_exists(static::$logFile)) {
                     $datas = file_get_contents(static::$logFile);
@@ -81,6 +82,37 @@ class PayOrder extends Data
                         }
                         $datas[$key][$k]['status'] = $data['status'];
                         $datas[$key][$k]['pay_time'] = $time;
+                    }
+                }
+            }
+
+            $datas = serialize($datas);
+            file_put_contents(static::$logFile, $datas);
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
+     * 自动审核时间更新
+     * @param $data
+     * @param $time
+     * @return bool
+     */
+    public function delayAutoPaydayUpdate($data, $time)
+    {
+        try {
+            $orderId = $data['originalOrderId'];
+            $datas = $this->getAllOrder();
+            foreach ($datas as $key => $value) {
+                foreach ($value as $k => $item) {
+                    if ($item['orderId'] == $orderId) {
+                        if ($data['status'] == 0) {
+                            $datas[$key][$k]['autoStatus'] = 0;
+                            $datas[$key][$k]['autoAuditDate'] = $data['autoAuditDate'];
+                        }
                     }
                 }
             }

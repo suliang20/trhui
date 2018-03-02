@@ -46,6 +46,7 @@ require_once "common-link.php";
             <th>状态</th>
             <th>请求时间</th>
             <th>支付时间</th>
+            <th>自动审核时间</th>
             <th>延长自动转账</th>
             <th>操作</th>
         </tr>
@@ -77,10 +78,11 @@ require_once "common-link.php";
                     <td><?= $status_name ?></td>
                     <td><?= isset($item['request_time']) ? date('Y-m-d H:i:s', $item['request_time']) : '' ?></td>
                     <td><?= !empty($item['pay_time']) ? date('Y-m-d H:i:s', substr($item['pay_time'], 0, -3)) : '' ?></td>
+                    <td><?= !empty($item['autoAuditDate']) ? date('Y-m-d H:i:s', substr($item['autoAuditDate'], 0, -3)) : '' ?></td>
                     <td>
                         <?php if ($item['status'] == 0): ?>
                             <a href="javascript:;" class="delay-auto-payday"
-                               value="<?= $item['merOrderId'] ?>">延长自动转账</a>
+                               value="<?= $item['merOrderId'] ?>" orderid= <?= $item['orderId'] ?>>延长自动转账</a>
                         <?php endif; ?>
                     </td>
                     <td>
@@ -93,6 +95,40 @@ require_once "common-link.php";
         <?php endforeach; ?>
     </table>
 </div>
+
+<script type="text/javascript">
+    $('.delay-auto-payday').on('click', function (event) {
+        var merOrderId = $(this).attr("value");
+        if (merOrderId == undefined || merOrderId == false) {
+            alert('数据异常');
+        }
+        var orderId = $(this).attr("orderid");
+        if (orderId == undefined || orderId == false) {
+            alert('数据异常');
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'delay-auto-payday.php',
+            data: {merOrderId: merOrderId, orderId: orderId},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.error == 0) {
+                    alert(data.msg);
+                } else if (data.error == 1) {
+                    alert(data.msg);
+//                    sendData(data.data.businessUrl, data.data.businessData);
+                } else {
+                    alert('数据异常');
+                }
+            },
+            error: function (request) {
+                alert("提交错误");
+            }
+        })
+    })
+</script>
 </body>
 </html>
 
