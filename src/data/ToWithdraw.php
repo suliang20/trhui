@@ -98,6 +98,9 @@ class ToWithdraw extends DataBase
             if (!(array_key_exists('amount', $this->params) && !empty($this->params['amount']))) {
                 throw new TpamException('交易金额未设置');
             }
+            if ($this->params['amount'] < 100) {
+                throw new TpamException('提现金额必须大于等于100');
+            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
