@@ -21,6 +21,10 @@ try {
     if (empty($orderId)) {
         $orderId = !empty($_POST['orderId']) ? $_POST['orderId'] : null;
     }
+    $auditType = !empty($_GET['auditType']) ? $_GET['auditType'] : null;
+    if (empty($auditType)) {
+        $auditType = !empty($_POST['auditType']) ? $_POST['auditType'] : \trhui\data\OrderTransferAudit::AUDIT_TYPE_PASS;
+    }
 
     if (empty($merOrderId)) {
         throw new \Exception('商户订单号不能为空');
@@ -42,7 +46,7 @@ try {
     $inputObj->SetOriginalPlatformOrder($payOrder['platformOrderId']);
     $inputObj->SetOriginalOrderId($payOrder['orderId']);
 //    $inputObj->SetAmount($payOrder['payeeAmount']);
-    $inputObj->SetAuditType(\trhui\data\OrderTransferAudit::AUDIT_TYPE_BACK);
+    $inputObj->SetAuditType($auditType);
 
     $tpam = new \trhui\extend\Tpam();
     $tpam->serverUrl = SERVER_URL;

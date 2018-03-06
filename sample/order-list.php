@@ -49,6 +49,7 @@ require_once "common-link.php";
             <th>自动审核时间</th>
             <th>延长自动转账</th>
             <th>操作</th>
+            <th>支付审核</th>
             <th>查询</th>
         </tr>
         <?php foreach ($orders as $order): ?>
@@ -88,11 +89,14 @@ require_once "common-link.php";
                     </td>
                     <td>
                         <?= $item['status'] == 0 ? '<a href="refund.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">退款</a>' : '' ?>
-                        <?= $item['status'] == 0 ? '<a href="order-transfer-audit.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '">审核</a>' : '' ?>
+                    </td>
+                    <td>
+                        <?= $item['status'] == 0 ? '<a href="order-transfer-audit.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '&auditType=' . \trhui\data\OrderTransferAudit::AUDIT_TYPE_BACK . '">拒绝</a>' : '' ?>
+                        <?= $item['status'] == 0 ? '<a href="order-transfer-audit.php?merOrderId=' . $item['merOrderId'] . '&orderId=' . $item['orderId'] . '&auditType=' . \trhui\data\OrderTransferAudit::AUDIT_TYPE_PASS . '">通过</a>' : '' ?>
                     </td>
                     <td>
                         <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_PAYMENT ?>">支付查询</a>
-                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_TRANSFER_AUDIT?>">支付审核查询</a>
+                        <a href="query.php?merOrderId=<?= $item['merOrderId'] ?>&orderId=<?= $item['orderId'] ?>&action=<?= \trhui\data\Query::ACTION_TRANSFER_AUDIT ?>">支付审核查询</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
