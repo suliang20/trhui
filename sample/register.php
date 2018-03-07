@@ -65,6 +65,9 @@ if (is_post()) {
     ?>
 </head>
 <body>
+<?php
+require_once "common-link.php";
+?>
 <div>
     <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
@@ -74,9 +77,6 @@ if (is_post()) {
         <button type="button" id="trhuiSubmit">提交注册</button>
     </form>
 </div>
-<?php
-require_once "common-link.php";
-?>
 <div>
     <table border="2">
         <tr>

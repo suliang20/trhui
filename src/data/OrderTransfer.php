@@ -88,22 +88,22 @@ class OrderTransfer extends DataBase
     const TOPUP_TYPE_WECHAT_H5 = 15;               //   微信H5
     const TOPUP_TYPE_WECHAT_APPLET = 16;          //   微信小程序
     public static $TOPUP_TYPE = [
-        '1' => '个人网银',
-        '2' => '企业网银',
-        '3' => '快捷支付',
-        '4' => 'WAP支付',
-        '5' => '代收/代扣',
-        '6' => 'EPOS',
-        '7' => '微信扫码',
-        '8' => '支付宝扫码',
-        '9' => '微信公众号',
-        '10' => '支付宝服务窗',
-        '11' => 'APOS',
-        '12' => '微信控件',
-        '13' => '微信B扫C',
-        '14' => '支付宝B扫C',
-        '15' => '微信H5',
-        '16' => '微信小程序',
+        self::TOPUP_TYPE_PERSONAL_BANK => '个人网银',
+        self::TOPUP_TYPE_BUSINESS_BANK => '企业网银',
+        self::TOPUP_TYPE_FAST_PAYMENT => '快捷支付',
+        self::TOPUP_TYPE_WAP_PAYMENT => 'WAP支付',
+        self::TOPUP_TYPE_COLLECTION_WITHHOLD => '代收/代扣',
+        self::TOPUP_TYPE_EPOS => 'EPOS',
+        self::TOPUP_TYPE_WECHAT_SCAN => '微信扫码',
+        self::TOPUP_TYPE_ALIPAY_SCAN => '支付宝扫码',
+        self::TOPUP_TYPE_WECHAT_OFFICIAL => '微信公众号',
+        self::TOPUP_TYPE_ALIPAY_SERVER => '支付宝服务窗',
+        self::TOPUP_TYPE_APOS => 'APOS',
+        self::TOPUP_TYPE_WECHAT_WIDGET => '微信控件',
+        self::TOPUP_TYPE_WECHAT_B2C => '微信B扫C',
+        self::TOPUP_TYPE_ALIPAY_B2C => '支付宝B扫C',
+        self::TOPUP_TYPE_WECHAT_H5 => '微信H5',
+        self::TOPUP_TYPE_WECHAT_APPLET => '微信小程序',
     ];
 
     /**
@@ -115,8 +115,8 @@ class OrderTransfer extends DataBase
     const PAY_TYPE_DEBIT_CARD = 1;      //  借记卡
     const PAY_TYPE_CREDIT_CARD = 2;     //  贷记卡
     public static $PAY_TYPE = [
-        '1' => '借记卡',
-        '2' => '贷记卡',
+        self::PAY_TYPE_DEBIT_CARD => '借记卡',
+        self::PAY_TYPE_CREDIT_CARD => '贷记卡',
     ];
 
     /**
@@ -128,8 +128,8 @@ class OrderTransfer extends DataBase
     const FEE_PAYER_MERCHANT_PLATFORM = 0;      //  商户平台
     const FEE_PAYER_PAYEE = 1;                    //  收款方
     public static $FEE_PAYER = [
-        '0' => '商户平台',
-        '1' => '收款方',
+        self::FEE_PAYER_MERCHANT_PLATFORM => '商户平台',
+        self::FEE_PAYER_PAYEE => '收款方',
     ];
 
     public function __construct()

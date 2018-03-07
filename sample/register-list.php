@@ -26,7 +26,6 @@ $registers = $registerObj->getAll();
 <?php
 require_once "common-link.php";
 ?>
-<p><a href="register.php">注册</a></p>
 <div>
     <table border="2">
         <tr>

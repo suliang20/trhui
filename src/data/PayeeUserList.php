@@ -26,9 +26,9 @@ class PayeeUserList extends DataBase
      */
     const TRANSFER_TYPE_COSTODY = 0;        //  托管转账
     const TRANSFER_TYPE_DIRECT = 1;         //  直接转账
-    const TRANSFER_TYPE = [
-        '0' => '托管转账',
-        '1' => '直接转账',
+    public static $TRANSFER_TYPE = [
+        self::TRANSFER_TYPE_COSTODY => '托管转账',
+        self::TRANSFER_TYPE_DIRECT => '直接转账',
     ];
 
     /**
@@ -39,9 +39,9 @@ class PayeeUserList extends DataBase
      */
     const FEE_TYPE_PROMPTLY = 0;                //  立即收取
     const FEE_TYPE_TRANSACTION_CLOSE = 1;     //  交易结束
-    const FEE_TYPE = [
-        '0' => '立即收取',
-        '1' => '交易结束',
+    public static $FEE_TYPE = [
+        self::FEE_TYPE_PROMPTLY => '立即收取',
+        self::FEE_TYPE_TRANSACTION_CLOSE => '交易结束',
     ];
 
 

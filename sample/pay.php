@@ -35,8 +35,7 @@ if (is_post()) {
             $inputObj->SetActionType(\trhui\data\OrderTransfer::ACTION_TYPE_CONSUME);
             $inputObj->SetTransferPayType($_POST['transfer_pay_type']);
             $inputObj->SetTopupType($_POST['topup_type']);
-            $inputObj->SetPayType(0);
-            $inputObj->SetFeePayer();
+            $inputObj->SetPayType($_POST['payType']);
 
             $paramArr1 = [
                 'orderId' => ORDER_ID,
@@ -96,6 +95,9 @@ if (is_post()) {
 </head>
 
 <body>
+<?php
+require_once "common-link.php";
+?>
 <div>
     <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
@@ -136,7 +138,7 @@ if (is_post()) {
         <div>
             <label for="topupType">转账方式</label>
             <select name="transfer_type" id="transfer_type">
-                <?php foreach (\trhui\data\PayeeUserList::TRANSFER_TYPE as $key => $name): ?>
+                <?php foreach (\trhui\data\PayeeUserList::$TRANSFER_TYPE as $key => $name): ?>
                     <option value="<?= $key ?>" <?= $key == \trhui\data\PayeeUserList::TRANSFER_TYPE_COSTODY ? 'selected="selected"' : '' ?>><?= $name ?></option>
                 <?php endforeach; ?>
             </select>
@@ -159,10 +161,6 @@ if (is_post()) {
         <button type="button" id="trhuiSubmit">提交支付</button>
     </form>
 </div>
-
-<?php
-require_once "common-link.php";
-?>
 </body>
 </html>
 
