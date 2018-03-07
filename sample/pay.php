@@ -18,10 +18,11 @@ if (is_post()) {
             if (!isset($_POST['amount']) || !is_numeric($_POST['amount'])) {
                 throw new \trhui\TpamException('支付金额错误');
             }
-            if (!isset($_POST['payee_user_id']) || !is_numeric($_POST['payee_user_id'])) {
+            $amount = $_POST['amount'];
+            if (!isset($_POST['payeeUserId']) || !is_numeric($_POST['payeeUserId'])) {
                 throw new \trhui\TpamException('收款用户ID不能为空');
             }
-            if (!isset($_POST['payer_user_id']) || !is_numeric($_POST['payer_user_id'])) {
+            if (!isset($_POST['payerUserId']) || !is_numeric($_POST['payeeUserId'])) {
                 throw new \trhui\TpamException('付款用户ID不能为空');
             }
 
@@ -29,21 +30,21 @@ if (is_post()) {
             $inputObj->SetNotifyUrl(NOTIFY_URL);
             $inputObj->SetFrontUrl(FRONT_URL);
 
-            $amount = $_POST['amount'];
             $inputObj->SetAmount($amount * 100);
-            $inputObj->SetPayerUserId($_POST['payer_user_id']);
+            $inputObj->SetPayerUserId($_POST['payerUserId']);
             $inputObj->SetActionType(\trhui\data\OrderTransfer::ACTION_TYPE_CONSUME);
-            $inputObj->SetTransferPayType($_POST['transfer_pay_type']);
-            $inputObj->SetTopupType($_POST['topup_type']);
+            $inputObj->SetTransferPayType($_POST['transferPayType']);
+            $inputObj->SetTopupType($_POST['topupType']);
             $inputObj->SetPayType($_POST['payType']);
+            $inputObj->SetFeePayer(\trhui\data\OrderTransfer::FEE_PAYER_PAYEE);
 
             $paramArr1 = [
                 'orderId' => ORDER_ID,
-                'payeeUserId' => $_POST['payee_user_id'],
+                'payeeUserId' => $_POST['payeeUserId'],
                 'payeeAmount' => $amount * 100,
-                'feeToMerchant' => 0,
-                'transferType' => $_POST['transfer_type'],
-                'feeType' => 1
+                'feeToMerchant' => !empty($_POST['feeToMerchant']) ? $_POST['feeToMerchant'] * 100 : 0,
+                'transferType' => $_POST['transferType'],
+                'feeType' => $_POST['feeType']
             ];
 
             $payeeUserListArrObj = new \trhui\data\ParamsArray();
@@ -102,8 +103,8 @@ require_once "common-link.php";
     <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
             <div>
-                <label for="payeeUserId">付款用户</label>
-                <select name="payer_user_id" id="payerUserId">
+                <label for="payerUserId">付款用户</label>
+                <select name="payerUserId" id="payerUserId">
                     <option value="0">商户平台</option>
                     <?php foreach ((new \trhui\business\Register())->getAll() as $key => $value): ?>
                         <?php if (isset($value['userId'])): ?>
@@ -113,7 +114,7 @@ require_once "common-link.php";
                 </select>
             </div>
             <label for="transferPayType">支付方式</label>
-            <select name="transfer_pay_type" id="transferPayType">
+            <select name="transferPayType" id="transferPayType">
                 <?php foreach (\trhui\data\OrderTransfer::$TRANSFER_PAY_TYPE as $key => $name): ?>
                     <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TRANSFER_PAY_TYPE_ONLINE ? 'selected="selected"' : '' ?>><?= $name ?></option>>
                 <?php endforeach; ?>
@@ -121,7 +122,7 @@ require_once "common-link.php";
         </div>
         <div>
             <label for="topupType">支付类型</label>
-            <select name="topup_type" id="topupType">
+            <select name="topupType" id="topupType">
                 <?php foreach (\trhui\data\OrderTransfer::$TOPUP_TYPE as $key => $name): ?>
                     <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TOPUP_TYPE_WECHAT_SCAN ? 'selected="selected"' : '' ?>><?= $name ?></option>
                 <?php endforeach; ?>
@@ -136,10 +137,18 @@ require_once "common-link.php";
             </select>
         </div>
         <div>
-            <label for="topupType">转账方式</label>
-            <select name="transfer_type" id="transfer_type">
+            <label for="transferType">转账方式</label>
+            <select name="transferType" id="transferType">
                 <?php foreach (\trhui\data\PayeeUserList::$TRANSFER_TYPE as $key => $name): ?>
                     <option value="<?= $key ?>" <?= $key == \trhui\data\PayeeUserList::TRANSFER_TYPE_COSTODY ? 'selected="selected"' : '' ?>><?= $name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="feeType">佣金收取方式</label>
+            <select name="feeType" id="feeType">
+                <?php foreach (\trhui\data\PayeeUserList::$FEE_TYPE as $key => $name): ?>
+                    <option value="<?= $key ?>" <?= $key == \trhui\data\PayeeUserList::FEE_TYPE_PROMPTLY ? 'selected="selected"' : '' ?>><?= $name ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -148,8 +157,12 @@ require_once "common-link.php";
             <input type="text" name="amount" id="amount" value="0.01">
         </div>
         <div>
+            <label for="feeToMerchant">佣金</label>
+            <input type="text" name="feeToMerchant" id="feeToMerchant" value="0.00">
+        </div>
+        <div>
             <label for="payeeUserId">收款用户</label>
-            <select name="payee_user_id" id="payeeUserId">
+            <select name="payeeUserId" id="payeeUserId">
                 <option value="0">商户平台</option>
                 <?php foreach ((new \trhui\business\Register())->getAll() as $key => $value): ?>
                     <?php if (isset($value['userId'])): ?>
