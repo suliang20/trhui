@@ -18,19 +18,22 @@ if (is_post()) {
             if (!isset($_POST['amount']) || !is_numeric($_POST['amount'])) {
                 throw new \trhui\TpamException('支付金额错误');
             }
-            $amount = $_POST['amount'];
+            $totalAmount = $_POST['amount'] * 100;
             if (!isset($_POST['payeeUserId']) || !is_numeric($_POST['payeeUserId'])) {
                 throw new \trhui\TpamException('收款用户ID不能为空');
             }
-            if (!isset($_POST['payerUserId']) || !is_numeric($_POST['payeeUserId'])) {
+            if (!isset($_POST['payerUserId']) || !is_numeric($_POST['payerUserId'])) {
                 throw new \trhui\TpamException('付款用户ID不能为空');
             }
+            $feeToMerchant = !empty($_POST['feeToMerchant']) ? $_POST['feeToMerchant'] * 100 : 0;
+
+            $amount = $totalAmount - $feeToMerchant;
 
             $inputObj = new \trhui\data\OrderTransfer();
             $inputObj->SetNotifyUrl(NOTIFY_URL);
             $inputObj->SetFrontUrl(FRONT_URL);
 
-            $inputObj->SetAmount($amount * 100);
+            $inputObj->SetAmount($totalAmount);
             $inputObj->SetPayerUserId($_POST['payerUserId']);
             $inputObj->SetActionType(\trhui\data\OrderTransfer::ACTION_TYPE_CONSUME);
             $inputObj->SetTransferPayType($_POST['transferPayType']);
@@ -41,8 +44,8 @@ if (is_post()) {
             $paramArr1 = [
                 'orderId' => ORDER_ID,
                 'payeeUserId' => $_POST['payeeUserId'],
-                'payeeAmount' => $amount * 100,
-                'feeToMerchant' => !empty($_POST['feeToMerchant']) ? $_POST['feeToMerchant'] * 100 : 0,
+                'payeeAmount' => $amount,
+                'feeToMerchant' => $feeToMerchant,
                 'transferType' => $_POST['transferType'],
                 'feeType' => $_POST['feeType']
             ];
