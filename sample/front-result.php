@@ -14,21 +14,20 @@ $res = $result->handle($_POST);
 var_dump($res);
 if (!$res) {
     var_dump($result->errors);
-    exit;
 }
 ?>
 
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>操作成功页面</title>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/trhui.js"></script>
+    <?php
+    require_once "common-js-style.php";
+    ?>
 </head>
 <body>
-<div>
-    <a href="register.php">注册</a>&nbsp;&nbsp;<a href="pay.php">支付</a>
-</div>
+<?php
+require_once "common-link.php";
+?>
 
 </body>
 </html>

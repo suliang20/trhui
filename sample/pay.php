@@ -112,7 +112,7 @@ if (is_post()) {
             </div>
             <label for="transferPayType">支付方式</label>
             <select name="transfer_pay_type" id="transferPayType">
-                <?php foreach (\trhui\data\OrderTransfer::TRANSFER_PAY_TYPE as $key => $name): ?>
+                <?php foreach (\trhui\data\OrderTransfer::$TRANSFER_PAY_TYPE as $key => $name): ?>
                     <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TRANSFER_PAY_TYPE_ONLINE ? 'selected="selected"' : '' ?>><?= $name ?></option>>
                 <?php endforeach; ?>
             </select>
@@ -120,7 +120,15 @@ if (is_post()) {
         <div>
             <label for="topupType">支付类型</label>
             <select name="topup_type" id="topupType">
-                <?php foreach (\trhui\data\OrderTransfer::TOPUP_TYPE as $key => $name): ?>
+                <?php foreach (\trhui\data\OrderTransfer::$TOPUP_TYPE as $key => $name): ?>
+                    <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TOPUP_TYPE_WECHAT_SCAN ? 'selected="selected"' : '' ?>><?= $name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="payType">卡种</label>
+            <select name="payType" id="payType">
+                <?php foreach (\trhui\data\OrderTransfer::$PAY_TYPE as $key => $name): ?>
                     <option value="<?= $key ?>"<?= $key == \trhui\data\OrderTransfer::TOPUP_TYPE_WECHAT_SCAN ? 'selected="selected"' : '' ?>><?= $name ?></option>
                 <?php endforeach; ?>
             </select>

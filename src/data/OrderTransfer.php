@@ -35,8 +35,8 @@ class OrderTransfer extends DataBase
      * 1：消费转账
      */
     const ACTION_TYPE_CONSUME = 1;      //  消费转账
-    const ACTION_TYPE = [
-        '1' => '消费转账'
+    public static $ACTION_TYPE = [
+        self::ACTION_TYPE_CONSUME => '消费转账'
     ];
 
     /**
@@ -46,9 +46,9 @@ class OrderTransfer extends DataBase
      */
     const TRANSFER_PAY_TYPE_BALANCE = 0;    //  余额支付
     const TRANSFER_PAY_TYPE_ONLINE = 1;     //  在线支付
-    const TRANSFER_PAY_TYPE = [
-        '0' => '余额支付',
-        '1' => '在线支付',
+    public static $TRANSFER_PAY_TYPE = [
+        self::TRANSFER_PAY_TYPE_BALANCE => '余额支付',
+        self::TRANSFER_PAY_TYPE_ONLINE => '在线支付',
     ];
 
     /**
@@ -87,7 +87,7 @@ class OrderTransfer extends DataBase
     const TOPUP_TYPE_ALIPAY_B2C = 14;               //  支付宝B扫C支
     const TOPUP_TYPE_WECHAT_H5 = 15;               //   微信H5
     const TOPUP_TYPE_WECHAT_APPLET = 16;          //   微信小程序
-    const TOPUP_TYPE = [
+    public static $TOPUP_TYPE = [
         '1' => '个人网银',
         '2' => '企业网银',
         '3' => '快捷支付',
@@ -114,7 +114,7 @@ class OrderTransfer extends DataBase
      */
     const PAY_TYPE_DEBIT_CARD = 1;      //  借记卡
     const PAY_TYPE_CREDIT_CARD = 2;     //  贷记卡
-    const PAY_TYPE = [
+    public static $PAY_TYPE = [
         '1' => '借记卡',
         '2' => '贷记卡',
     ];
@@ -127,7 +127,7 @@ class OrderTransfer extends DataBase
      */
     const FEE_PAYER_MERCHANT_PLATFORM = 0;      //  商户平台
     const FEE_PAYER_PAYEE = 1;                    //  收款方
-    const FEE_PAYER = [
+    public static $FEE_PAYER = [
         '0' => '商户平台',
         '1' => '收款方',
     ];
@@ -346,11 +346,7 @@ class OrderTransfer extends DataBase
 
     public function IsFeePayerSet()
     {
-        return true;
         try {
-            if (!(array_key_exists('feePayer', $this->params) && !empty($this->params['feePayer']))) {
-                throw new TpamException('支付手续费承担方未设置');
-            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
