@@ -87,6 +87,7 @@ class OrderTransfer extends DataBase
     const TOPUP_TYPE_ALIPAY_B2C = 14;               //  支付宝B扫C支
     const TOPUP_TYPE_WECHAT_H5 = 15;               //   微信H5
     const TOPUP_TYPE_WECHAT_APPLET = 16;          //   微信小程序
+    const TOPUP_TYPE_ALIPAY_APP = 17;           //  支付宝APP支付
     public static $TOPUP_TYPE = [
         self::TOPUP_TYPE_PERSONAL_BANK => '个人网银',
         self::TOPUP_TYPE_BUSINESS_BANK => '企业网银',
@@ -104,6 +105,7 @@ class OrderTransfer extends DataBase
         self::TOPUP_TYPE_ALIPAY_B2C => '支付宝B扫C',
         self::TOPUP_TYPE_WECHAT_H5 => '微信H5',
         self::TOPUP_TYPE_WECHAT_APPLET => '微信小程序',
+        self::TOPUP_TYPE_ALIPAY_APP => '支付宝APP',
     ];
 
     /**
