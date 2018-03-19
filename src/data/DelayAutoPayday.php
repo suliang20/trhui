@@ -159,9 +159,9 @@ class DelayAutoPayday extends DataBase
     public function IsFrontUrlSet()
     {
         try {
-            if (!(array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']))) {
-                throw new TpamException('前台回调地址未设置');
-            }
+//            if (!(array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']))) {
+//                throw new TpamException('前台回调地址未设置');
+//            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
