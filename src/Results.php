@@ -70,13 +70,18 @@ class Results
      * @var
      */
     protected $resultObj;
+    /**
+     * 平台业务ID
+     * @var
+     */
+    public $merOrderId;
 
     /**
      * 处理入口
      * @param $data
      * @return bool
      */
-    final public function Handle($data)
+    final public function Handle($data, $isHandle = true)
     {
         try {
             if (empty($data) || !is_array($data)) {
@@ -85,6 +90,7 @@ class Results
             foreach ($data as $key => $value) {
                 if ($key == 'resultObj') {
                     $this->$key = json_encode($value, JSON_UNESCAPED_UNICODE);
+                    continue;
                 } elseif (!is_string($key) || !is_string($value)) {
                     throw new TpamException('数据异常');
                 }
@@ -94,13 +100,22 @@ class Results
             if (!$this->checkSign()) {
                 throw new TpamException('验签失败');
             }
+
+            //  获取系统业务ID
+            if (!empty($this->result)) {
+                $result = json_decode($this->result, true);
+                $this->merOrderId = !empty($result['merOrderId']) ? $result['merOrderId'] : null;
+            }
+
             //  获取返回参数
             $values = $this->getValues();
             if (!$values) {
                 throw new TpamException('获取数据失败');
             }
             //  结果处理
-            $this->ResultProcess();
+            if ($isHandle === true) {
+                $this->ResultProcess();
+            }
 
             return $values;
         } catch (TpamException $e) {
@@ -135,7 +150,7 @@ class Results
                 'sign' => $this->sign,
                 'msg' => $this->msg,
                 'date' => $this->date,
-                'date' => $this->resultObj,
+                'data' => $this->resultObj,
             ];
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());

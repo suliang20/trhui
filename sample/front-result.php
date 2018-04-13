@@ -15,6 +15,7 @@ var_dump($res);
 if (!$res) {
     var_dump($result->errors);
 }
+var_dump($result->merOrderId);
 ?>
 
 <html>
