@@ -11,6 +11,7 @@
     <a href="index.php">首页</a>
     <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
     <a href="register.php">注册</a>
+    <a href="private_register.php">新注册</a>
     <a href="register-list.php">用户列表</a>
     <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
     <a href="pay.php">支付</a>

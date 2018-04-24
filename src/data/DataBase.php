@@ -19,6 +19,7 @@ class DataBase extends Data
 {
 
     const SERVER_TO_REGISTER = 'toRegister';
+    const SERVER_TO_PRIVATE_REGISTER = 'toPrivateRegister';
     const SERVER_TO_AUTHEN = 'toAuthen';
     const SERVER_ORDER_TRANSFER = 'orderTransfer';
     const SERVER_REFUND_ALL = 'refundAll';
@@ -53,6 +54,7 @@ class DataBase extends Data
 
     public static $SERVER_INTERFACE = [
         self::SERVER_TO_REGISTER => '/tpam/service/interface/toRegister',
+        self::SERVER_TO_PRIVATE_REGISTER => '/tpam/service/interface/toPrivateRegister',
         self::SERVER_TO_AUTHEN => '/tpam/service/interface/toAuthen',
         self::SERVER_ORDER_TRANSFER => '/tpam/service/interface/orderTransfer',
         self::SERVER_REFUND_ALL => '/tpam/service/interface/refundAll',
@@ -63,7 +65,7 @@ class DataBase extends Data
 
         self::SERVER_ACCREDIT => '/tpam/service/interface/accredit',
         self::SERVER_QUERY => '/tpam/service/interface/query',
-        self::SERVER_GET_BALANCE=> '/tpam/service/interface/getBalance',
+        self::SERVER_GET_BALANCE => '/tpam/service/interface/getBalance',
 
         self::SERVER_MODIFY_PASSWORD => '/tpam/service/interface/modifyPassword',
         self::SERVER_MODIFY_PHONE => '/tpam/service/interface/modifyPhone',
@@ -73,6 +75,7 @@ class DataBase extends Data
 
     public static $SERVER_CODE = [
         self::SERVER_TO_REGISTER => 'toRegister',
+        self::SERVER_TO_PRIVATE_REGISTER => 'toPrivateRegister',
         self::SERVER_TO_AUTHEN => 'toAuthen',
         self::SERVER_ORDER_TRANSFER => 'orderTransfer',
         self::SERVER_REFUND_ALL => 'refundAll',
@@ -83,7 +86,7 @@ class DataBase extends Data
 
         self::SERVER_ACCREDIT => 'accredit',
         self::SERVER_QUERY => 'query',
-        self::SERVER_GET_BALANCE=> 'getBalance',
+        self::SERVER_GET_BALANCE => 'getBalance',
 
         self::SERVER_MODIFY_PASSWORD => 'modifyPassword',
         self::SERVER_MODIFY_PHONE => 'modifyPhone',
