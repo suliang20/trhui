@@ -40,6 +40,12 @@ if (is_post()) {
             $inputObj->SetTopupType($_POST['topupType']);
             $inputObj->SetPayType($_POST['payType']);
             $inputObj->SetFeePayer(\trhui\data\OrderTransfer::FEE_PAYER_PAYEE);
+            switch ($_POST['topupType']) {
+                case \trhui\data\OrderTransfer::TOPUP_TYPE_WECHAT_WIDGET:
+                    $inputObj->SetParameter1(WECHAT_OPEN_APPID);
+                    break;
+
+            }
 
             $paramArr1 = [
                 'orderId' => ORDER_ID,
@@ -63,8 +69,9 @@ if (is_post()) {
             $tpam->merchantNo = MER_CHANT_NO;
             $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
             $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+
             if (!$res) {
-                foreach ($tpam->errors as $error) {
+                foreach ($tpam->errors as $error)
                     throw new \trhui\TpamException($error['errorMsg']);
                 }
             }
