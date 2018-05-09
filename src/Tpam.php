@@ -331,7 +331,7 @@ class Tpam extends Data
      * @param int $second url执行超时时间，默认30s
      * @throws WxPayException
      */
-    public function postCurl($requestData, $url, $useCert = false, $second = 30)
+    public function postCurl($requestData, $url, $isJson = true, $useCert = false, $second = 30)
     {
         try {
             $ch = curl_init();
@@ -371,7 +371,10 @@ class Tpam extends Data
                 throw new TpamException("curl出错，错误码:$error");
             }
             curl_close($ch);
-            return json_decode($data, true);
+            if ($isJson) {
+                return json_decode($data, true);
+            }
+            return $data;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
