@@ -286,9 +286,9 @@ class OrderTransfer extends DataBase
     public function IsTopupTypeSet()
     {
         try {
-            if (!(array_key_exists('topupType', $this->params) && !is_null($this->params['topupType']))) {
-                throw new TpamException('支付类型未设置');
-            }
+//            if (!(array_key_exists('topupType', $this->params) && !is_null($this->params['topupType']))) {
+//                throw new TpamException('支付类型未设置');
+//            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
