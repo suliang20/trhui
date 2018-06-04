@@ -20,7 +20,11 @@ class DataBase extends Data
 
     const SERVER_TO_REGISTER = 'toRegister';
     const SERVER_TO_PRIVATE_REGISTER = 'toPrivateRegister';
+
     const SERVER_TO_AUTHEN = 'toAuthen';
+    const SERVER_PERSONAL_CERTIFICATE = 'personalCertificate';
+    const SERVER_ENTERPRISE_CERTIFICATE = 'enterpriseCertificate';
+
     const SERVER_ORDER_TRANSFER = 'orderTransfer';
     const SERVER_REFUND_ALL = 'refundAll';
     const SERVER_REFUND = 'refund';
@@ -55,7 +59,11 @@ class DataBase extends Data
     public static $SERVER_INTERFACE = [
         self::SERVER_TO_REGISTER => '/tpam/service/interface/toRegister',
         self::SERVER_TO_PRIVATE_REGISTER => '/tpam/service/interface/toPrivateRegister',
+
         self::SERVER_TO_AUTHEN => '/tpam/service/interface/toAuthen',
+        self::SERVER_PERSONAL_CERTIFICATE => '/tpam/service/interface/personalCertificate',
+        self::SERVER_ENTERPRISE_CERTIFICATE => '/tpam/service/interface/enterprise_certificate',
+
         self::SERVER_ORDER_TRANSFER => '/tpam/service/interface/orderTransfer',
         self::SERVER_REFUND_ALL => '/tpam/service/interface/refundAll',
         self::SERVER_REFUND => '/tpam/service/interface/refund',
@@ -76,7 +84,11 @@ class DataBase extends Data
     public static $SERVER_CODE = [
         self::SERVER_TO_REGISTER => 'toRegister',
         self::SERVER_TO_PRIVATE_REGISTER => 'toPrivateRegister',
+
         self::SERVER_TO_AUTHEN => 'toAuthen',
+        self::SERVER_PERSONAL_CERTIFICATE => 'personal_certificate',
+        self::SERVER_ENTERPRISE_CERTIFICATE => 'enterprise_certificate',
+
         self::SERVER_ORDER_TRANSFER => 'orderTransfer',
         self::SERVER_REFUND_ALL => 'refundAll',
         self::SERVER_REFUND => 'refund',
