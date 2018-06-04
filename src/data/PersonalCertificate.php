@@ -183,6 +183,9 @@ class PersonalCertificate extends DataBase
             if (!(array_key_exists('certificationType', $this->params) && !empty($this->params['certificationType']))) {
                 throw new TpamException('认证类型未设置');
             }
+            if (!in_array($this->params['certificationType'], [0, 1])) {
+                throw new TpamException('认证类型错误');
+            }
             return true;
         } catch (TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());

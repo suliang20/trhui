@@ -25,7 +25,13 @@ require_once '../vendor/autoload.php';
         <?php foreach ((new \trhui\business\Register())->getAll() as $item): ?>
             <?php if (isset($item['userId'])): ?>
                 <tr>
-                    <td><?= isset($item['authed']) && $item['authed'] == 1 ? '已认证' : "<a href='authen.php?mobile={$item['mobile']}'>未认证</a>" ?></td>
+                    <td><?= isset($item['authed']) && $item['authed'] == 1 ? '已认证' :
+                            "
+                             <a href='authen.php?mobile={$item['mobile']}'>未认证</a>
+                             <a href='authen-personal.php?mobile={$item['mobile']}'>个人认证</a>
+                             <a href='authen.php?mobile={$item['mobile']}'>企业认证</a>
+                             " ?>
+                    </td>
                     <td><?= isset($item['authenType']) ? ($item['authenType'] == 1 ? '企业认证' : '个人认证') : '未认证' ?></td>
                     <td><?= isset($item['userId']) ? $item['userId'] : '' ?></td>
                     <td><?= isset($item['merUserId']) ? $item['merUserId'] : '' ?></td>
@@ -34,13 +40,6 @@ require_once '../vendor/autoload.php';
                     <td><?= isset($item['register_time']) ? date('Y-m-d H:i:s', substr($item['register_time'], 0, -3)) : '' ?></td>
                     <td>
                         <a href="pay.php?mobile=<?= $item['mobile'] ?>">支付</a>
-                        &nbsp;&nbsp;
-
-                        <a href="modify-password.php?userId=<?= $item['userId'] ?>">认证</a>
-                        <a href="modify-password.php?userId=<?= $item['userId'] ?>">个人认证</a>
-                        <a href="modify-password.php?userId=<?= $item['userId'] ?>">企业认证</a>
-                        &nbsp;&nbsp;
-
                         <a href="modify-password.php?userId=<?= $item['userId'] ?>">修改交易密码</a>
                         <a href="modify-phone.php?userId=<?= $item['userId'] ?>">修改手机号</a>
                         <a href="member-login.php?userId=<?= $item['userId'] ?>">会员自助登录</a>
