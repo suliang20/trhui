@@ -27,6 +27,7 @@ if (is_post()) {
         $inputObj->SetCorporateId($_POST['corporateId']);
         $inputObj->SetMobile($_POST['mobile']);
         $inputObj->SetAcctNo($_POST['acctNo']);
+        $inputObj->SetAcctName($_POST['acctName']);
         $inputObj->SetBranchNo($_POST['branchNo']);
         $inputObj->SetOrganType($_POST['organType']);
         $inputObj->SetOrganCode($_POST['organCode']);
@@ -49,7 +50,6 @@ if (is_post()) {
                 throw new \Exception($error['errorMsg']);
             }
         }
-//        var_dump($postRes);exit;
 
         if ($postRes['code'] != 100) {
             throw new \Exception($postRes['msg']);
@@ -109,6 +109,10 @@ if (is_post()) {
         <div>
             <label for="acctNo">对公帐号</label>
             <input type="text" name="acctNo" id="acctNo" value="6221558834567890">
+        </div>
+        <div>
+            <label for="acctName">对公户名</label>
+            <input type="text" name="acctName" id="acctName" value="6221558834567890">
         </div>
         <div>
             <label for="branchNo">开户网点联行号</label>

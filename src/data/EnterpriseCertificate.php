@@ -216,6 +216,33 @@ class EnterpriseCertificate extends DataBase
     }
 
     /**
+     * 对公户名
+     * @param $value
+     */
+    public function SetAcctName($value)
+    {
+        $this->params['acctName'] = $value;
+    }
+
+    public function GetAcctName()
+    {
+        return $this->params['acctName'];
+    }
+
+    public function IsAcctNameSet()
+    {
+        try {
+            if (!(array_key_exists('acctName', $this->params) && !empty($this->params['acctName']))) {
+                throw new TpamException('对公户名未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
      * 开户网点联行号
      * @param $value
      */
