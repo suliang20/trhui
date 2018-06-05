@@ -17,15 +17,19 @@ if (is_post()) {
         if (!isset($_POST['userId']) || !is_numeric($_POST['userId'])) {
             throw new \Exception('授权用户ID不存在');
         }
-        $inputObj = new \trhui\data\PersonalCertificate();
+        $inputObj = new \trhui\data\EnterpriseCertificate();
         $inputObj->SetNotifyUrl(NOTIFY_URL);
 
         $inputObj->SetUserId($_POST['userId']);
-        $inputObj->SetRealName($_POST['realName']);
-        $inputObj->SetCardNo($_POST['cardNo']);
-        $inputObj->SetBankCard($_POST['bankCard']);
+        $inputObj->SetOrganCode($_POST['organCode']);
+        $inputObj->SetBusinessLicense($_POST['businessLicense']);
+        $inputObj->SetLegalPersonName($_POST['legalPersonName']);
+        $inputObj->SetCorporateId($_POST['corporateId']);
         $inputObj->SetMobile($_POST['mobile']);
-        $inputObj->SetCertificationType($_POST['certificationType']);
+        $inputObj->SetAcctNo($_POST['acctNo']);
+        $inputObj->SetBranchNo($_POST['branchNo']);
+        $inputObj->SetOrganType($_POST['organType']);
+        $inputObj->SetOrganCode($_POST['organCode']);
         $inputObj->SetCardFrontUrl($_POST['cardFrontUrl']);
         $inputObj->SetCardBackUrl($_POST['cardBackUrl']);
         $inputObj->SetOrganDocumentsUrl($_POST['organDocumentsUrl']);
@@ -40,12 +44,12 @@ if (is_post()) {
                 throw new \Exception($error['errorMsg']);
             }
         }
-
         if (!$postRes = $tpam->postCurl($res, $tpam->getUrl())) {
             foreach ($tpam->errors as $error) {
                 throw new \Exception($error['errorMsg']);
             }
         }
+//        var_dump($postRes);exit;
 
         if ($postRes['code'] != 100) {
             throw new \Exception($postRes['msg']);
@@ -63,7 +67,7 @@ if (is_post()) {
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>用户个人认证</title>
+    <title>用户企业认证</title>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/trhui.js"></script>
 </head>
@@ -83,26 +87,38 @@ if (is_post()) {
             </select>
         </div>
         <div>
-            <label for="realName">真实姓名</label>
-            <input type="text" name="realName" id="realName" value="test">
+            <label for="organCode">组织机构代码</label>
+            <input type="text" name="organCode" id="organCode" value="test">
         </div>
         <div>
-            <label for="cardNo">身份证号码</label>
-            <input type="text" name="cardNo" id="cardNo" value="340201190001012632">
+            <label for="businessLicense">组织机构全称</label>
+            <input type="text" name="businessLicense" id="businessLicense" value="test">
         </div>
         <div>
-            <label for="bankCard">银行卡号</label>
-            <input type="text" name="bankCard" id="bankCard" value="6221558834567890">
+            <label for="legalPersonName">法人姓名</label>
+            <input type="text" name="legalPersonName" id="legalPersonName" value="test">
+        </div>
+        <div>
+            <label for="corporateId">法人证件号</label>
+            <input type="text" name="corporateId" id="corporateId" value="340201190001012632">
         </div>
         <div>
             <label for="mobile">手机号码</label>
             <input type="text" name="mobile" id="mobile" value="13000000001">
         </div>
         <div>
-            <label for="certificationType">认证类型</label>
-            <select name="certificationType" id="ceartificationType">
-                <option value="0">内地居民</option>
-                <option value="1">港澳台及外籍居民</option>
+            <label for="acctNo">对公帐号</label>
+            <input type="text" name="acctNo" id="acctNo" value="6221558834567890">
+        </div>
+        <div>
+            <label for="branchNo">开户网点联行号</label>
+            <input type="text" name="branchNo" id="branchNo" value="6221558834567890">
+        </div>
+        <div>
+            <label for="organType">机构类型</label>
+            <select name="organType" id="organType">
+                <option value="0">营利性组织</option>
+                <option value="1">非营利性组织</option>
             </select>
         </div>
         <div>

@@ -11,19 +11,19 @@ namespace trhui\data;
 use trhui\TpamException;
 
 /**
- * 个人银行账户认证
- * TODO 请求地址：/tpam/service/interface/personalCertificate
+ * 企业银行帐户认证参数
+ * TODO 请求地址：/tpam/service/interface/enterpriseCertificate
  * 会员在提现操作之前，都必须要实名认证(绑定银行卡)
  * Class ToAuthen
  * @package trhui\data
  */
-class PersonalCertificate extends DataBase
+class EnterpriseCertificate extends DataBase
 {
 
     public function __construct()
     {
-        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_PERSONAL_CERTIFICATE];
-        $this->serverCode = self::$SERVER_CODE[self::SERVER_PERSONAL_CERTIFICATE];
+        $this->serverInterface = self::$SERVER_INTERFACE[self::SERVER_ENTERPRISE_CERTIFICATE];
+        $this->serverCode = self::$SERVER_CODE[self::SERVER_ENTERPRISE_CERTIFICATE];
     }
 
     /**
@@ -54,24 +54,24 @@ class PersonalCertificate extends DataBase
     }
 
     /**
-     * 真实姓名
+     * 组织机构代码
      * @param $value
      */
-    public function SetRealName($value)
+    public function SetOrganCode($value)
     {
-        $this->params['realName'] = $value;
+        $this->params['organCode'] = $value;
     }
 
-    public function GetRealName()
+    public function GetOrganCode()
     {
-        return $this->params['realName'];
+        return $this->params['organCode'];
     }
 
-    public function IsRealNameSet()
+    public function IsOrganCodeSet()
     {
         try {
-            if (!(array_key_exists('realName', $this->params) && !empty($this->params['realName']))) {
-                throw new TpamException('真实姓名未设置');
+            if (!(array_key_exists('organCode', $this->params) && !empty($this->params['organCode']))) {
+                throw new TpamException('组织机构代码未设置');
             }
             return true;
         } catch (TpamException $e) {
@@ -81,24 +81,24 @@ class PersonalCertificate extends DataBase
     }
 
     /**
-     * 身份证号码
+     * 组织机构全称
      * @param $value
      */
-    public function SetCardNo($value)
+    public function SetBusinessLicense($value)
     {
-        $this->params['cardNo'] = $value;
+        $this->params['businessLicense'] = $value;
     }
 
-    public function GetCardNo()
+    public function GetBusinessLicense()
     {
-        return $this->params['cardNo'];
+        return $this->params['businessLicense'];
     }
 
-    public function IsCardNoSet()
+    public function IsBusinessLicenseSet()
     {
         try {
-            if (!(array_key_exists('cardNo', $this->params) && !empty($this->params['cardNo']))) {
-                throw new TpamException('身份证号码未设置');
+            if (!(array_key_exists('businessLicense', $this->params) && !empty($this->params['businessLicense']))) {
+                throw new TpamException('组织机构全称');
             }
             return true;
         } catch (TpamException $e) {
@@ -108,24 +108,51 @@ class PersonalCertificate extends DataBase
     }
 
     /**
-     * 银行卡号
+     * 法人姓名
      * @param $value
      */
-    public function SetBankCard($value)
+    public function SetLegalPersonName($value)
     {
-        $this->params['bankCard'] = $value;
+        $this->params['legalPersonName'] = $value;
     }
 
-    public function GetBankCard()
+    public function GetLegalPersonName()
     {
-        return $this->params['bankCard'];
+        return $this->params['legalPersonName'];
     }
 
-    public function IsBankCardSet()
+    public function IsLegalPersonNameSet()
     {
         try {
-            if (!(array_key_exists('bankCard', $this->params) && !empty($this->params['bankCard']))) {
-                throw new TpamException('银行卡号未设置');
+            if (!(array_key_exists('legalPersonName', $this->params) && !empty($this->params['legalPersonName']))) {
+                throw new TpamException('法人姓名未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
+     * 法人证件号
+     * @param $value
+     */
+    public function SetCorporateId($value)
+    {
+        $this->params['corporateId'] = $value;
+    }
+
+    public function GetCorporateId()
+    {
+        return $this->params['corporateId'];
+    }
+
+    public function IsCorporateIdSet()
+    {
+        try {
+            if (!(array_key_exists('corporateId', $this->params) && !empty($this->params['corporateId']))) {
+                throw new TpamException('法人证件号未设置');
             }
             return true;
         } catch (TpamException $e) {
@@ -162,29 +189,24 @@ class PersonalCertificate extends DataBase
     }
 
     /**
-     * 认证类型
-     * 0:内地居民
-     * 1:港澳台及外籍居民
+     * 对公帐号
      * @param $value
      */
-    public function SetCertificationType($value)
+    public function SetAcctNo($value)
     {
-        $this->params['certificationType'] = $value;
+        $this->params['acctNo'] = $value;
     }
 
-    public function GetCertificationType()
+    public function GetAcctNo()
     {
-        return $this->params['certificationType'];
+        return $this->params['acctNo'];
     }
 
-    public function IsCertificationTypeSet()
+    public function IsAcctNoSet()
     {
         try {
-            if (!(array_key_exists('certificationType', $this->params) && isset($this->params['certificationType']))) {
-                throw new TpamException('认证类型未设置');
-            }
-            if (!in_array($this->params['certificationType'], [0, 1])) {
-                throw new TpamException('认证类型错误');
+            if (!(array_key_exists('acctNo', $this->params) && !empty($this->params['acctNo']))) {
+                throw new TpamException('对公帐号未设置');
             }
             return true;
         } catch (TpamException $e) {
@@ -194,7 +216,66 @@ class PersonalCertificate extends DataBase
     }
 
     /**
-     * 身份证正面
+     * 开户网点联行号
+     * @param $value
+     */
+    public function SetBranchNo($value)
+    {
+        $this->params['branchNo'] = $value;
+    }
+
+    public function GetBranchNo()
+    {
+        return $this->params['branchNo'];
+    }
+
+    public function IsBranchNoSet()
+    {
+        try {
+            if (!(array_key_exists('branchNo', $this->params) && !empty($this->params['branchNo']))) {
+                throw new TpamException('开户网点联行号未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
+     * 机构类型
+     * 0:营利性组织
+     * 1:非营利性组织
+     * @param $value
+     */
+    public function SetOrganType($value)
+    {
+        $this->params['organType'] = $value;
+    }
+
+    public function GetOrganType()
+    {
+        return $this->params['organType'];
+    }
+
+    public function IsOrganTypeSet()
+    {
+        try {
+            if (!(array_key_exists('organType', $this->params) && isset($this->params['organCode']))) {
+                throw new TpamException('机构类型未设置');
+            }
+            if (!in_array($this->params['organCode'], [0, 1])) {
+                throw new TpamException('机构类型错误');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
+    }
+
+    /**
+     * 法人身份证正面
      * @param $value
      */
     public function SetCardFrontUrl($value)
@@ -211,7 +292,7 @@ class PersonalCertificate extends DataBase
     {
         try {
             if (!(array_key_exists('cardFrontUrl', $this->params) && !empty($this->params['cardFrontUrl']))) {
-                throw new TpamException('身份证正面未设置');
+                throw new TpamException('法人身份证正面未设置');
             }
             return true;
         } catch (TpamException $e) {
@@ -221,7 +302,7 @@ class PersonalCertificate extends DataBase
     }
 
     /**
-     * 身份证反面
+     * 法人身份证反面
      * @param $value
      */
     public function SetCardBackUrl($value)
@@ -238,7 +319,7 @@ class PersonalCertificate extends DataBase
     {
         try {
             if (!(array_key_exists('cardBackUrl', $this->params) && !empty($this->params['cardBackUrl']))) {
-                throw new TpamException('身份证反面未设置');
+                throw new TpamException('法人身份证反面未设置');
             }
             return true;
         } catch (TpamException $e) {
@@ -249,7 +330,7 @@ class PersonalCertificate extends DataBase
 
     /**
      * 机构证件照片
-     * 个体工商户时需要传
+     * 营业执照图片地址
      * @param $value
      */
     public function SetOrganDocumentsUrl($value)
@@ -260,6 +341,19 @@ class PersonalCertificate extends DataBase
     public function GetOrganDocumentsUrl()
     {
         return $this->params['organDocumentsUrl'];
+    }
+
+    public function IsOrganDocumentsUrlSet()
+    {
+        try {
+            if (!(array_key_exists('organDocumentsUrl', $this->params) && !empty($this->params['organDocumentsUrl']))) {
+                throw new TpamException('机构证件照未设置');
+            }
+            return true;
+        } catch (TpamException $e) {
+            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
+        }
+        return false;
     }
 
     /**

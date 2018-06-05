@@ -62,7 +62,7 @@ class DataBase extends Data
 
         self::SERVER_TO_AUTHEN => '/tpam/service/interface/toAuthen',
         self::SERVER_PERSONAL_CERTIFICATE => '/tpam/service/interface/personalCertificate',
-        self::SERVER_ENTERPRISE_CERTIFICATE => '/tpam/service/interface/enterprise_certificate',
+        self::SERVER_ENTERPRISE_CERTIFICATE => '/tpam/service/interface/enterpriseCertificate',
 
         self::SERVER_ORDER_TRANSFER => '/tpam/service/interface/orderTransfer',
         self::SERVER_REFUND_ALL => '/tpam/service/interface/refundAll',
@@ -86,8 +86,8 @@ class DataBase extends Data
         self::SERVER_TO_PRIVATE_REGISTER => 'toPrivateRegister',
 
         self::SERVER_TO_AUTHEN => 'toAuthen',
-        self::SERVER_PERSONAL_CERTIFICATE => 'personal_certificate',
-        self::SERVER_ENTERPRISE_CERTIFICATE => 'enterprise_certificate',
+        self::SERVER_PERSONAL_CERTIFICATE => 'personalCertificate',
+        self::SERVER_ENTERPRISE_CERTIFICATE => 'enterpriseCertificate',
 
         self::SERVER_ORDER_TRANSFER => 'orderTransfer',
         self::SERVER_REFUND_ALL => 'refundAll',

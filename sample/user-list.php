@@ -29,7 +29,7 @@ require_once '../vendor/autoload.php';
                             "
                              <a href='authen.php?mobile={$item['mobile']}'>未认证</a>
                              <a href='authen-personal.php?mobile={$item['mobile']}'>个人认证</a>
-                             <a href='authen.php?mobile={$item['mobile']}'>企业认证</a>
+                             <a href='authen-enterprise.php?mobile={$item['mobile']}'>企业认证</a>
                              " ?>
                     </td>
                     <td><?= isset($item['authenType']) ? ($item['authenType'] == 1 ? '企业认证' : '个人认证') : '未认证' ?></td>
