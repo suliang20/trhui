@@ -180,7 +180,7 @@ class PersonalCertificate extends DataBase
     public function IsCertificationTypeSet()
     {
         try {
-            if (!(array_key_exists('certificationType', $this->params) && !empty($this->params['certificationType']))) {
+            if (!(array_key_exists('certificationType', $this->params) && isset($this->params['certificationType']))) {
                 throw new TpamException('认证类型未设置');
             }
             if (!in_array($this->params['certificationType'], [0, 1])) {

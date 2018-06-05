@@ -17,7 +17,7 @@ if (is_post()) {
         do {
             //  结算清算通用户ID
             if (empty($_POST['userId'])) {
-                throw new \trhui\TpamException('数据错误');
+                throw new \Exception('数据错误');
             }
             $registerObj = new \trhui\business\Register();
             $userId = $_POST['userId'];
@@ -26,7 +26,7 @@ if (is_post()) {
             }
             //  结算金额
             if (empty($_POST['amount'])) {
-                throw new \trhui\TpamException('结算金额不能为空');
+                throw new \Exception('结算金额不能为空');
             }
             $amount = $_POST['amount'];
             //  是否需要审核
@@ -50,7 +50,7 @@ if (is_post()) {
             $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
             if (!$res) {
                 foreach ($tpam->errors as $error) {
-                    throw new \trhui\TpamException($error['errorMsg']);
+                    throw new \Exception($error['errorMsg']);
                 }
             }
         } while (false);
@@ -59,7 +59,7 @@ if (is_post()) {
         $result['msg'] = '提交成功';
         $result['data']['businessData'] = $res;
         $result['data']['businessUrl'] = $tpam->getUrl();
-    } catch (\trhui\TpamException $e) {
+    } catch (\Exception $e) {
         $result['msg'] = $e->getMessage();
     }
     echo json_encode($result, JSON_UNESCAPED_UNICODE);

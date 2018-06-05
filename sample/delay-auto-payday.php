@@ -14,16 +14,16 @@ $result = [
 ];
 try {
     if (empty($_POST['merOrderId'])) {
-        throw new \trhui\TpamException('交易订单号不能为空');
+        throw new \Exception('交易订单号不能为空');
     }
     $merOrderId = $_POST['merOrderId'];
     if (empty($_POST['orderId'])) {
-        throw new \trhui\TpamException('支付订单号不能为空');
+        throw new \Exception('支付订单号不能为空');
     }
     $orderId= $_POST['orderId'];
     $payOrderObj = new \trhui\business\PayOrder();
     if (!$orderInfo = $payOrderObj->getPayOrder($merOrderId,$orderId)) {
-        throw new \trhui\TpamException('支付订单不存在');
+        throw new \Exception('支付订单不存在');
     }
 
     $inputObj = new \trhui\data\DelayAutoPayday();
@@ -41,13 +41,13 @@ try {
     $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
     if (!$res) {
         foreach ($tpam->errors as $error) {
-            throw new \trhui\TpamException($error['errorMsg']);
+            throw new \Exception($error['errorMsg']);
         }
     }
 
     if (!$postRes = $tpam->postCurl($res, $tpam->getUrl())) {
         foreach ($tpam->errors as $error) {
-            throw new \trhui\TpamException($error['errorMsg']);
+            throw new \Exception($error['errorMsg']);
         }
     }
 
@@ -56,14 +56,14 @@ try {
     $resultRes = $resultObj->handle($postRes);
     if (!$resultRes) {
         foreach ($resultObj->errors as $error) {
-            throw new \trhui\TpamException($error['errorMsg']);
+            throw new \Exception($error['errorMsg']);
         }
     }
 
     $result['error'] = 1;
     $result['msg'] = '提交成功';
     $result['data'] = $resultRes;
-} catch (\trhui\TpamException $e) {
+} catch (\Exception $e) {
     $result['msg'] = $e->getMessage();
 }
 echo json_encode($result, JSON_UNESCAPED_UNICODE);

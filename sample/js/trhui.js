@@ -72,5 +72,28 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#trhuiAjaxSubmit").click(function () {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: window.location.href,//提交的URL
+            data: $('#trhuiForm').serialize(), // 要提交的表单,必须使用name属性
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.error == 0) {
+                    alert(data.msg);
+                } else if (data.error == 1) {
+                    alert(data.msg);
+                } else {
+                    alert('数据异常');
+                }
+            },
+            error: function (request) {
+                alert("Connection error");
+            }
+        });
+    });
 })
 

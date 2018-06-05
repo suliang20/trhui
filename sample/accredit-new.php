@@ -68,7 +68,7 @@ if (is_post()) {
             $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
             if (!$res) {
                 foreach ($tpam->errors as $error) {
-                    throw new \trhui\TpamException($error['errorMsg']);
+                    throw new \Exception($error['errorMsg']);
                 }
             }
         } while (false);

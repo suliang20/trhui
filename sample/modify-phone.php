@@ -16,15 +16,15 @@ if (is_post()) {
     try {
         do {
             if (!\trhui\business\Register::chkMobile($_POST['newPhone'])) {
-                throw new \trhui\TpamException('手机号格式错误');
+                throw new \Exception('手机号格式错误');
             }
             $mobile = $_POST['newPhone'];
             $registerObj = new \trhui\business\Register();
             if ($registerObj->hasMobile($mobile)) {
-                throw new \trhui\TpamException('手机号已注册');
+                throw new \Exception('手机号已注册');
             }
             if (empty($_POST['userId'])) {
-                throw new \trhui\TpamException('数据错误');
+                throw new \Exception('数据错误');
             }
             $userId = $_POST['userId'];
             if (!$registerObj->hasUserId($userId)) {
@@ -47,7 +47,7 @@ if (is_post()) {
             $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
             if (!$res) {
                 foreach ($tpam->errors as $error) {
-                    throw new \trhui\TpamException($error['errorMsg']);
+                    throw new \Exception($error['errorMsg']);
                 }
             }
         } while (false);
@@ -56,7 +56,7 @@ if (is_post()) {
         $result['msg'] = '提交成功';
         $result['data']['businessData'] = $res;
         $result['data']['businessUrl'] = $tpam->getUrl();
-    } catch (\trhui\TpamException $e) {
+    } catch (\Exception $e) {
         $result['msg'] = $e->getMessage();
     }
     echo json_encode($result, JSON_UNESCAPED_UNICODE);

@@ -14,7 +14,7 @@ $result = [
 ];
 try {
     if (empty($_GET['userId'])) {
-        throw new \trhui\TpamException('数据错误');
+        throw new \Exception('数据错误');
     }
     $userId = $_GET['userId'];
     $registerObj = new \trhui\business\Register();
@@ -33,10 +33,10 @@ try {
     $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
     if (!$res) {
         foreach ($tpam->errors as $error) {
-            throw new \trhui\TpamException($error['errorMsg']);
+            throw new \Exception($error['errorMsg']);
         }
     }
-} catch (\trhui\TpamException $e) {
+} catch (\Exception $e) {
     $result['msg'] = $e->getMessage();
 }
 ?>

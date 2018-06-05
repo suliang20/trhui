@@ -16,14 +16,14 @@ if (is_post()) {
     try {
         do {
             if (!isset($_POST['amount']) || !is_numeric($_POST['amount'])) {
-                throw new \trhui\TpamException('支付金额错误');
+                throw new \Exception('支付金额错误');
             }
             $totalAmount = $_POST['amount'] * 100;
             if (!isset($_POST['payeeUserId']) || !is_numeric($_POST['payeeUserId'])) {
-                throw new \trhui\TpamException('收款用户ID不能为空');
+                throw new \Exception('收款用户ID不能为空');
             }
             if (!isset($_POST['payerUserId']) || !is_numeric($_POST['payerUserId'])) {
-                throw new \trhui\TpamException('付款用户ID不能为空');
+                throw new \Exception('付款用户ID不能为空');
             }
             $feeToMerchant = !empty($_POST['feeToMerchant']) ? $_POST['feeToMerchant'] * 100 : 0;
 
@@ -59,7 +59,7 @@ if (is_post()) {
             $payeeUserListArrObj = new \trhui\data\ParamsArray();
             if (!$payeeUserListArrObj->SetParams(new \trhui\data\PayeeUserList(), $paramArr1)) {
                 foreach ($payeeUserListArrObj->errors as $error) {
-                    throw new \trhui\TpamException($error['errorMsg']);
+                    throw new \Exception($error['errorMsg']);
                 }
             }
             $inputObj->SetPayeeUserList($payeeUserListArrObj->getParamsArr());
@@ -72,7 +72,7 @@ if (is_post()) {
 
             if (!$res) {
                 foreach ($tpam->errors as $error) {
-                    throw new \trhui\TpamException($error['errorMsg']);
+                    throw new \Exception($error['errorMsg']);
                 }
             }
         } while (false);
@@ -89,7 +89,7 @@ if (is_post()) {
         $result['msg'] = '提交成功';
         $result['data']['businessData'] = $res;
         $result['data']['businessUrl'] = $tpam->getUrl();
-    } catch (\trhui\TpamException $e) {
+    } catch (\Exception $e) {
         $result['msg'] = $e->getMessage();
     }
     echo json_encode($result, JSON_UNESCAPED_UNICODE);

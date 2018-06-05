@@ -16,7 +16,7 @@ if (is_post()) {
     try {
         do {
             if (!isset($_POST['payee_user_id']) || !is_numeric($_POST['payee_user_id'])) {
-                throw new \trhui\TpamException('授权用户ID不存在');
+                throw new \Exception('授权用户ID不存在');
             }
             $inputObj = new \trhui\data\ToAuthen();
             $inputObj->SetNotifyUrl(NOTIFY_URL);
@@ -31,7 +31,7 @@ if (is_post()) {
             $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
             if (!$res) {
                 foreach ($tpam->errors as $error) {
-                    throw new \trhui\TpamException($error['errorMsg']);
+                    throw new \Exception($error['errorMsg']);
                 }
             }
         } while (false);
@@ -40,7 +40,7 @@ if (is_post()) {
         $result['msg'] = '提交成功';
         $result['data']['businessData'] = $res;
         $result['data']['businessUrl'] = $tpam->getUrl();
-    } catch (\trhui\TpamException $e) {
+    } catch (\Exception $e) {
         $result['msg'] = $e->getMessage();
     }
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
