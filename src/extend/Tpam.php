@@ -8,7 +8,7 @@
 
 namespace trhui\extend;
 
-use trhui\Request;
+use trhui\business\Request;
 use trhui\TpamException;
 
 class Tpam extends \trhui\Tpam

@@ -6,9 +6,10 @@
  * Time: 18:44
  */
 
-namespace trhui;
+namespace trhui\business;
 
 use trhui\data\Data;
+use trhui\TpamException;
 
 class Response extends Data
 {

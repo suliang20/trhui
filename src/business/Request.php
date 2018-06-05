@@ -6,7 +6,7 @@
  * Time: 18:44
  */
 
-namespace trhui;
+namespace trhui\business;
 
 use trhui\business\AccreditNew;
 use trhui\business\ModifyPhone;
@@ -16,6 +16,7 @@ use trhui\business\RefundAll;
 use trhui\business\ToWithdraw;
 use trhui\data\Data;
 use trhui\data\DataBase;
+use trhui\TpamException;
 
 class Request extends Data
 {
@@ -29,7 +30,7 @@ class Request extends Data
                 $datas = unserialize($datas);
             } else {
                 if (!@touch(static::$logFile)) {
-                    throw new TpamException('创建请求日志文件失败');
+                    throw new \trhui\TpamException('创建请求日志文件失败');
                 }
                 $datas = [];
             }
@@ -69,12 +70,12 @@ class Request extends Data
             }
             if (!$res) {
                 $this->errors = array_merge($this->errors, $requestObj->errors);
-                throw new TpamException('订单记录失败');
+                throw new \trhui\TpamException('订单记录失败');
             }
             $datas = serialize($datas);
             file_put_contents(static::$logFile, $datas);
             return true;
-        } catch (TpamException $e) {
+        } catch (\trhui\TpamException $e) {
             $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
         }
         return false;

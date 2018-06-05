@@ -8,14 +8,9 @@
 
 namespace trhui\extend;
 
-use trhui\business\DelayAutoPayday;
 use trhui\business\PayRequestOrder;
-use trhui\business\PayResponse;
-use trhui\business\Refund;
-use trhui\business\Register;
+use trhui\business\Request;
 use trhui\data\ResultCode;
-use trhui\Request;
-use trhui\Response;
 use trhui\TpamException;
 
 class QueryResults extends \trhui\Results

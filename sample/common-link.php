@@ -10,8 +10,8 @@
     <a href="javascript:history.go(-1);">返回</a>
     <a href="index.php">首页</a>
     <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
-    <a href="register.php">注册</a>
-    <a href="register_private.php">新注册</a>
+    <a href="register.php">需认证注册</a>
+    <a href="register_private.php">不需认证注册</a>
     <a href="register-list.php">用户列表</a>
     <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
     <a href="pay.php">支付</a>

@@ -15,12 +15,11 @@ use trhui\business\PayResponse;
 use trhui\business\Refund;
 use trhui\business\RefundAll;
 use trhui\business\Register;
+use trhui\business\Request;
+use trhui\business\Response;
 use trhui\business\ToWithdraw;
-use trhui\data\Data;
 use trhui\data\DataBase;
 use trhui\data\ResultCode;
-use trhui\Request;
-use trhui\Response;
 use trhui\TpamException;
 
 class Results extends \trhui\Results
@@ -56,6 +55,7 @@ class Results extends \trhui\Results
             $processObj = null;
             switch ($requestData['serverCode']) {
                 case DataBase::SERVER_TO_REGISTER:
+                case DataBase::SERVER_TO_PRIVATE_REGISTER:
                     $processObj = new Register();
                     break;
                 case DataBase::SERVER_ORDER_TRANSFER:
