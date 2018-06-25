@@ -8,15 +8,17 @@ ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('PRC');//其中PRC为“中华人民共和国”
 
-defined('PROTOCOL') or define('PROTOCOL', strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === false ? 'http' : 'https');
+defined('PROTOCOL') or define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https' : 'http');
 
 defined('DOMAIN') or define('DOMAIN', $_SERVER['HTTP_HOST']);
 defined('PORT') or define('PORT', $_SERVER['SERVER_PORT']);
+
 if (PORT == 80 || PORT == 443) {
     defined('HOST') or define('HOST', PROTOCOL . '://' . DOMAIN . '/');
 } else {
     defined('HOST') or define('HOST', PROTOCOL . '://' . DOMAIN . ':' . PORT . '/');
 }
+
 //  项目根目录
 defined('ROOT') or define('ROOT', realpath(dirname(dirname(__FILE__))) . '/');
 //  本地配置文件路径
