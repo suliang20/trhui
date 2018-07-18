@@ -165,7 +165,7 @@ class Results
     final protected function checkValues()
     {
         try {
-            if (isset($this->result)) {
+            if (!isset($this->result)) {
                 throw new TpamException('结果字符串不能为空');
             }
             if (empty($this->sign)) {
