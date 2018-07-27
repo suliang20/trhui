@@ -288,10 +288,10 @@ class EnterpriseCertificate extends DataBase
     public function IsOrganTypeSet()
     {
         try {
-            if (!(array_key_exists('organType', $this->params) && isset($this->params['organCode']))) {
+            if (!(array_key_exists('organType', $this->params) && isset($this->params['organType']))) {
                 throw new TpamException('机构类型未设置');
             }
-            if (!in_array($this->params['organCode'], [0, 1])) {
+            if (!in_array($this->params['organType'], [0, 1])) {
                 throw new TpamException('机构类型错误');
             }
             return true;
