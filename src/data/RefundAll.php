@@ -112,33 +112,6 @@ class RefundAll extends DataBase
     }
 
     /**
-     * 前台回调地址
-     * @param $value
-     */
-    public function SetFrontUrl($value)
-    {
-        $this->params['frontUrl'] = $value;
-    }
-
-    public function GetFrontUrl()
-    {
-        return $this->params['frontUrl'];
-    }
-
-    public function IsFrontUrlSet()
-    {
-        try {
-            if (!(array_key_exists('frontUrl', $this->params) && !empty($this->params['frontUrl']))) {
-                throw new TpamException('前台回调地址未设置');
-            }
-            return true;
-        } catch (TpamException $e) {
-            $this->addError(__FUNCTION__, $e->getMessage(), $e->getFile(), $e->getLine());
-        }
-        return false;
-    }
-
-    /**
      * 后台回调地址
      * @param $value
      */
