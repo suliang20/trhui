@@ -14,41 +14,126 @@ if (is_post()) {
         'msg' => '提交错误',
     ];
     try {
-        do {
-            if (!\trhui\business\Register::chkMobile($_POST['mobile'])) {
-                throw new \Exception('手机号格式错误');
-            }
-            $mobile = $_POST['mobile'];
-            $registerObj = new \trhui\business\Register();
-            if ($registerObj->hasMobile($mobile)) {
-                throw new \Exception('手机号已注册');
-            }
+        if (empty($_POST['button'])) {
+            throw new \Exception('请求类型为空');
+        }
+        if (empty($_POST['userId'])) {
+            throw new \Exception('用户ID不能为空');
+        }
 
-            $inputObj = new \trhui\data\ToRegister();
-            $inputObj->SetNotifyUrl(NOTIFY_URL);
-            $inputObj->SetFrontUrl(FRONT_URL);
+        switch ($_POST['button']) {
+            case 'balance':
+                $inputObj = new \trhui\data\GetBalance();
+                $inputObj->SetUserId($_POST['userId']);
 
-            //  获取商户用户ID
-            $merUserId = $registerObj->getNewMerUserId();
-            $inputObj->SetMerUserId($merUserId);
-            $inputObj->SetMobile($mobile);
-
-            $tpam = new \trhui\extend\Tpam();
-            $tpam->serverUrl = SERVER_URL;
-            $tpam->merchantNo = MER_CHANT_NO;
-            $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
-            $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
-            if (!$res) {
-                foreach ($tpam->errors as $error) {
-                    throw new \Exception($error['errorMsg']);
+                $tpam = new \trhui\extend\Tpam();
+                $tpam->serverUrl = SERVER_URL;
+                $tpam->merchantNo = MER_CHANT_NO;
+                $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+                $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+                if (!$res) {
+                    foreach ($tpam->errors as $error) {
+                        throw new \Exception($error['errorMsg']);
+                    }
                 }
-            }
-        } while (false);
+//    echo json_encode($res);exit;
+                $postRes = $tpam->postCurl($res, $tpam->getUrl());
+                if (!$postRes) {
+                    foreach ($tpam->errors as $error) {
+                        throw new \Exception($error['errorMsg']);
+                    }
+                }
+//    var_dump($postRes);exit;
+
+                $resultObj = new \trhui\extend\AccountResults();
+                $resultObj->tpamPublicKeyPath = PUBLIC_KEY_PATH;
+                $resultRes = $resultObj->handle($postRes);
+
+                if (!empty($resultObj->errors)) {
+                    foreach ($resultObj->errors as $error) {
+                        throw new \Exception($error['errorMsg']);
+                    }
+                }
+                $result['data'] = $resultRes['result'];
+                break;
+
+            case 'login':
+                $inputObj = new \trhui\data\MemberLogin();
+                $inputObj->SetUserId($_POST['userId']);
+
+                $tpam = new \trhui\extend\Tpam();
+                $tpam->serverUrl = SERVER_URL;
+                $tpam->merchantNo = MER_CHANT_NO;
+                $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+                $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+                if (!$res) {
+                    foreach ($tpam->errors as $error) {
+                        throw new \Exception($error['errorMsg']);
+                    }
+                }
+                $result['data']['businessData'] = $res;
+                $result['data']['businessUrl'] = $tpam->getUrl();
+                break;
+
+            case 'withdraw':
+                //  结算金额
+                if (empty($_POST['amount'])) {
+                    throw new \Exception('结算金额不能为空');
+                }
+                $amount = $_POST['amount'];
+                //  是否需要审核
+                $isNeedForAudit = !empty($_POST['is_need_for_audit']) ? $_POST['is_need_for_audit'] : 0;
+
+                $inputObj = new \trhui\data\ToWithdraw();
+                $inputObj->SetNotifyUrl(NOTIFY_URL);
+                $inputObj->SetFrontUrl(FRONT_URL);
+
+                //  获取商户用户ID
+                $inputObj->SetUserId($_POST['userId']);
+                $inputObj->SetAmount($amount);
+                $inputObj->SetFeePayer(0);
+                $inputObj->SetFeeToMerchant(0);
+                $inputObj->SetIsNeedForAudit($isNeedForAudit);
+
+                $tpam = new \trhui\extend\Tpam();
+                $tpam->serverUrl = SERVER_URL;
+                $tpam->merchantNo = MER_CHANT_NO;
+                $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+                $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+                if (!$res) {
+                    foreach ($tpam->errors as $error) {
+                        throw new \Exception($error['errorMsg']);
+                    }
+                }
+                $result['data']['businessData'] = $res;
+                $result['data']['businessUrl'] = $tpam->getUrl();
+                break;
+
+            case 'toAuthen':
+                $inputObj = new \trhui\data\ToAuthen();
+                $inputObj->SetNotifyUrl(NOTIFY_URL);
+                $inputObj->SetFrontUrl(FRONT_URL);
+                $inputObj->SetUserId($_POST['userId']);
+
+                $tpam = new \trhui\extend\Tpam();
+                $tpam->serverUrl = SERVER_URL;
+                $tpam->merchantNo = MER_CHANT_NO;
+                $tpam->rsaPrivateKeyPath = PRIVATE_KEY_PATH;
+                $res = $tpam->frontInterface($inputObj, MER_ORDER_ID);
+                if (!$res) {
+                    foreach ($tpam->errors as $error) {
+                        throw new \Exception($error['errorMsg']);
+                    }
+                }
+                $result['data']['businessData'] = $res;
+                $result['data']['businessUrl'] = $tpam->getUrl();
+                break;
+            default:
+                throw new \Exception('不存在的请求类型');
+        }
 
         $result['error'] = 1;
         $result['msg'] = '提交成功';
-        $result['data']['businessData'] = $res;
-        $result['data']['businessUrl'] = $tpam->getUrl();
     } catch (\Exception $e) {
         $result['msg'] = $e->getMessage();
     }
@@ -74,11 +159,135 @@ require_once "common-link.php";
             <label for="userId">用户ID</label>
             <input type="text" name="userId" id="userId">
         </div>
-        <button type="button" id="trhuiSubmit" name="balance">提交注册</button>
+        <button type="button" onclick="getBalance()">用户余额</button>
+        <button type="button" onclick="goLogin()">用户登录</button>
+        <button type="button" onclick="toAuthen()">用户认证</button>
     </form>
 </div>
 
+<div>
+    <form action="" method="post" id="withdraw" name="trhuiForm">
+        <div>
+            <label for="userId">用户ID</label>
+            <input type="text" name="userId" id="userId">
+            <label for="amount">提现金额</label>
+            <input type="text" name="amount" id="amount">
+        </div>
+        <button type="button" onclick="goWithdraw()">提现</button>
+    </form>
+</div>
 
 </body>
 </html>
 
+<script>
+  function getBalance () {
+    var dataStr = ($('#trhuiForm').serialize())
+    dataStr += '&button=balance'
+    console.log(dataStr)
+
+    $.ajax({
+      cache: true,
+      type: 'POST',
+      url: window.location.href,//提交的URL
+      data: dataStr,
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        if (data.error == 0) {
+          alert(data.msg)
+        } else if (data.error == 1) {
+          console.log(data.data)
+          alert((data.data))
+        } else {
+          alert('数据异常')
+        }
+      },
+      error: function (request) {
+        alert('Connection error')
+      }
+    })
+  }
+
+  function goLogin () {
+    var dataStr = ($('#trhuiForm').serialize())
+    dataStr += '&button=login'
+    console.log(dataStr)
+
+    $.ajax({
+      cache: true,
+      type: 'POST',
+      url: window.location.href,//提交的URL
+      data: dataStr,
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        if (data.error == 0) {
+          alert(data.msg)
+        } else if (data.error == 1) {
+          sendData(data.data.businessUrl, data.data.businessData)
+        } else {
+          alert('数据异常')
+        }
+      },
+      error: function (request) {
+        alert('Connection error')
+      }
+    })
+  }
+
+  function goWithdraw () {
+    var dataStr = ($('#withdraw').serialize())
+    dataStr += '&button=withdraw'
+    console.log(dataStr)
+
+    $.ajax({
+      cache: true,
+      type: 'POST',
+      url: window.location.href,//提交的URL
+      data: dataStr,
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        if (data.error == 0) {
+          alert(data.msg)
+        } else if (data.error == 1) {
+          sendData(data.data.businessUrl, data.data.businessData)
+        } else {
+          alert('数据异常')
+        }
+      },
+      error: function (request) {
+        alert('Connection error')
+      }
+    })
+  }
+
+  function toAuthen () {
+    var dataStr = ($('#trhuiForm').serialize())
+    dataStr += '&button=toAuthen'
+    console.log(dataStr)
+
+    $.ajax({
+      cache: true,
+      type: 'POST',
+      url: window.location.href,//提交的URL
+      data: dataStr,
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        if (data.error == 0) {
+          alert(data.msg)
+        } else if (data.error == 1) {
+          sendData(data.data.businessUrl, data.data.businessData)
+        } else {
+          alert('数据异常')
+        }
+      },
+      error: function (request) {
+        alert('Connection error')
+      }
+    })
+  }
+
+</script>
