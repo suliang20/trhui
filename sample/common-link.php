@@ -20,4 +20,6 @@
     <a href="order-list.php">支付订单列表</a>
     <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
     <a href="refund-list.php">部分退款列表</a>
+    <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+    <a href="other.php">其他用户</a>
 </div>

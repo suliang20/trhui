@@ -27,12 +27,12 @@ try {
         }
     }
 //    echo json_encode($res);exit;
-    if (!$postRes = $tpam->postCurl($res, $tpam->getUrl())) {
+    $postRes = $tpam->postCurl($res, $tpam->getUrl());
+    if (!$postRes) {
         foreach ($tpam->errors as $error) {
             throw new \Exception($error['errorMsg']);
         }
     }
-//    echo json_encode($postRes);exit;
 //    var_dump($postRes);exit;
 
     $resultObj = new \trhui\extend\AccountResults();
