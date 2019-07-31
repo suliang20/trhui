@@ -5,8 +5,8 @@
  * Date: 2017/12/29
  * Time: 15:29
  */
-require_once('./config.php');
-require '../vendor/autoload.php';
+require_once('./core/init.php');
+require_once('../vendor/autoload.php');
 
 if (is_post()) {
     $result = [

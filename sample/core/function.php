@@ -56,3 +56,39 @@ function is_get()
     return $_SERVER['REQUEST_METHOD'] == 'get' ? true : false;
 }
 
+/**
+ * 获取域名根目录
+ * @return string
+ */
+function GetCurrentUrl()
+{
+    $url = GetCurUrl();
+    $url = explode('?', $url)[0];
+    $parseArr = parse_url($url);
+    if (!empty($parseArr['path'])) {
+        $arr = explode('/', $url);
+        array_pop($arr);
+        $url = implode('/', $arr);
+    }
+    return $url . '/';
+}
+
+
+/**
+ * 获取当前URL
+ * @return string
+ */
+function GetCurUrl()
+{
+    $url = 'http://';
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $url = 'https://';
+    }
+    if ($_SERVER['SERVER_PORT'] != '80') {
+        $url .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
+    } else {
+        $url .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+    }
+    return $url;
+}
+

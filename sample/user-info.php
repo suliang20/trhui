@@ -6,8 +6,8 @@
  * Time: 11:04
  */
 
-require_once('./config.php');
-require '../vendor/autoload.php';
+require_once('./core/init.php');
+require_once('../vendor/autoload.php');
 
 $userInfo = [];
 try {

@@ -1,3 +1,6 @@
+<?php
+require_once "core/init.php";
+?>
 <html>
 <head>
     <title>招商银行清算通测试</title>

@@ -6,7 +6,7 @@
  * Time: 15:29
  */
 require_once('./core/init.php');
-require_once('../vendor/autoload.php');
+require_once '../vendor/autoload.php';
 
 if (is_post()) {
     $result = [
@@ -15,30 +15,23 @@ if (is_post()) {
     ];
     try {
         do {
-            if (!\trhui\business\Register::chkMobile($_POST['newPhone'])) {
+            if (!\trhui\business\Register::chkMobile($_POST['mobile'])) {
                 throw new \Exception('手机号格式错误');
             }
-            $mobile = $_POST['newPhone'];
+            $mobile = $_POST['mobile'];
             $registerObj = new \trhui\business\Register();
             if ($registerObj->hasMobile($mobile)) {
                 throw new \Exception('手机号已注册');
             }
-            if (empty($_POST['userId'])) {
-                throw new \Exception('数据错误');
-            }
-            $userId = $_POST['userId'];
-            if (!$registerObj->hasUserId($userId)) {
-                throw new \Exception('清算通用户ID不存在');
-            }
 
-
-            $inputObj = new \trhui\data\ModifyPhone();
+            $inputObj = new \trhui\data\ToRegister();
             $inputObj->SetNotifyUrl(NOTIFY_URL);
             $inputObj->SetFrontUrl(FRONT_URL);
 
             //  获取商户用户ID
-            $inputObj->SetUserId($userId);
-            $inputObj->SetNewPhone($mobile);
+            $merUserId = $registerObj->getNewMerUserId();
+            $inputObj->SetMerUserId($merUserId);
+            $inputObj->SetMobile($mobile);
 
             $tpam = new \trhui\extend\Tpam();
             $tpam->serverUrl = SERVER_URL;
@@ -66,23 +59,26 @@ if (is_post()) {
 
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>用户手机修改示例</title>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/trhui.js"></script>
+    <title>用户注册示例</title>
+    <?php
+    require_once "common-js-style.php";
+    ?>
 </head>
 <body>
+<?php
+require_once "common-link.php";
+?>
 <div>
     <form action="" method="post" id="trhuiForm" name="trhuiForm">
         <div>
-            <label for="mobile">用户新手机号</label>
-            <input type="text" name="newPhone" id="newPhone">
-            <input type="hidden" name="userId" id="userId" value="<?= $_GET['userId'] ?>">
+            <label for="userId">用户ID</label>
+            <input type="text" name="userId" id="userId">
         </div>
-        <button type="button" id="trhuiSubmit">提交修改</button>
-        <a href="register.php">返回注册页面</a>
+        <button type="button" id="trhuiSubmit" name="balance">提交注册</button>
     </form>
 </div>
+
+
 </body>
 </html>
 

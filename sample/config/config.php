@@ -13,9 +13,6 @@ return [
     'mer_chant_no' => 'test',
     'server_url' => 'http://cmbtest.trhui.com/',
 
-    'notify_url' => 'http://test.com/back-result.php',
-    'front_url' => 'http://test.com/front-result.php',
-
     'mer_order_id' => date('YmdHis'),
     'order_id' => date('YmdHis'),
 ];

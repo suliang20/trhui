@@ -5,8 +5,8 @@
  * Date: 2018/1/4
  * Time: 18:08
  */
-require_once('./config.php');
-require '../vendor/autoload.php';
+require_once('./core/init.php');
+require_once('../vendor/autoload.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Read the input from stdin
